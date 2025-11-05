@@ -178,6 +178,10 @@ const Home = () => {
                 >
                   {user.similarity}% similarity
                 </Badge>
+                <Button size="sm" variant="default">
+                  <Star className="w-4 h-4 mr-2" />
+                  Add as Benchmark
+                </Button>
                 <Button size="sm" variant="outline">
                   View Details
                 </Button>
