@@ -60,7 +60,7 @@ export const EmailCard = ({
             <div className="flex items-center gap-2 flex-wrap min-w-0">
               <span className="font-semibold text-sm">{email.email}</span>
               <Badge variant="outline" className="bg-success/10 text-success border-success/20 text-xs px-1.5 py-0">
-                {email.confidence}%
+                Confidence Score: {email.confidence}%
               </Badge>
               {email.type === "reply" && (
                 <Badge variant="outline" className="bg-info/10 text-info border-info/20 text-xs px-1.5 py-0">
