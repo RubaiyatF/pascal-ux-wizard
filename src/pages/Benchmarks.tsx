@@ -129,9 +129,6 @@ const Benchmarks = () => {
               Users behaving like your benchmarks (opportunity list)
             </p>
           </div>
-          <Button className="bg-gradient-hero hover:opacity-90">
-            Queue Activation Campaign
-          </Button>
         </div>
 
         <div className="space-y-3">
