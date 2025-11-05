@@ -135,31 +135,29 @@ export const SwipeableEmailCard = ({
       <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-lg">{email.email}</span>
-            <TooltipProvider delayDuration={0}>
+          <TooltipProvider delayDuration={0} skipDelayDuration={0}>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-lg">{email.email}</span>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Badge variant="outline" className="bg-success/10 text-success border-success/20 cursor-help">
                     {email.confidence}%
                   </Badge>
                 </TooltipTrigger>
-                <TooltipContent side="top" align="center" className="max-w-xs">
+                <TooltipContent side="top" align="center" sideOffset={8} className="max-w-xs">
                   <p>AI confidence score - how certain the AI is that this email should be sent</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Badge variant="outline" className="cursor-help">♥ {email.heartScore}</Badge>
                 </TooltipTrigger>
-                <TooltipContent side="top" align="center" className="max-w-xs">
+                <TooltipContent side="top" align="center" sideOffset={8} className="max-w-xs">
                   <p>Heart score - user engagement and satisfaction metric</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-          </div>
+            </div>
+          </TooltipProvider>
           {email.type === "reply" && (
             <Badge variant="outline" className="bg-info/10 text-info border-info/20">
               Reply
