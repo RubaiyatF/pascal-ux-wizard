@@ -10,11 +10,18 @@ import { EmailQueueStats } from "@/components/email-queue/EmailQueueStats";
 import { BulkActions } from "@/components/email-queue/BulkActions";
 import { EmailCard, QueuedEmail } from "@/components/email-queue/EmailCard";
 import { FeedbackModal } from "@/components/email-queue/FeedbackModal";
+import { EditEmailModal } from "@/components/email-queue/EditEmailModal";
+import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
+import { ConversationThreadModal } from "@/components/email-queue/ConversationThreadModal";
 import { useToast } from "@/hooks/use-toast";
 
 const EmailQueue = () => {
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showRecordingModal, setShowRecordingModal] = useState(false);
+  const [showThreadModal, setShowThreadModal] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const { toast } = useToast();
 
   const queuedEmails: QueuedEmail[] = [
@@ -73,10 +80,11 @@ const EmailQueue = () => {
   };
 
   const handleEdit = (id: string) => {
-    toast({
-      title: "Edit Email",
-      description: "Email editor would open here.",
-    });
+    const email = queuedEmails.find(e => e.id === id);
+    if (email) {
+      setCurrentEmail(email);
+      setShowEditModal(true);
+    }
   };
 
   const handleReject = (id: string) => {
@@ -86,17 +94,18 @@ const EmailQueue = () => {
 
   const handleViewRecording = (id: string) => {
     const email = queuedEmails.find(e => e.id === id);
-    toast({
-      title: "Opening Session Recording",
-      description: `Loading session ${email?.sessionId}...`,
-    });
+    if (email) {
+      setCurrentEmail(email);
+      setShowRecordingModal(true);
+    }
   };
 
   const handleViewThread = (id: string) => {
-    toast({
-      title: "Opening Thread",
-      description: "Full conversation would open here.",
-    });
+    const email = queuedEmails.find(e => e.id === id);
+    if (email) {
+      setCurrentEmail(email);
+      setShowThreadModal(true);
+    }
   };
 
   const handleBulkApprove = () => {
@@ -118,6 +127,15 @@ const EmailQueue = () => {
     });
     setShowFeedbackModal(false);
     setSelectedEmails([]);
+  };
+
+  const handleEditSave = (emailId: string, subject: string, body: string) => {
+    toast({
+      title: "Email Updated & Approved",
+      description: "Your edited email has been queued for sending.",
+    });
+    setShowEditModal(false);
+    setCurrentEmail(null);
   };
 
   return (
@@ -178,6 +196,39 @@ const EmailQueue = () => {
         selectedCount={selectedEmails.length}
         onClose={() => setShowFeedbackModal(false)}
         onSubmit={handleFeedbackSubmit}
+      />
+
+      {/* Edit Email Modal */}
+      <EditEmailModal
+        isOpen={showEditModal}
+        email={currentEmail}
+        onClose={() => {
+          setShowEditModal(false);
+          setCurrentEmail(null);
+        }}
+        onSave={handleEditSave}
+      />
+
+      {/* Session Recording Modal */}
+      <SessionRecordingModal
+        isOpen={showRecordingModal}
+        sessionId={currentEmail?.sessionId || null}
+        email={currentEmail?.email || null}
+        onClose={() => {
+          setShowRecordingModal(false);
+          setCurrentEmail(null);
+        }}
+      />
+
+      {/* Conversation Thread Modal */}
+      <ConversationThreadModal
+        isOpen={showThreadModal}
+        email={currentEmail?.email || null}
+        userId={currentEmail?.id || null}
+        onClose={() => {
+          setShowThreadModal(false);
+          setCurrentEmail(null);
+        }}
       />
     </div>
   );
