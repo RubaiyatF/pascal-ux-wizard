@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,7 @@ const Onboarding = () => {
   const [website, setWebsite] = useState("");
   const [eventsDetected, setEventsDetected] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const projectId = "proj_demo_" + Math.random().toString(36).substr(2, 9);
   const apiKey = "pk_" + Math.random().toString(36).substr(2, 24);
@@ -282,7 +284,7 @@ const Onboarding = () => {
                         <p className="text-sm text-muted-foreground mb-3">
                           Pascal is now tracking user behavior and will start generating AI insights within minutes.
                         </p>
-                        <Button size="sm" className="bg-primary hover:bg-primary/90">
+                        <Button size="sm" className="bg-primary hover:bg-primary/90" onClick={() => navigate("/home")}>
                           Go to Dashboard
                         </Button>
                       </div>
