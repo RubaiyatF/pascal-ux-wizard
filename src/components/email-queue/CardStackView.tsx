@@ -82,7 +82,8 @@ export const CardStackView = ({
 
         <Button
           size="lg"
-          className="rounded-full w-16 h-16 p-0 bg-success hover:bg-success/90 border-2 border-success"
+          variant="outline"
+          className="rounded-full w-16 h-16 p-0 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
           onClick={() => onApprove(emails[0].id)}
         >
           <Check className="w-8 h-8" />
