@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -6,6 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import pascalLogo from "@/assets/pascal-logo.png";
 
@@ -20,29 +21,43 @@ export const TopNavbar = () => {
         <span className="font-bold text-lg">Pascal</span>
       </div>
 
-      {/* Project Selector */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="gap-2 text-muted-foreground">
-            Pascal Demo
-            <ChevronDown className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Pascal Demo</DropdownMenuItem>
-          <DropdownMenuItem>Create New Project</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {/* Spacer */}
+      <div className="flex-1" />
 
       {/* Right Actions */}
-      <div className="flex items-center gap-3 ml-auto">
-        {/* User Avatar */}
-        <Avatar className="w-8 h-8 cursor-pointer">
-          <AvatarImage src="" />
-          <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-            MO
-          </AvatarFallback>
-        </Avatar>
+      <div className="flex items-center gap-3">
+        {/* Project Selector */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="gap-2 border-border bg-muted/50">
+              Pascal Demo
+              <ChevronDown className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+            <DropdownMenuItem className="cursor-pointer">Pascal Demo</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer">Create New Project</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* User Avatar with Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="w-8 h-8 cursor-pointer">
+              <AvatarImage src="" />
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                MO
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+            <DropdownMenuItem className="cursor-pointer">
+              <LogOut className="w-4 h-4 mr-2" />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
