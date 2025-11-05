@@ -18,7 +18,7 @@ interface LayoutProps {
 }
 
 const navigation = [
-  { name: "Benchmarks", href: "/benchmarks", icon: Target },
+  { name: "Home", href: "/home", icon: Target },
   { name: "Email Queue", href: "/email-queue", icon: Mail },
   { name: "Journey", href: "/conversations", icon: MessageSquare },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-6 border-b border-border">
-            <Link to="/email-queue" className="flex items-center gap-3">
+            <Link to="/home" className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>

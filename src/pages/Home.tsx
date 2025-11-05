@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Star, Plus, TrendingUp } from "lucide-react";
 
-const Benchmarks = () => {
+const Home = () => {
   const benchmarkUsers = [
     {
       email: "john@company.com",
@@ -196,4 +196,4 @@ const Benchmarks = () => {
   );
 };
 
-export default Benchmarks;
+export default Home;
