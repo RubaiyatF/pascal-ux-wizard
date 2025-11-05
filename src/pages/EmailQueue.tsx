@@ -126,6 +126,14 @@ const EmailQueue = () => {
     setShowFeedbackModal(true);
   };
 
+  const handleSelectAll = () => {
+    if (selectedEmails.length === queuedEmailsList.length) {
+      setSelectedEmails([]);
+    } else {
+      setSelectedEmails(queuedEmailsList.map(e => e.id));
+    }
+  };
+
   const handleFeedbackSubmit = (feedback: string) => {
     toast({
       title: "Feedback Submitted",
@@ -202,8 +210,11 @@ const EmailQueue = () => {
       {viewMode === "list" && (
         <BulkActions
           selectedCount={selectedEmails.length}
+          totalCount={queuedEmailsList.length}
+          allSelected={selectedEmails.length === queuedEmailsList.length && queuedEmailsList.length > 0}
           onApprove={handleBulkApprove}
           onReject={handleBulkReject}
+          onSelectAll={handleSelectAll}
         />
       )}
 
