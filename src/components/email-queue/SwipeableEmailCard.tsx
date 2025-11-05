@@ -112,25 +112,25 @@ export const SwipeableEmailCard = ({
         <>
           {swipeDirection === "approve" && (
             <div
-              className="absolute -top-4 -right-4 bg-success text-white rounded-full p-4 shadow-lg z-10"
+              className="absolute -top-4 -right-4 bg-primary rounded-full p-4 shadow-lg z-10"
               style={{ opacity }}
             >
-              <Check className="w-8 h-8" />
+              <Check className="w-8 h-8 text-primary-foreground" />
             </div>
           )}
           {swipeDirection === "reject" && (
             <div
-              className="absolute -top-4 -left-4 bg-destructive text-white rounded-full p-4 shadow-lg z-10"
+              className="absolute -top-4 -left-4 bg-destructive rounded-full p-4 shadow-lg z-10"
               style={{ opacity }}
             >
-              <X className="w-8 h-8" />
+              <X className="w-8 h-8 text-destructive-foreground" />
             </div>
           )}
         </>
       )}
 
       {/* Card Content */}
-      <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm">
+      <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm bg-opacity-100">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 flex-wrap">
