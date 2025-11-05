@@ -16,6 +16,7 @@ export interface QueuedEmail {
   sessionTime: string;
   type: "first_touch" | "reply";
   status: "queued" | "approved" | "rejected";
+  rejectionReason?: string;
   conversationStage?: string;
   sentiment?: string;
   intent?: string;
@@ -113,6 +114,16 @@ export const EmailCard = ({
                 )}
               </div>
             </>
+          )}
+
+          {/* Rejection Reason (Only for rejected emails) */}
+          {email.status === "rejected" && email.rejectionReason && (
+            <div className="bg-destructive/10 rounded px-3 py-2 mb-3 border border-destructive/20">
+              <div className="flex items-start gap-2">
+                <span className="text-xs font-semibold text-destructive">Rejection Reason:</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">{email.rejectionReason}</p>
+            </div>
           )}
 
           {/* Actions Row */}

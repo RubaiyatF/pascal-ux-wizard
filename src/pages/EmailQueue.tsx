@@ -96,6 +96,7 @@ const EmailQueue = () => {
       sessionTime: "3 hours ago",
       type: "first_touch",
       status: "rejected",
+      rejectionReason: "Confidence score too low. Email tone seems too negative and may not resonate well with the user.",
     },
   ]);
   const { toast } = useToast();
@@ -174,8 +175,12 @@ const EmailQueue = () => {
       title: "Feedback Submitted",
       description: `Rejected ${selectedEmails.length} emails with feedback.`,
     });
-    // Update status to rejected for selected emails
-    setQueuedEmailsList(prev => prev.map(e => selectedEmails.includes(e.id) ? { ...e, status: "rejected" as const } : e));
+    // Update status to rejected for selected emails and store feedback
+    setQueuedEmailsList(prev => prev.map(e => 
+      selectedEmails.includes(e.id) 
+        ? { ...e, status: "rejected" as const, rejectionReason: feedback } 
+        : e
+    ));
     setShowFeedbackModal(false);
     setSelectedEmails([]);
   };
