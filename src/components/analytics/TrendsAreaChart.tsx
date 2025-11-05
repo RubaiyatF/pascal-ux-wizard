@@ -51,19 +51,19 @@ const chartData = [
 const chartConfig = {
   activeUsers: {
     label: "Active Users",
-    color: "hsl(var(--chart-1))",
+    color: "oklch(var(--chart-1))",
   },
   activation: {
     label: "Activation %",
-    color: "hsl(var(--chart-2))",
+    color: "oklch(var(--chart-2))",
   },
   retention: {
     label: "Retention %",
-    color: "hsl(var(--chart-3))",
+    color: "oklch(var(--chart-3))",
   },
   featureAdoption: {
     label: "Feature Adoption %",
-    color: "hsl(var(--chart-4))",
+    color: "oklch(var(--chart-4))",
   },
 } satisfies ChartConfig
 
