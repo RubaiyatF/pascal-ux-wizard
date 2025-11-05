@@ -8,6 +8,7 @@ import {
   Settings,
   Sparkles,
   ChevronRight,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -75,14 +76,30 @@ const Layout = ({ children }: LayoutProps) => {
             <div className="p-3 rounded-lg bg-gradient-card border border-primary/20">
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <p className="text-xs font-semibold">Pro Tip</p>
+                <p className="text-xs font-semibold">Quick Actions</p>
               </div>
               <p className="text-xs text-muted-foreground mb-3">
-                View AI-powered insights on each user's journey
+                Manage your projects and workspace
               </p>
-              <Button size="sm" variant="outline" className="w-full text-xs">
-                Learn More
-              </Button>
+              <div className="space-y-2">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="w-full text-xs"
+                  onClick={() => window.open('https://lovable.dev', '_blank')}
+                >
+                  <Plus className="w-3 h-3 mr-2" />
+                  Create New Project
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="w-full text-xs"
+                  onClick={() => window.open('https://lovable.dev/projects', '_blank')}
+                >
+                  Switch Project
+                </Button>
+              </div>
             </div>
           </div>
         </div>
