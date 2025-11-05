@@ -39,7 +39,7 @@ const Layout = ({
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <Link to="/home" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-glow">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.4)]">
                 <img src={pascalLogo} alt="Pascal Logo" className="w-7 h-7" />
               </div>
               <div>
