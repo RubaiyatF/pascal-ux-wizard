@@ -7,7 +7,6 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import EmailQueue from "./pages/EmailQueue";
 import Journey from "./pages/Journey";
-import Sessions from "./pages/Sessions";
 import Benchmarks from "./pages/Benchmarks";
 import Analytics from "./pages/Analytics";
 import Learning from "./pages/Learning";
@@ -40,14 +39,6 @@ const App = () => (
             element={
               <Layout>
                 <Journey />
-              </Layout>
-            }
-          />
-          <Route
-            path="/sessions"
-            element={
-              <Layout>
-                <Sessions />
               </Layout>
             }
           />

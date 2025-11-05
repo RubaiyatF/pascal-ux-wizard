@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Mail,
   MessageSquare,
-  Video,
   Target,
   BarChart3,
   Brain,
@@ -21,7 +20,6 @@ interface LayoutProps {
 const navigation = [
   { name: "Email Queue", href: "/email-queue", icon: Mail },
   { name: "Journey", href: "/conversations", icon: MessageSquare },
-  { name: "Sessions", href: "/sessions", icon: Video },
   { name: "Benchmarks", href: "/benchmarks", icon: Target },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Learning", href: "/learning", icon: Brain },
