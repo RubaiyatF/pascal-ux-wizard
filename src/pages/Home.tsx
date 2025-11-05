@@ -7,8 +7,10 @@ import { useState } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { UserDetailsModal } from "@/components/home/UserDetailsModal";
+import { useToast } from "@/hooks/use-toast";
 
 const Home = () => {
+  const { toast } = useToast();
   const [addBenchmarkOpen, setAddBenchmarkOpen] = useState(false);
   const [benchmarkEmail, setBenchmarkEmail] = useState("");
   const [journeyOpen, setJourneyOpen] = useState(false);
@@ -20,7 +22,7 @@ const Home = () => {
     reason: string;
   } | null>(null);
 
-  const benchmarkUsers = [
+  const [benchmarkUsers, setBenchmarkUsers] = useState([
     {
       email: "john@company.com",
       markedDate: "Nov 1",
@@ -36,7 +38,42 @@ const Home = () => {
       markedDate: "Oct 25",
       sessionsAnalyzed: 89,
     },
-  ];
+  ]);
+
+  const handleAddBenchmark = (email: string) => {
+    // Check if user is already a benchmark
+    if (benchmarkUsers.some(user => user.email === email)) {
+      toast({
+        title: "Already a benchmark",
+        description: `${email} is already marked as a benchmark user`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Add new benchmark user
+    const newUser = {
+      email,
+      markedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      sessionsAnalyzed: Math.floor(Math.random() * 50) + 20, // Mock data
+    };
+
+    setBenchmarkUsers([...benchmarkUsers, newUser]);
+    
+    toast({
+      title: "Benchmark user added",
+      description: `${email} has been added as a benchmark user`,
+    });
+  };
+
+  const handleRemoveBenchmark = (email: string) => {
+    setBenchmarkUsers(benchmarkUsers.filter(user => user.email !== email));
+    
+    toast({
+      title: "Benchmark removed",
+      description: `${email} has been removed from benchmark users`,
+    });
+  };
 
   const similarUsers = [
     {
@@ -151,7 +188,13 @@ const Home = () => {
               className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <Star className="w-5 h-5 text-warning fill-warning" />
+                <button
+                  onClick={() => handleRemoveBenchmark(user.email)}
+                  className="transition-colors hover:opacity-70"
+                  title="Remove from benchmarks"
+                >
+                  <Star className="w-5 h-5 text-warning fill-warning" />
+                </button>
                 <div>
                   <p className="font-medium">{user.email}</p>
                   <p className="text-sm text-muted-foreground">
@@ -210,10 +253,7 @@ const Home = () => {
                 <Button 
                   size="sm" 
                   variant="default"
-                  onClick={() => {
-                    setBenchmarkEmail(user.email);
-                    setAddBenchmarkOpen(true);
-                  }}
+                  onClick={() => handleAddBenchmark(user.email)}
                 >
                   <Star className="w-4 h-4 mr-2" />
                   Add as Benchmark
