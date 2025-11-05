@@ -17,7 +17,16 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
           <Star className="w-10 h-10 text-primary" />
         </div>
         
-        <h2 className="text-3xl font-bold mb-4">Pascal Agent is Processing</h2>
+        <h2 className="text-3xl font-bold mb-4">
+          <span className="inline-block animate-fade-in" style={{ animationDelay: "0ms" }}>Pascal</span>
+          {" "}
+          <span className="inline-block animate-fade-in" style={{ animationDelay: "150ms" }}>Agent</span>
+          {" "}
+          <span className="inline-block animate-fade-in" style={{ animationDelay: "300ms" }}>is</span>
+          {" "}
+          <span className="inline-block animate-fade-in" style={{ animationDelay: "450ms" }}>Processing</span>
+          <span className="inline-block animate-pulse ml-1" style={{ animationDelay: "600ms" }}>...</span>
+        </h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
           Great! Your events are flowing in and Pascal agent is analyzing the data. This takes 5-15 minutes to populate everything. Meanwhile, record a session showcasing your best activation scenario to set the benchmark.
@@ -27,21 +36,23 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
             <div>
-              <h4 className="font-semibold mb-2">What is a Benchmark Session?</h4>
+              <h4 className="font-semibold mb-2 animate-fade-in" style={{ animationDelay: "700ms" }}>
+                What is a Benchmark Session?
+              </h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 animate-fade-in" style={{ animationDelay: "850ms" }}>
                   <span className="text-primary">•</span>
                   <span>Record a complete user journey from signup to key activation moment</span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 animate-fade-in" style={{ animationDelay: "1000ms" }}>
                   <span className="text-primary">•</span>
                   <span>Show the ideal path: feature discovery, engagement, and success</span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 animate-fade-in" style={{ animationDelay: "1150ms" }}>
                   <span className="text-primary">•</span>
-                  <span>Capture the "aha moment" where users realize your product&apos;s value</span>
+                  <span>Capture the &quot;aha moment&quot; where users realize your product&apos;s value</span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2 animate-fade-in" style={{ animationDelay: "1300ms" }}>
                   <span className="text-primary">•</span>
                   <span>Pascal AI will use this to identify and activate similar users</span>
                 </li>
