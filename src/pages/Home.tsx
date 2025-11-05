@@ -75,6 +75,32 @@ const Home = () => {
         ))}
       </div>
 
+      {/* Trends */}
+      <Card className="p-6 bg-gradient-card border-primary/20">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <TrendingUp className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold mb-2">Success Trends - Last 30 Days</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Activation</p>
+                <p className="text-2xl font-bold">+5.2%</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Retention</p>
+                <p className="text-2xl font-bold">+3.1%</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Benchmarks Added</p>
+                <p className="text-2xl font-bold">+8</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
       {/* Benchmark Users */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
@@ -166,34 +192,9 @@ const Home = () => {
           </p>
         </div>
       </Card>
-
-      {/* Trends */}
-      <Card className="p-6 bg-gradient-card border-primary/20">
-        <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <TrendingUp className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">Success Trends - Last 30 Days</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Activation</p>
-                <p className="text-2xl font-bold">+5.2%</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Retention</p>
-                <p className="text-2xl font-bold">+3.1%</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Benchmarks Added</p>
-                <p className="text-2xl font-bold">+8</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 };
+
 
 export default Home;
