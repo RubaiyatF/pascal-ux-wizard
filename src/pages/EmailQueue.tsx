@@ -270,7 +270,7 @@ const EmailQueue = () => {
       {/* Email Queue Views */}
       {viewMode === "stack" ? (
         <CardStackView
-          emails={queuedEmailsList}
+          emails={queuedEmailsList.filter(e => e.status === "queued")}
           onApprove={handleApprove}
           onEdit={handleEdit}
           onReject={handleReject}
