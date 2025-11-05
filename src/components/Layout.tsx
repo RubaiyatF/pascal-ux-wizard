@@ -18,9 +18,9 @@ interface LayoutProps {
 }
 
 const navigation = [
+  { name: "Benchmarks", href: "/benchmarks", icon: Target },
   { name: "Email Queue", href: "/email-queue", icon: Mail },
   { name: "Journey", href: "/conversations", icon: MessageSquare },
-  { name: "Benchmarks", href: "/benchmarks", icon: Target },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Learning", href: "/learning", icon: Brain },
   { name: "Settings", href: "/settings", icon: Settings },
