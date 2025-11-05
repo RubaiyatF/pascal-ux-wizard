@@ -9,7 +9,6 @@ interface CardStackViewProps {
   onEdit: (id: string) => void;
   onReject: (id: string) => void;
   onViewRecording: (id: string) => void;
-  onViewThread: (id: string) => void;
 }
 
 export const CardStackView = ({
@@ -18,7 +17,6 @@ export const CardStackView = ({
   onEdit,
   onReject,
   onViewRecording,
-  onViewThread,
 }: CardStackViewProps) => {
   const visibleCards = emails.slice(0, 3);
 
@@ -51,7 +49,6 @@ export const CardStackView = ({
               onEdit={onEdit}
               onReject={onReject}
               onViewRecording={onViewRecording}
-              onViewThread={onViewThread}
               zIndex={visibleCards.length - index}
               style={{
                 transform: `translateY(${yOffset}px) scale(${scale})`,

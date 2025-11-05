@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Eye, Sparkles, MessageSquare, X, Check, Edit, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, Eye, Sparkles, X, Check, Edit, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { QueuedEmail } from "./EmailCard";
 
@@ -10,7 +10,6 @@ interface SwipeableEmailCardProps {
   onEdit: (id: string) => void;
   onReject: (id: string) => void;
   onViewRecording: (id: string) => void;
-  onViewThread: (id: string) => void;
   style?: React.CSSProperties;
   zIndex?: number;
 }
@@ -21,7 +20,6 @@ export const SwipeableEmailCard = ({
   onEdit,
   onReject,
   onViewRecording,
-  onViewThread,
   style,
   zIndex = 1,
 }: SwipeableEmailCardProps) => {
@@ -229,15 +227,6 @@ export const SwipeableEmailCard = ({
           >
             <Eye className="w-4 h-4" />
           </Button>
-          {email.type === "reply" && (
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => onViewThread(email.id)}
-            >
-              <MessageSquare className="w-4 h-4" />
-            </Button>
-          )}
         </div>
       </div>
     </div>

@@ -16,7 +16,6 @@ import { CardStackView } from "@/components/email-queue/CardStackView";
 import { FeedbackModal } from "@/components/email-queue/FeedbackModal";
 import { EditEmailModal } from "@/components/email-queue/EditEmailModal";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
-import { ConversationThreadModal } from "@/components/email-queue/ConversationThreadModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { useToast } from "@/hooks/use-toast";
 
@@ -25,7 +24,6 @@ const EmailQueue = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRecordingModal, setShowRecordingModal] = useState(false);
-  const [showThreadModal, setShowThreadModal] = useState(false);
   const [showJourneyModal, setShowJourneyModal] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
@@ -139,14 +137,6 @@ const EmailQueue = () => {
     if (email) {
       setCurrentEmail(email);
       setShowJourneyModal(true);
-    }
-  };
-
-  const handleViewThread = (id: string) => {
-    const email = queuedEmailsList.find(e => e.id === id);
-    if (email) {
-      setCurrentEmail(email);
-      setShowThreadModal(true);
     }
   };
 
@@ -285,7 +275,6 @@ const EmailQueue = () => {
           onEdit={handleEdit}
           onReject={handleReject}
           onViewRecording={handleViewRecording}
-          onViewThread={handleViewThread}
         />
       ) : (
         <div className="border rounded-lg overflow-hidden bg-card">
@@ -300,7 +289,6 @@ const EmailQueue = () => {
                 onEdit={handleEdit}
                 onReject={handleReject}
                 onViewRecording={handleViewRecording}
-                onViewThread={handleViewThread}
               />
             ))
           ) : (
@@ -337,17 +325,6 @@ const EmailQueue = () => {
         email={currentEmail?.email || null}
         onClose={() => {
           setShowRecordingModal(false);
-          setCurrentEmail(null);
-        }}
-      />
-
-      {/* Conversation Thread Modal */}
-      <ConversationThreadModal
-        isOpen={showThreadModal}
-        email={currentEmail?.email || null}
-        userId={currentEmail?.id || null}
-        onClose={() => {
-          setShowThreadModal(false);
           setCurrentEmail(null);
         }}
       />

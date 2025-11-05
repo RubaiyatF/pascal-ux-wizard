@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Play, Eye, Sparkles, MessageSquare, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, Eye, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
 export interface QueuedEmail {
@@ -30,7 +30,6 @@ interface EmailCardProps {
   onEdit: (id: string) => void;
   onReject: (id: string) => void;
   onViewRecording: (id: string) => void;
-  onViewThread: (id: string) => void;
 }
 
 export const EmailCard = ({
@@ -41,7 +40,6 @@ export const EmailCard = ({
   onEdit,
   onReject,
   onViewRecording,
-  onViewThread,
 }: EmailCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -172,11 +170,6 @@ export const EmailCard = ({
             <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewRecording(email.id)}>
               <Eye className="w-3 h-3" />
             </Button>
-            {email.type === "reply" && (
-              <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewThread(email.id)}>
-                <MessageSquare className="w-3 h-3" />
-              </Button>
-            )}
           </div>
         </div>
       </div>
