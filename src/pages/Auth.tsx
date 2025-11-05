@@ -26,7 +26,7 @@ const Auth = () => {
             <Sparkles className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">Pascal</h1>
-          <p className="text-muted-foreground mt-2">Customer Success Agent</p>
+          <p className="text-muted-foreground mt-2">Customer Success Agent that activates and upsell</p>
         </div>
 
         {/* Auth Card */}
