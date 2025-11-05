@@ -1,4 +1,4 @@
-import { Video, Users, Mail, Settings, ChevronLeft } from "lucide-react";
+import { Target, Mail, MessageSquare, BarChart3, Settings, ChevronLeft } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -14,9 +14,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { title: "Recordings", url: "/home", icon: Video },
-  { title: "Users", url: "/users", icon: Users },
-  { title: "Emails", url: "/email-queue", icon: Mail },
+  { title: "Home", url: "/home", icon: Target },
+  { title: "Email Queue", url: "/email-queue", icon: Mail },
+  { title: "Journey", url: "/conversations", icon: MessageSquare },
+  { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
