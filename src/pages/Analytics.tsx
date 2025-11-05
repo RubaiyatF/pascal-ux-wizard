@@ -2,8 +2,16 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Mail, Users, CheckCircle2 } from "lucide-react";
 import { TrendsAreaChart } from "@/components/analytics/TrendsAreaChart";
+import { AnalyticsEmptyState } from "@/components/empty-states/AnalyticsEmptyState";
+import { useState } from "react";
 
 const Analytics = () => {
+  const [hasData] = useState(false); // Toggle this to show/hide empty state
+
+  if (!hasData) {
+    return <AnalyticsEmptyState />;
+  }
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { UserDetailsModal } from "@/components/home/UserDetailsModal";
+import { HomeEmptyState } from "@/components/empty-states/HomeEmptyState";
 import { useToast } from "@/hooks/use-toast";
 
 const Home = () => {
@@ -22,23 +23,11 @@ const Home = () => {
     reason: string;
   } | null>(null);
 
-  const [benchmarkUsers, setBenchmarkUsers] = useState([
-    {
-      email: "john@company.com",
-      markedDate: "Nov 1",
-      sessionsAnalyzed: 45,
-    },
-    {
-      email: "lisa@tech.com",
-      markedDate: "Oct 28",
-      sessionsAnalyzed: 67,
-    },
-    {
-      email: "mike@startup.com",
-      markedDate: "Oct 25",
-      sessionsAnalyzed: 89,
-    },
-  ]);
+  const [benchmarkUsers, setBenchmarkUsers] = useState<Array<{
+    email: string;
+    markedDate: string;
+    sessionsAnalyzed: number;
+  }>>([]);
 
   const handleAddBenchmark = (email: string) => {
     // Check if user is already a benchmark
@@ -99,6 +88,20 @@ const Home = () => {
     { label: "Retention", value: "82%", change: "+3.1%" },
     { label: "Feature Adoption", value: "65%", change: "+8%" },
   ];
+
+  // Show empty state if no benchmark users
+  if (benchmarkUsers.length === 0) {
+    return (
+      <>
+        <HomeEmptyState onAddBenchmark={() => setAddBenchmarkOpen(true)} />
+        <AddBenchmarkModal
+          open={addBenchmarkOpen}
+          onOpenChange={setAddBenchmarkOpen}
+          initialEmail={benchmarkEmail}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="space-y-6 animate-fade-in">

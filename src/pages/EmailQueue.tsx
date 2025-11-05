@@ -17,6 +17,7 @@ import { FeedbackModal } from "@/components/email-queue/FeedbackModal";
 import { EditEmailModal } from "@/components/email-queue/EditEmailModal";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
+import { EmailQueueEmptyState } from "@/components/empty-states/EmailQueueEmptyState";
 import { useToast } from "@/hooks/use-toast";
 
 const EmailQueue = () => {
@@ -28,81 +29,16 @@ const EmailQueue = () => {
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
-  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
-    {
-      id: "email_1",
-      email: "john@company.com",
-      confidence: 94,
-      heartScore: 85,
-      subject: "You're making great progress, John!",
-      preview: "Hi John, I noticed you completed 3 new workflows today. Your engagement is fantastic! Would love to show you some advanced features that could help you save even more time...",
-      aiReasoning: "User showing high activation signals. Completed core workflow. Perfect timing for upgrade.",
-      sessionId: "sess_xyz789",
-      sessionTime: "12 min ago",
-      type: "first_touch",
-      status: "queued",
-    },
-    {
-      id: "email_2",
-      email: "sarah@startup.io",
-      confidence: 87,
-      heartScore: 72,
-      subject: "Re: Your question about integrations",
-      preview: "Thread: 3 messages | Last reply: 'What about API limits?'",
-      aiReasoning: "User actively engaged in technical questions. Ongoing dialogue shows high interest.",
-      sessionId: "sess_abc456",
-      sessionTime: "25 min ago",
-      type: "reply",
-      status: "queued",
-      conversationStage: "ongoing_dialogue",
-      sentiment: "positive",
-      intent: "question",
-    },
-    {
-      id: "email_3",
-      email: "mike@tech.com",
-      confidence: 91,
-      heartScore: 78,
-      subject: "Great session today - here's what's next",
-      preview: "Hi Mike, I saw you explored our advanced features today. Looks like you're getting serious about automation! Here are some tips to get the most out of...",
-      aiReasoning: "User exploring premium features. High engagement with advanced tools. Strong conversion signal.",
-      sessionId: "sess_def123",
-      sessionTime: "1 hour ago",
-      type: "first_touch",
-      status: "queued",
-    },
-    {
-      id: "email_4",
-      email: "lisa@design.co",
-      confidence: 88,
-      heartScore: 82,
-      subject: "Welcome aboard!",
-      preview: "Hi Lisa, Great to have you on board. We've approved this welcome email...",
-      aiReasoning: "New user onboarding email approved for sending.",
-      sessionId: "sess_ghi789",
-      sessionTime: "2 hours ago",
-      type: "first_touch",
-      status: "approved",
-    },
-    {
-      id: "email_5",
-      email: "david@corp.com",
-      confidence: 65,
-      heartScore: 55,
-      subject: "Low engagement alert",
-      preview: "Hi David, We noticed your activity has decreased...",
-      aiReasoning: "Low confidence score. User engagement patterns unclear.",
-      sessionId: "sess_jkl012",
-      sessionTime: "3 hours ago",
-      type: "first_touch",
-      status: "rejected",
-      rejectionReason: "Confidence score too low. Email tone seems too negative and may not resonate well with the user.",
-    },
-  ]);
+  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([]);
   const { toast } = useToast();
 
   // Filter emails based on status
   const filteredEmails = queuedEmailsList.filter(email => email.status === statusFilter);
+
+  // Show empty state if no queued emails
+  if (queuedEmailsList.length === 0) {
+    return <EmailQueueEmptyState />;
+  }
 
   const toggleEmailSelection = (id: string) => {
     setSelectedEmails(prev =>

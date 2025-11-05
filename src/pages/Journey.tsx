@@ -7,6 +7,7 @@ import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, Search, Calendar
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 import { DraftAIResponseModal } from "@/components/journey/DraftAIResponseModal";
+import { JourneyEmptyState } from "@/components/empty-states/JourneyEmptyState";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
@@ -32,35 +33,12 @@ const Journey = () => {
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
 
-  const users: User[] = [
-    {
-      name: "Sarah Johnson",
-      email: "sarah@startup.io",
-      userId: "user_456",
-      sessions: 6,
-      heartScore: 80,
-      plan: "Free",
-      lastActivity: "2024-01-18",
-    },
-    {
-      name: "Liam Chen",
-      email: "liam@sample.com",
-      userId: "user_123",
-      sessions: 3,
-      heartScore: 65,
-      plan: "Free",
-      lastActivity: "2024-01-15",
-    },
-    {
-      name: "Nora Khan",
-      email: "nora@sample.com",
-      userId: "user_789",
-      sessions: 8,
-      heartScore: 92,
-      plan: "Pro Trial",
-      lastActivity: "2024-01-12",
-    },
-  ];
+  const users: User[] = [];
+
+  // Show empty state if no users
+  if (users.length === 0) {
+    return <JourneyEmptyState />;
+  }
 
   // Filter users based on search query and date range
   const filteredUsers = users.filter((user) => {
