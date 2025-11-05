@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LayoutGrid, Layers } from "lucide-react";
 import { EmailQueueStats } from "@/components/email-queue/EmailQueueStats";
 import { BulkActions } from "@/components/email-queue/BulkActions";
@@ -26,6 +27,7 @@ const EmailQueue = () => {
   const [showThreadModal, setShowThreadModal] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
+  const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
   const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
     {
       id: "email_1",
@@ -38,6 +40,7 @@ const EmailQueue = () => {
       sessionId: "sess_xyz789",
       sessionTime: "12 min ago",
       type: "first_touch",
+      status: "queued",
     },
     {
       id: "email_2",
@@ -50,6 +53,7 @@ const EmailQueue = () => {
       sessionId: "sess_abc456",
       sessionTime: "25 min ago",
       type: "reply",
+      status: "queued",
       conversationStage: "ongoing_dialogue",
       sentiment: "positive",
       intent: "question",
@@ -65,10 +69,39 @@ const EmailQueue = () => {
       sessionId: "sess_def123",
       sessionTime: "1 hour ago",
       type: "first_touch",
+      status: "queued",
+    },
+    {
+      id: "email_4",
+      email: "lisa@design.co",
+      confidence: 88,
+      heartScore: 82,
+      subject: "Welcome aboard!",
+      preview: "Hi Lisa, Great to have you on board. We've approved this welcome email...",
+      aiReasoning: "New user onboarding email approved for sending.",
+      sessionId: "sess_ghi789",
+      sessionTime: "2 hours ago",
+      type: "first_touch",
+      status: "approved",
+    },
+    {
+      id: "email_5",
+      email: "david@corp.com",
+      confidence: 65,
+      heartScore: 55,
+      subject: "Low engagement alert",
+      preview: "Hi David, We noticed your activity has decreased...",
+      aiReasoning: "Low confidence score. User engagement patterns unclear.",
+      sessionId: "sess_jkl012",
+      sessionTime: "3 hours ago",
+      type: "first_touch",
+      status: "rejected",
     },
   ]);
   const { toast } = useToast();
 
+  // Filter emails based on status
+  const filteredEmails = queuedEmailsList.filter(email => email.status === statusFilter);
 
   const toggleEmailSelection = (id: string) => {
     setSelectedEmails(prev =>
@@ -81,8 +114,8 @@ const EmailQueue = () => {
       title: "Email Approved",
       description: "Email has been queued for sending.",
     });
-    // Remove from queue
-    setQueuedEmailsList(prev => prev.filter(e => e.id !== id));
+    // Update status to approved
+    setQueuedEmailsList(prev => prev.map(e => e.id === id ? { ...e, status: "approved" as const } : e));
   };
 
   const handleEdit = (id: string) => {
@@ -119,6 +152,8 @@ const EmailQueue = () => {
       title: "Bulk Approval",
       description: `${selectedEmails.length} emails approved.`,
     });
+    // Update status to approved for selected emails
+    setQueuedEmailsList(prev => prev.map(e => selectedEmails.includes(e.id) ? { ...e, status: "approved" as const } : e));
     setSelectedEmails([]);
   };
 
@@ -127,10 +162,10 @@ const EmailQueue = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectedEmails.length === queuedEmailsList.length) {
+    if (selectedEmails.length === filteredEmails.length) {
       setSelectedEmails([]);
     } else {
-      setSelectedEmails(queuedEmailsList.map(e => e.id));
+      setSelectedEmails(filteredEmails.map(e => e.id));
     }
   };
 
@@ -139,8 +174,8 @@ const EmailQueue = () => {
       title: "Feedback Submitted",
       description: `Rejected ${selectedEmails.length} emails with feedback.`,
     });
-    // Remove rejected emails from queue
-    setQueuedEmailsList(prev => prev.filter(e => !selectedEmails.includes(e.id)));
+    // Update status to rejected for selected emails
+    setQueuedEmailsList(prev => prev.map(e => selectedEmails.includes(e.id) ? { ...e, status: "rejected" as const } : e));
     setShowFeedbackModal(false);
     setSelectedEmails([]);
   };
@@ -150,8 +185,8 @@ const EmailQueue = () => {
       title: "Email Updated & Approved",
       description: "Your edited email has been queued for sending.",
     });
-    // Remove from queue after editing and approving
-    setQueuedEmailsList(prev => prev.filter(e => e.id !== emailId));
+    // Update status to approved after editing
+    setQueuedEmailsList(prev => prev.map(e => e.id === emailId ? { ...e, status: "approved" as const } : e));
     setShowEditModal(false);
     setCurrentEmail(null);
   };
@@ -206,12 +241,29 @@ const EmailQueue = () => {
       {/* Stats Cards */}
       <EmailQueueStats />
 
-      {/* Conditional Bulk Actions (List View Only) */}
+      {/* Status Filter Tabs (List View Only) */}
       {viewMode === "list" && (
+        <Tabs value={statusFilter} onValueChange={(value) => setStatusFilter(value as "queued" | "approved" | "rejected")} className="w-full">
+          <TabsList className="grid w-full max-w-md grid-cols-3">
+            <TabsTrigger value="queued" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+              Queued ({queuedEmailsList.filter(e => e.status === "queued").length})
+            </TabsTrigger>
+            <TabsTrigger value="approved" className="data-[state=active]:bg-success data-[state=active]:text-success-foreground">
+              Approved ({queuedEmailsList.filter(e => e.status === "approved").length})
+            </TabsTrigger>
+            <TabsTrigger value="rejected" className="data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
+              Rejected ({queuedEmailsList.filter(e => e.status === "rejected").length})
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      )}
+
+      {/* Conditional Bulk Actions (List View Only) */}
+      {viewMode === "list" && statusFilter === "queued" && (
         <BulkActions
           selectedCount={selectedEmails.length}
-          totalCount={queuedEmailsList.length}
-          allSelected={selectedEmails.length === queuedEmailsList.length && queuedEmailsList.length > 0}
+          totalCount={filteredEmails.length}
+          allSelected={selectedEmails.length === filteredEmails.length && filteredEmails.length > 0}
           onApprove={handleBulkApprove}
           onReject={handleBulkReject}
           onSelectAll={handleSelectAll}
@@ -230,19 +282,25 @@ const EmailQueue = () => {
         />
       ) : (
         <div className="border rounded-lg overflow-hidden bg-card">
-          {queuedEmailsList.map((email) => (
-            <EmailCard
-              key={email.id}
-              email={email}
-              isSelected={selectedEmails.includes(email.id)}
-              onToggleSelect={toggleEmailSelection}
-              onApprove={handleApprove}
-              onEdit={handleEdit}
-              onReject={handleReject}
-              onViewRecording={handleViewRecording}
-              onViewThread={handleViewThread}
-            />
-          ))}
+          {filteredEmails.length > 0 ? (
+            filteredEmails.map((email) => (
+              <EmailCard
+                key={email.id}
+                email={email}
+                isSelected={selectedEmails.includes(email.id)}
+                onToggleSelect={toggleEmailSelection}
+                onApprove={handleApprove}
+                onEdit={handleEdit}
+                onReject={handleReject}
+                onViewRecording={handleViewRecording}
+                onViewThread={handleViewThread}
+              />
+            ))
+          ) : (
+            <div className="p-8 text-center text-muted-foreground">
+              No {statusFilter} emails found
+            </div>
+          )}
         </div>
       )}
 

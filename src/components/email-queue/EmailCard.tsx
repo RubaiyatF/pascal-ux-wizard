@@ -15,6 +15,7 @@ export interface QueuedEmail {
   sessionId: string;
   sessionTime: string;
   type: "first_touch" | "reply";
+  status: "queued" | "approved" | "rejected";
   conversationStage?: string;
   sentiment?: string;
   intent?: string;
@@ -134,19 +135,29 @@ export const EmailCard = ({
                 </>
               )}
             </Button>
-            <Button
-              size="sm"
-              className="bg-gradient-hero hover:opacity-90 h-7 text-xs px-3"
-              onClick={() => onApprove(email.id)}
-            >
-              Approve
-            </Button>
-            <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onEdit(email.id)}>
-              Edit
-            </Button>
-            <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onReject(email.id)}>
-              Reject
-            </Button>
+            {email.status === "queued" && (
+              <>
+                <Button
+                  size="sm"
+                  className="bg-gradient-hero hover:opacity-90 h-7 text-xs px-3"
+                  onClick={() => onApprove(email.id)}
+                >
+                  Approve
+                </Button>
+                <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onEdit(email.id)}>
+                  Edit
+                </Button>
+                <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onReject(email.id)}>
+                  Reject
+                </Button>
+              </>
+            )}
+            {email.status === "approved" && (
+              <Badge className="bg-success text-success-foreground h-7">Approved</Badge>
+            )}
+            {email.status === "rejected" && (
+              <Badge className="bg-destructive text-destructive-foreground h-7">Rejected</Badge>
+            )}
             <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewRecording(email.id)}>
               <Eye className="w-3 h-3" />
             </Button>
