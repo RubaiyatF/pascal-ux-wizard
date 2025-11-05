@@ -58,9 +58,12 @@ All colors MUST be HSL.
     --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
     --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-    --tracking-normal: 0em;
-    --spacing: 0.25rem;
-  }
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+  --gradient-hero: linear-gradient(135deg, oklch(0.5798 0.1786 145.7140), oklch(0.6798 0.1986 145.7140));
+  --gradient-card: linear-gradient(180deg, oklch(1.0000 0 0), oklch(0.98 0 0));
+  --gradient-subtle: linear-gradient(180deg, oklch(0.99 0 0), oklch(0.97 0 0));
+}
 
   .dark {
     --background: 0.2138 0.0019 286.2347;
@@ -111,9 +114,12 @@ All colors MUST be HSL.
     --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
     --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
     --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  }
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --gradient-hero: linear-gradient(135deg, oklch(0.8704 0.2637 146.3022), oklch(0.9204 0.2837 146.3022));
+  --gradient-card: linear-gradient(180deg, oklch(0.2138 0.0019 286.2347), oklch(0.25 0.0019 286.2347));
+  --gradient-subtle: linear-gradient(180deg, oklch(0.2138 0.0019 286.2347), oklch(0.24 0 0));
+}
 }
 
 @theme inline {
