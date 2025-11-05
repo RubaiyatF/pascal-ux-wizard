@@ -147,56 +147,6 @@ const Analytics = () => {
               <p className="text-xs text-muted-foreground">40.4%</p>
             </Card>
           </div>
-
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">
-              Performance by Email Type
-            </h3>
-            <div className="space-y-4">
-              {[
-                {
-                  type: "Activation nudge",
-                  sent: 200,
-                  open: "75%",
-                  click: "45%",
-                },
-                {
-                  type: "Feature tutorial",
-                  sent: 150,
-                  open: "68%",
-                  click: "38%",
-                },
-                {
-                  type: "Re-engagement",
-                  sent: 100,
-                  open: "65%",
-                  click: "35%",
-                },
-              ].map((item) => (
-                <div
-                  key={item.type}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg"
-                >
-                  <div>
-                    <p className="font-medium">{item.type}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {item.sent} sent
-                    </p>
-                  </div>
-                  <div className="flex gap-6 text-sm">
-                    <div>
-                      <p className="text-muted-foreground">Open</p>
-                      <p className="font-medium">{item.open}</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Click</p>
-                      <p className="font-medium">{item.click}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>
