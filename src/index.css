@@ -9,19 +9,19 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --background: oklch(1.0000 0 0);
-    --foreground: oklch(0.2138 0.0019 286.2347);
+    --foreground: oklch(0.5798 0.1786 145.7140);
     --card: oklch(1.0000 0 0);
     --card-foreground: oklch(0.2138 0.0019 286.2347);
-    --popover: oklch(1.0000 0 0);
+    --popover: oklch(0.9904 0.0032 17.2120);
     --popover-foreground: oklch(0.2138 0.0019 286.2347);
-    --primary: oklch(0.2138 0.0019 286.2347);
+    --primary: oklch(0.5798 0.1786 145.7140);
     --primary-foreground: oklch(0.9851 0 0);
     --secondary: oklch(0.9702 0 0);
-    --secondary-foreground: oklch(0.2138 0.0019 286.2347);
+    --secondary-foreground: oklch(0.5798 0.1786 145.7140);
     --muted: oklch(0.9702 0 0);
     --muted-foreground: oklch(0.5555 0 0);
     --accent: oklch(0.9702 0 0);
-    --accent-foreground: oklch(0.2138 0.0019 286.2347);
+    --accent-foreground: oklch(0.5798 0.1786 145.7140);
     --destructive: oklch(0.5379 0.2186 25.9751);
     --destructive-foreground: oklch(1.0000 0 0);
     --border: oklch(0.9219 0 0);
