@@ -356,6 +356,11 @@ const Journey = () => {
                               ))}
                             </div>
                           </div>
+                          
+                          <Button size="sm" variant="outline" className="w-full">
+                            <Play className="w-3 h-3 mr-2" />
+                            Watch Recording
+                          </Button>
                         </div>
                       ) : (
                         // Email Event
