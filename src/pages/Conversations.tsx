@@ -183,9 +183,9 @@ const Conversations = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-12 gap-6 relative">
         {/* Left Column - Users List */}
-        <div className="col-span-12 lg:col-span-4 space-y-4">
+        <div className="col-span-12 lg:col-span-4 space-y-4 relative">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Users</h2>
             <div className="space-y-2">
@@ -195,12 +195,15 @@ const Conversations = () => {
                   onClick={() => setSelectedUser(user.email)}
                   className={`p-4 rounded-lg border cursor-pointer transition-all relative ${
                     selectedUser === user.email
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-border hover:border-primary/50"
+                      ? "border-accent bg-accent/10 shadow-md ring-2 ring-accent/20"
+                      : "border-border hover:border-accent/30 hover:bg-accent/5"
                   }`}
                 >
                   {selectedUser === user.email && (
-                    <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-0.5 bg-primary" />
+                    <>
+                      <div className="absolute -right-[1.75rem] top-1/2 -translate-y-1/2 w-7 h-0.5 bg-gradient-to-r from-accent to-accent/50 z-10" />
+                      <div className="absolute -right-[1.6rem] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent shadow-lg shadow-accent/50" />
+                    </>
                   )}
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -215,7 +218,7 @@ const Conversations = () => {
                       </p>
                     </div>
                     {selectedUser === user.email && (
-                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      <div className="w-2 h-2 rounded-full bg-accent animate-pulse shadow-lg shadow-accent/50" />
                     )}
                   </div>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
@@ -230,8 +233,13 @@ const Conversations = () => {
         </div>
 
         {/* Right Column - Email Thread */}
-        <div className="col-span-12 lg:col-span-8 space-y-4">
-          <Card className="p-6">
+        <div className="col-span-12 lg:col-span-8 space-y-4 relative">
+          {/* Connection indicator on the left edge */}
+          <div className="hidden lg:block absolute -left-3 top-8 w-1 h-12 bg-gradient-to-b from-accent/50 to-transparent rounded-full" />
+          
+          <Card className="p-6 relative">
+            {/* Connection dot */}
+            <div className="hidden lg:block absolute -left-[1.15rem] top-8 w-2 h-2 rounded-full bg-accent shadow-lg shadow-accent/50 animate-pulse" />
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Email Thread</h2>
               <Badge variant="outline" className="text-xs">
