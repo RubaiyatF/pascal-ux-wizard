@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Play, Mail, Reply } from "lucide-react";
+import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles } from "lucide-react";
 
 interface User {
   name: string;
@@ -55,6 +55,17 @@ const Journey = () => {
           sessionId: "sess_abc001",
           duration: "3:45",
           score: 65,
+          pages: 5,
+          events: 89,
+          journeyStage: "Onboarding",
+          aiSummary: "User explored dashboard features, completed initial setup steps.",
+          heartBreakdown: {
+            happiness: 60,
+            engagement: 65,
+            adoption: 68,
+            retention: 70,
+            taskSuccess: 62,
+          },
           actions: ["Signed up", "Explored dashboard", "Viewed docs"],
         },
         {
@@ -74,6 +85,17 @@ const Journey = () => {
           sessionId: "sess_def456",
           duration: "8:21",
           score: 72,
+          pages: 7,
+          events: 134,
+          journeyStage: "Evaluation",
+          aiSummary: "Strong engagement with pricing and product comparison tools.",
+          heartBreakdown: {
+            happiness: 70,
+            engagement: 75,
+            adoption: 72,
+            retention: 68,
+            taskSuccess: 75,
+          },
           actions: ["Checked pricing", "Used ROI calculator", "Compared plans"],
         },
         {
@@ -101,6 +123,17 @@ const Journey = () => {
           sessionId: "sess_abc123",
           duration: "12:34",
           score: 85,
+          pages: 12,
+          events: 245,
+          journeyStage: "Adoption",
+          aiSummary: "Deep technical exploration with API documentation, encountered rate limit questions.",
+          heartBreakdown: {
+            happiness: 82,
+            engagement: 90,
+            adoption: 85,
+            retention: 88,
+            taskSuccess: 80,
+          },
           actions: [
             "Explored API docs",
             "Tested authentication",
@@ -141,6 +174,17 @@ const Journey = () => {
           sessionId: "sess_liam001",
           duration: "5:12",
           score: 55,
+          pages: 3,
+          events: 45,
+          journeyStage: "Discovery",
+          aiSummary: "Brief initial exploration, limited engagement.",
+          heartBreakdown: {
+            happiness: 55,
+            engagement: 58,
+            adoption: 50,
+            retention: 60,
+            taskSuccess: 52,
+          },
           actions: ["Signed up", "Viewed homepage"],
         },
         {
@@ -176,6 +220,17 @@ const Journey = () => {
           sessionId: "sess_nora001",
           duration: "15:30",
           score: 90,
+          pages: 15,
+          events: 312,
+          journeyStage: "Power User",
+          aiSummary: "Exceptional onboarding experience, completed full API integration independently.",
+          heartBreakdown: {
+            happiness: 92,
+            engagement: 95,
+            adoption: 90,
+            retention: 90,
+            taskSuccess: 93,
+          },
           actions: ["Signed up", "Completed setup", "Integrated API"],
         },
         {
@@ -205,6 +260,17 @@ const Journey = () => {
           sessionId: "sess_nora002",
           duration: "22:45",
           score: 95,
+          pages: 18,
+          events: 387,
+          journeyStage: "Champion",
+          aiSummary: "Power user behavior: extensive feature exploration, team collaboration setup.",
+          heartBreakdown: {
+            happiness: 95,
+            engagement: 98,
+            adoption: 92,
+            retention: 95,
+            taskSuccess: 95,
+          },
           actions: ["Explored advanced features", "Set up custom dashboards", "Invited team members"],
         },
       ],
@@ -325,42 +391,95 @@ const Journey = () => {
                     >
                       {event.type === "session" ? (
                         // Session Recording Event
-                        <div>
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <Play className="w-4 h-4 text-primary" />
-                              <span className="font-semibold text-sm">Session Recording</span>
-                              <Badge variant="outline" className="text-xs">
-                                Score: {event.score}
-                              </Badge>
-                            </div>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(event.timestamp).toLocaleString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric',
-                                hour: 'numeric',
-                                minute: '2-digit'
-                              })}
-                            </span>
-                          </div>
-                          
-                          <div className="mb-3">
-                            <p className="text-xs text-muted-foreground mb-2">
-                              {event.sessionId} · Duration: {event.duration}
-                            </p>
-                            <div className="space-y-1">
-                              {event.actions.map((action: string, actionIdx: number) => (
-                                <p key={actionIdx} className="text-xs text-muted-foreground">
-                                  • {action}
+                        <div className="space-y-4">
+                          {/* Header Row */}
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-start gap-4">
+                              {/* Score Badge */}
+                              <div
+                                className={`flex items-center justify-center w-16 h-16 rounded-xl bg-muted ${
+                                  event.score >= 80 ? "text-success" :
+                                  event.score >= 60 ? "text-info" :
+                                  event.score >= 40 ? "text-warning" : "text-destructive"
+                                }`}
+                              >
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold">
+                                    {event.score}
+                                  </div>
+                                  <div className="text-[10px] uppercase tracking-wide opacity-70">
+                                    Score
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Session Info */}
+                              <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Play className="w-4 h-4 text-primary" />
+                                  <span className="font-semibold text-sm">Session Recording</span>
+                                  <Badge variant="outline" className="text-xs">
+                                    {event.journeyStage}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground mb-2">
+                                  {new Date(event.timestamp).toLocaleString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: '2-digit'
+                                  })}
                                 </p>
-                              ))}
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    {event.duration}
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <Eye className="w-3 h-3" />
+                                    {event.pages} pages
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <MousePointer className="w-3 h-3" />
+                                    {event.events} events
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Action Button */}
+                            <Button size="sm" className="bg-gradient-hero hover:opacity-90 transition-opacity shrink-0">
+                              <Play className="w-3 h-3 mr-2" />
+                              Watch
+                            </Button>
+                          </div>
+
+                          {/* AI Summary */}
+                          <div className="bg-secondary/50 rounded-lg p-3 border border-border">
+                            <div className="flex items-start gap-2">
+                              <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-xs font-medium mb-1">AI Analysis</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {event.aiSummary}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                          
-                          <Button size="sm" variant="outline" className="w-full">
-                            <Play className="w-3 h-3 mr-2" />
-                            Watch Recording
-                          </Button>
+
+                          {/* HEART Breakdown */}
+                          <div className="grid grid-cols-5 gap-2 pt-3 border-t border-border">
+                            {Object.entries(event.heartBreakdown).map(([key, value]) => (
+                              <div key={key} className="text-center">
+                                <div className="text-[10px] text-muted-foreground mb-1 capitalize">
+                                  {key}
+                                </div>
+                                <div className="text-sm font-semibold">
+                                  {value as number}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       ) : (
                         // Email Event
