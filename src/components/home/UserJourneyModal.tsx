@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { JourneyTimeline } from "@/components/journey/JourneyTimeline";
-import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 
 interface UserJourneyModalProps {
@@ -13,8 +12,6 @@ interface UserJourneyModalProps {
 }
 
 export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyModalProps) => {
-  const [sessionModalOpen, setSessionModalOpen] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<any>(null);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
 
@@ -90,11 +87,6 @@ export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyM
     },
   ];
 
-  const handleSessionClick = (event: any) => {
-    setSelectedSession(event);
-    setSessionModalOpen(true);
-  };
-
   const handleEmailClick = (event: any) => {
     setSelectedEmail(event);
     setEmailModalOpen(true);
@@ -132,21 +124,13 @@ export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyM
             <h3 className="font-semibold">Journey Timeline</h3>
             <JourneyTimeline 
               timeline={timeline}
-              onSessionClick={handleSessionClick}
               onEmailClick={handleEmailClick}
             />
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Nested Modals */}
-      <SessionRecordingModal
-        isOpen={sessionModalOpen}
-        onClose={() => setSessionModalOpen(false)}
-        sessionId={selectedSession?.sessionId || null}
-        email={userEmail}
-      />
-      
+      {/* Email Modal */}
       <EmailDetailModal
         isOpen={emailModalOpen}
         onClose={() => setEmailModalOpen(false)}

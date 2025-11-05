@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { InlineSessionPlayer } from "./InlineSessionPlayer";
 
 interface TimelineEvent {
   id: number;
@@ -46,6 +48,16 @@ export const JourneyTimeline = ({
   onEmailClick,
   compact = false 
 }: JourneyTimelineProps) => {
+  const [expandedSession, setExpandedSession] = useState<number | null>(null);
+
+  const handleSessionClick = (event: TimelineEvent) => {
+    if (compact) {
+      setExpandedSession(expandedSession === event.id ? null : event.id);
+    } else if (onSessionClick) {
+      onSessionClick(event);
+    }
+  };
+
   return (
     <div className="relative">
       {/* Vertical Line */}
@@ -73,11 +85,11 @@ export const JourneyTimeline = ({
             {/* Event Card */}
             <Card 
               className={`p-4 hover:shadow-md transition-all ${
-                onSessionClick || onEmailClick ? "cursor-pointer" : ""
+                onSessionClick || onEmailClick || compact ? "cursor-pointer" : ""
               } ${event.isNew ? "border-primary bg-primary/5 ring-1 ring-primary/20" : ""}`}
               onClick={() => {
-                if (event.type === "session" && onSessionClick) {
-                  onSessionClick(event);
+                if (event.type === "session") {
+                  handleSessionClick(event);
                 } else if (event.type === "email" && onEmailClick) {
                   onEmailClick(event);
                 }
@@ -146,20 +158,28 @@ export const JourneyTimeline = ({
                     </div>
 
                     {/* Action Button */}
-                    {onSessionClick && !compact && (
+                    {!compact && (
                       <Button 
                         size="sm" 
                         className="bg-gradient-hero hover:opacity-90 transition-opacity shrink-0"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onSessionClick(event);
+                          setExpandedSession(expandedSession === event.id ? null : event.id);
                         }}
                       >
                         <Play className="w-4 h-4 mr-2" />
-                        Watch
+                        {expandedSession === event.id ? "Close" : "Watch"}
                       </Button>
                     )}
                   </div>
+
+                  {/* Inline Session Player */}
+                  {expandedSession === event.id && (
+                    <InlineSessionPlayer 
+                      session={event}
+                      onClose={() => setExpandedSession(null)}
+                    />
+                  )}
 
                   {/* AI Summary */}
                   {event.aiSummary && !compact && (

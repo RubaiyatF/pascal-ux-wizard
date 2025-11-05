@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Calendar, Mail, Activity, TrendingUp, Clock } from "lucide-react";
 import { useState } from "react";
 import { JourneyTimeline } from "@/components/journey/JourneyTimeline";
-import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 
 interface UserDetailsModalProps {
@@ -17,8 +16,6 @@ interface UserDetailsModalProps {
 }
 
 export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, reason }: UserDetailsModalProps) => {
-  const [sessionModalOpen, setSessionModalOpen] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<any>(null);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
 
@@ -75,11 +72,6 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
       actions: ["Explored features", "Tested integrations"],
     },
   ];
-
-  const handleSessionClick = (event: any) => {
-    setSelectedSession(event);
-    setSessionModalOpen(true);
-  };
 
   const handleEmailClick = (event: any) => {
     setSelectedEmail(event);
@@ -158,7 +150,6 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
             <h3 className="font-semibold">Recent Activity Timeline</h3>
             <JourneyTimeline 
               timeline={timeline}
-              onSessionClick={handleSessionClick}
               onEmailClick={handleEmailClick}
               compact
             />
@@ -204,14 +195,7 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
         </DialogContent>
       </Dialog>
 
-      {/* Nested Modals */}
-      <SessionRecordingModal
-        isOpen={sessionModalOpen}
-        onClose={() => setSessionModalOpen(false)}
-        sessionId={selectedSession?.sessionId || null}
-        email={userEmail}
-      />
-      
+      {/* Email Modal */}
       <EmailDetailModal
         isOpen={emailModalOpen}
         onClose={() => setEmailModalOpen(false)}
