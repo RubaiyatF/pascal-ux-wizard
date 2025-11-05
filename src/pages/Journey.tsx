@@ -3,6 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles } from "lucide-react";
+import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
+import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
+import { DraftAIResponseModal } from "@/components/journey/DraftAIResponseModal";
 
 interface User {
   name: string;
@@ -15,6 +18,11 @@ interface User {
 
 const Journey = () => {
   const [selectedUser, setSelectedUser] = useState<string>("sarah@startup.io");
+  const [sessionModalOpen, setSessionModalOpen] = useState(false);
+  const [selectedSession, setSelectedSession] = useState<any>(null);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [selectedEmail, setSelectedEmail] = useState<any>(null);
+  const [draftModalOpen, setDraftModalOpen] = useState(false);
 
   const users: User[] = [
     {
@@ -289,8 +297,23 @@ const Journey = () => {
 
   const conversation = conversations[selectedUser];
 
+  const handleSessionClick = (event: any) => {
+    setSelectedSession(event);
+    setSessionModalOpen(true);
+  };
+
+  const handleEmailClick = (event: any) => {
+    setSelectedEmail(event);
+    setEmailModalOpen(true);
+  };
+
+  const handleDraftResponse = () => {
+    setDraftModalOpen(true);
+  };
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <>
+      <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold mb-2">Journey</h1>
@@ -385,9 +408,10 @@ const Journey = () => {
                     
                     {/* Event Card */}
                     <Card 
-                      className={`p-4 hover:shadow-md transition-all ${
+                      className={`p-4 hover:shadow-md transition-all cursor-pointer ${
                         event.isNew ? "border-primary bg-primary/5 ring-1 ring-primary/20" : ""
                       }`}
+                      onClick={() => event.type === "session" ? handleSessionClick(event) : handleEmailClick(event)}
                     >
                       {event.type === "session" ? (
                         // Session Recording Event
@@ -448,7 +472,14 @@ const Journey = () => {
                             </div>
 
                             {/* Action Button */}
-                            <Button size="sm" className="bg-gradient-hero hover:opacity-90 transition-opacity shrink-0">
+                            <Button 
+                              size="sm" 
+                              className="bg-gradient-hero hover:opacity-90 transition-opacity shrink-0"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSessionClick(event);
+                              }}
+                            >
                               <Play className="w-3 h-3 mr-2" />
                               Watch
                             </Button>
@@ -565,7 +596,11 @@ const Journey = () => {
 
           {/* Actions */}
           <div className="flex gap-2 flex-wrap">
-            <Button className="bg-gradient-hero hover:opacity-90">
+            <Button 
+              className="bg-gradient-hero hover:opacity-90"
+              onClick={handleDraftResponse}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
               Draft AI Response
             </Button>
           </div>
@@ -604,7 +639,34 @@ const Journey = () => {
           </Card>
         </div>
       </div>
-    </div>
+      </div>
+
+      {/* Modals */}
+      <SessionRecordingModal
+        isOpen={sessionModalOpen}
+        sessionId={selectedSession?.sessionId || null}
+        email={selectedUser}
+        onClose={() => {
+          setSessionModalOpen(false);
+          setSelectedSession(null);
+        }}
+      />
+
+      <EmailDetailModal
+        isOpen={emailModalOpen}
+        email={selectedEmail}
+        onClose={() => {
+          setEmailModalOpen(false);
+          setSelectedEmail(null);
+        }}
+      />
+
+      <DraftAIResponseModal
+        isOpen={draftModalOpen}
+        conversation={conversation}
+        onClose={() => setDraftModalOpen(false)}
+      />
+    </>
   );
 };
 
