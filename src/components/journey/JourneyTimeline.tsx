@@ -408,29 +408,27 @@ export const JourneyTimeline = ({
                       )}
                     </div>
 
-                    {!compact && (
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        className="shrink-0 ml-2"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setExpandedEmail(expandedEmail === event.id ? null : event.id);
-                        }}
-                      >
-                        {expandedEmail === event.id ? (
-                          <>
-                            <ChevronUp className="w-4 h-4 mr-1" />
-                            Close
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="w-4 h-4 mr-1" />
-                            View
-                          </>
-                        )}
-                      </Button>
-                    )}
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      className="shrink-0 ml-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedEmail(expandedEmail === event.id ? null : event.id);
+                      }}
+                    >
+                      {expandedEmail === event.id ? (
+                        <>
+                          <ChevronUp className="w-4 h-4 mr-1" />
+                          Close
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="w-4 h-4 mr-1" />
+                          View
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </div>
               )}
