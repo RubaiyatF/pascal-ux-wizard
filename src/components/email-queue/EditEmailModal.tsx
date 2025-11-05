@@ -41,17 +41,6 @@ export const EditEmailModal = ({
           </Button>
         </div>
 
-        {/* AI Reasoning Context */}
-        <div className="bg-secondary/50 rounded-lg p-4 border border-border mb-6">
-          <div className="flex items-start gap-2">
-            <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="text-sm font-medium mb-1">AI Reasoning</p>
-              <p className="text-sm text-muted-foreground">{email.aiReasoning}</p>
-            </div>
-          </div>
-        </div>
-
         <div className="space-y-4">
           {/* Recipient */}
           <div>
@@ -88,16 +77,6 @@ export const EditEmailModal = ({
             />
           </div>
 
-          {/* Session Context */}
-          <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm font-medium mb-2">Session Context</p>
-            <div className="text-sm text-muted-foreground space-y-1">
-              <p>• Session ID: {email.sessionId}</p>
-              <p>• Triggered: {email.sessionTime}</p>
-              <p>• HEART Score: {email.heartScore}</p>
-              <p>• Confidence: {email.confidence}%</p>
-            </div>
-          </div>
         </div>
 
         <div className="flex gap-2 justify-end mt-6">

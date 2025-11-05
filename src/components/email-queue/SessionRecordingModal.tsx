@@ -98,79 +98,9 @@ export const SessionRecordingModal = ({
           </div>
         </div>
 
-        {/* Session Analysis */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          {/* HEART Scores */}
-          <Card className="p-4 bg-secondary/50">
-            <h4 className="font-semibold mb-3">HEART Scores</h4>
-            <div className="space-y-2">
-              {[
-                { label: "Happiness", value: 75, color: "bg-success" },
-                { label: "Engagement", value: 82, color: "bg-info" },
-                { label: "Adoption", value: 68, color: "bg-warning" },
-                { label: "Retention", value: 90, color: "bg-success" },
-                { label: "Task Success", value: 85, color: "bg-success" },
-              ].map((metric) => (
-                <div key={metric.label}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-muted-foreground">{metric.label}</span>
-                    <span className="font-medium">{metric.value}</span>
-                  </div>
-                  <Progress value={metric.value} className="h-2" />
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 pt-4 border-t">
-              <div className="flex justify-between">
-                <span className="font-medium">Overall Score</span>
-                <span className="text-xl font-bold">80/100</span>
-              </div>
-            </div>
-          </Card>
-
-          {/* AI Insights */}
-          <Card className="p-4 bg-secondary/50">
-            <h4 className="font-semibold mb-3">AI Insights</h4>
-            <div className="space-y-3 text-sm">
-              <div>
-                <p className="font-medium mb-1">Visual Description:</p>
-                <p className="text-muted-foreground">
-                  User navigated to dashboard, explored charts, exported report to PDF,
-                  tested API integration features.
-                </p>
-              </div>
-              <div>
-                <p className="font-medium mb-1">Key Actions:</p>
-                <ul className="space-y-1 text-muted-foreground">
-                  <li>• Exploring advanced features</li>
-                  <li>• High engagement with charts</li>
-                  <li>• Ready for upgrade prompt</li>
-                </ul>
-              </div>
-              <div>
-                <p className="font-medium mb-1">Activation Signals:</p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                    ✓ Core workflow
-                  </Badge>
-                  <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                    ✓ Advanced features
-                  </Badge>
-                  <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                    ✓ High task success
-                  </Badge>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        <div className="flex gap-2 justify-end mt-6">
+        <div className="flex justify-end mt-6">
           <Button variant="outline" onClick={onClose}>
             Close
-          </Button>
-          <Button className="bg-gradient-hero hover:opacity-90">
-            Queue Follow-up Email
           </Button>
         </div>
       </Card>
