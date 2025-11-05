@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { InlineSessionPlayer } from "./InlineSessionPlayer";
 
 interface TimelineEvent {
@@ -53,6 +54,7 @@ export const JourneyTimeline = ({
   compact = false 
 }: JourneyTimelineProps) => {
   const [expandedSession, setExpandedSession] = useState<number | null>(null);
+  const [expandedEmail, setExpandedEmail] = useState<number | null>(null);
 
   const handleSessionClick = (event: TimelineEvent) => {
     if (compact) {
@@ -335,9 +337,52 @@ export const JourneyTimeline = ({
                         })}
                       </p>
                       <p className="font-medium text-sm mb-1">{event.subject}</p>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <div className={`text-sm text-muted-foreground ${expandedEmail === event.id ? "" : "line-clamp-2"}`}>
                         {event.content}
-                      </p>
+                      </div>
+                      
+                      {/* Expanded Email Details */}
+                      {expandedEmail === event.id && (
+                        <div className="mt-4 bg-muted/50 rounded-lg p-4 border border-border space-y-3">
+                          <div>
+                            <label className="text-xs font-medium text-muted-foreground">Date</label>
+                            <p className="text-sm font-medium">
+                              {new Date(event.timestamp).toLocaleString('en-US', { 
+                                month: 'long', 
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: '2-digit'
+                              })}
+                            </p>
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium text-muted-foreground block mb-2">Full Message</label>
+                            <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                              {event.content}
+                            </div>
+                          </div>
+                          {event.direction === "reply" && (
+                            <div className="flex gap-2 flex-wrap pt-2">
+                              {event.intent && (
+                                <Badge variant="outline">
+                                  Intent: {event.intent}
+                                </Badge>
+                              )}
+                              {event.sentiment && (
+                                <Badge variant="outline">
+                                  Sentiment: {event.sentiment}
+                                </Badge>
+                              )}
+                              {event.topics && (
+                                <Badge variant="outline">
+                                  Topics: {event.topics.join(", ")}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
                       
                       {event.direction === "sent" && (
                         <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
@@ -363,17 +408,27 @@ export const JourneyTimeline = ({
                       )}
                     </div>
 
-                    {onEmailClick && !compact && (
+                    {!compact && (
                       <Button 
                         size="sm" 
                         variant="outline"
                         className="shrink-0 ml-2"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEmailClick(event);
+                          setExpandedEmail(expandedEmail === event.id ? null : event.id);
                         }}
                       >
-                        View
+                        {expandedEmail === event.id ? (
+                          <>
+                            <ChevronUp className="w-4 h-4 mr-1" />
+                            Close
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4 mr-1" />
+                            View
+                          </>
+                        )}
                       </Button>
                     )}
                   </div>
