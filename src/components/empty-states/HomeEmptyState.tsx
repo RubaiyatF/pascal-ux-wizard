@@ -20,7 +20,7 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
         <h2 className="text-3xl font-bold mb-4">Define Your Success Benchmarks</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Your tracking is live and collecting data! Now, mark users who represent success in your product, and Pascal AI will find similar users to activate.
+          Great! Your tracking is live and events are flowing in. The next step is to mark users who represent success, so Pascal AI can identify similar users and help activate them.
         </p>
 
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8 text-left">

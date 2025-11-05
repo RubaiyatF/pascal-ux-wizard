@@ -13,10 +13,10 @@ export const JourneyEmptyState = () => {
           <MessageSquare className="w-10 h-10 text-primary" />
         </div>
         
-        <h2 className="text-3xl font-bold mb-4">Building User Journeys</h2>
+        <h2 className="text-3xl font-bold mb-4">User Journeys Building</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Your tracking is live and collecting sessions! User journey timelines will appear here as more activity is captured and processed.
+          Excellent! Your tracking is live and sessions are being recorded. Complete journey timelines with session replays and email history will appear here as users interact with your product.
         </p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">

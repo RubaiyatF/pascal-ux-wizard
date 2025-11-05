@@ -13,10 +13,10 @@ export const EmailQueueEmptyState = () => {
           <Mail className="w-10 h-10 text-primary" />
         </div>
         
-        <h2 className="text-3xl font-bold mb-4">No Email Drafts Yet</h2>
+        <h2 className="text-3xl font-bold mb-4">AI Email Drafts Coming Soon</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Pascal AI is analyzing user behavior patterns. Once you mark benchmark users, AI will start generating personalized email drafts for similar users showing activation potential.
+          Your events are flowing in! Pascal AI is analyzing behavior patterns. Mark your benchmark users, and AI will generate personalized email drafts to help activate similar users.
         </p>
 
         <div className="grid grid-cols-1 gap-4 mb-8">
