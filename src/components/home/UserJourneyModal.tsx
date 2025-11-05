@@ -1,9 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
 import { JourneyTimeline } from "@/components/journey/JourneyTimeline";
-import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 
 interface UserJourneyModalProps {
   open: boolean;
@@ -12,9 +10,6 @@ interface UserJourneyModalProps {
 }
 
 export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyModalProps) => {
-  const [emailModalOpen, setEmailModalOpen] = useState(false);
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
-
   // Mock data - in real app, this would come from API
   const timeline = [
     {
@@ -87,14 +82,8 @@ export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyM
     },
   ];
 
-  const handleEmailClick = (event: any) => {
-    setSelectedEmail(event);
-    setEmailModalOpen(true);
-  };
-
   return (
-    <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>User Journey</DialogTitle>
@@ -124,18 +113,9 @@ export const UserJourneyModal = ({ open, onOpenChange, userEmail }: UserJourneyM
             <h3 className="font-semibold">Journey Timeline</h3>
             <JourneyTimeline 
               timeline={timeline}
-              onEmailClick={handleEmailClick}
             />
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Email Modal */}
-      <EmailDetailModal
-        isOpen={emailModalOpen}
-        onClose={() => setEmailModalOpen(false)}
-        email={selectedEmail}
-      />
-    </>
   );
 };

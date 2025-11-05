@@ -3,9 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Mail, Activity, TrendingUp, Clock } from "lucide-react";
-import { useState } from "react";
 import { JourneyTimeline } from "@/components/journey/JourneyTimeline";
-import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 
 interface UserDetailsModalProps {
   open: boolean;
@@ -16,9 +14,6 @@ interface UserDetailsModalProps {
 }
 
 export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, reason }: UserDetailsModalProps) => {
-  const [emailModalOpen, setEmailModalOpen] = useState(false);
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
-
   // Mock timeline data
   const timeline = [
     {
@@ -73,14 +68,8 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
     },
   ];
 
-  const handleEmailClick = (event: any) => {
-    setSelectedEmail(event);
-    setEmailModalOpen(true);
-  };
-
   return (
-    <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>User Details</DialogTitle>
@@ -150,7 +139,6 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
             <h3 className="font-semibold">Recent Activity Timeline</h3>
             <JourneyTimeline 
               timeline={timeline}
-              onEmailClick={handleEmailClick}
               compact
             />
           </div>
@@ -194,13 +182,5 @@ export const UserDetailsModal = ({ open, onOpenChange, userEmail, similarity, re
           </Card>
         </DialogContent>
       </Dialog>
-
-      {/* Email Modal */}
-      <EmailDetailModal
-        isOpen={emailModalOpen}
-        onClose={() => setEmailModalOpen(false)}
-        email={selectedEmail}
-      />
-    </>
   );
 };
