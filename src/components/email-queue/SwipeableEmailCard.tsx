@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Eye, Sparkles, MessageSquare, X, Check, Edit } from "lucide-react";
+import { Play, Eye, Sparkles, MessageSquare, X, Check, Edit, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { QueuedEmail } from "./EmailCard";
 
@@ -28,6 +28,7 @@ export const SwipeableEmailCard = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+  const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -149,13 +150,39 @@ export const SwipeableEmailCard = ({
         </div>
 
         {/* Subject */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold">"{email.subject}"</h3>
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <h3 className="text-xl font-semibold flex-1">"{email.subject}"</h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="shrink-0"
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="w-4 h-4 mr-1" />
+                Collapse
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4 mr-1" />
+                Expand
+              </>
+            )}
+          </Button>
         </div>
 
-        {/* Email Preview */}
-        <div className="bg-secondary/30 rounded-lg p-4 mb-4 min-h-[100px]">
-          <p className="text-sm leading-relaxed">{email.preview}</p>
+        {/* Email Preview/Full Content */}
+        <div className={`bg-secondary/30 rounded-lg p-4 mb-4 ${isExpanded ? 'min-h-[200px]' : 'min-h-[100px]'}`}>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            {isExpanded ? (
+              // Full email content
+              `${email.preview}\n\nBest regards,\nYour AI Assistant\n\nP.S. This is an auto-generated email based on user behavior and engagement patterns. We've analyzed their session activity and determined this is an optimal touchpoint for meaningful engagement.\n\nKey insights:\n- User engagement level: ${email.heartScore}%\n- Behavior patterns indicate high interest\n- Optimal timing for conversion dialogue\n\nFeel free to customize this message before sending.`
+            ) : (
+              // Preview only
+              email.preview
+            )}
+          </p>
         </div>
 
         {/* AI Reasoning */}
