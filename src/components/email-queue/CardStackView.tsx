@@ -2,6 +2,7 @@ import { QueuedEmail } from "./EmailCard";
 import { SwipeableEmailCard } from "./SwipeableEmailCard";
 import { Button } from "@/components/ui/button";
 import { X, Check, RotateCcw } from "lucide-react";
+import { useState } from "react";
 
 interface CardStackViewProps {
   emails: QueuedEmail[];
@@ -19,6 +20,7 @@ export const CardStackView = ({
   onViewRecording,
 }: CardStackViewProps) => {
   const visibleCards = emails.slice(0, 3);
+  const [isTopCardExpanded, setIsTopCardExpanded] = useState(false);
 
   if (emails.length === 0) {
     return (
@@ -35,7 +37,7 @@ export const CardStackView = ({
   return (
     <div className="space-y-8">
       {/* Card Stack Container */}
-      <div className="relative h-[600px] max-w-2xl mx-auto">
+      <div className={`relative max-w-2xl mx-auto transition-all duration-300 ${isTopCardExpanded ? 'h-[900px]' : 'h-[600px]'}`}>
         {visibleCards.map((email, index) => {
           const scale = 1 - index * 0.05;
           const yOffset = index * 8;
@@ -50,6 +52,8 @@ export const CardStackView = ({
               onReject={onReject}
               onViewRecording={onViewRecording}
               zIndex={visibleCards.length - index}
+              isExpanded={index === 0 ? isTopCardExpanded : false}
+              onExpandChange={index === 0 ? setIsTopCardExpanded : undefined}
               style={{
                 transform: `translateY(${yOffset}px) scale(${scale})`,
                 opacity,
@@ -61,7 +65,7 @@ export const CardStackView = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex items-center justify-center gap-6 pt-6">
         <Button
           size="lg"
           variant="outline"

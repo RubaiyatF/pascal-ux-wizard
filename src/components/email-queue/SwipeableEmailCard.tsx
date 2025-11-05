@@ -12,6 +12,8 @@ interface SwipeableEmailCardProps {
   onViewRecording: (id: string) => void;
   style?: React.CSSProperties;
   zIndex?: number;
+  isExpanded?: boolean;
+  onExpandChange?: (expanded: boolean) => void;
 }
 
 export const SwipeableEmailCard = ({
@@ -22,12 +24,25 @@ export const SwipeableEmailCard = ({
   onViewRecording,
   style,
   zIndex = 1,
+  isExpanded: externalIsExpanded,
+  onExpandChange,
 }: SwipeableEmailCardProps) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [internalIsExpanded, setInternalIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const isExpanded = externalIsExpanded !== undefined ? externalIsExpanded : internalIsExpanded;
+  
+  const handleExpandToggle = () => {
+    const newValue = !isExpanded;
+    if (onExpandChange) {
+      onExpandChange(newValue);
+    } else {
+      setInternalIsExpanded(newValue);
+    }
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -153,7 +168,7 @@ export const SwipeableEmailCard = ({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={handleExpandToggle}
             className="shrink-0"
           >
             {isExpanded ? (
