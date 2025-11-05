@@ -40,6 +40,201 @@ const Settings = () => {
           <TabsTrigger value="ai">AI Settings</TabsTrigger>
         </TabsList>
 
+        {/* Email Setup */}
+        <TabsContent value="email" className="space-y-6">
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 p-4 bg-success/10 border border-success/20 rounded-lg">
+                <CheckCircle2 className="w-5 h-5 text-success" />
+                <div>
+                  <p className="font-medium">✅ Connected</p>
+                  <p className="text-sm text-muted-foreground">
+                    Account: premium
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="brevo-key">API Key</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="brevo-key"
+                    type="password"
+                    placeholder="xkeysib-abc123..."
+                    defaultValue="xkeysib-abc123..."
+                  />
+                  <Button variant="outline">Verify</Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-6">Sender Settings</h3>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="from-email">From Email</Label>
+                <Input
+                  id="from-email"
+                  type="email"
+                  placeholder="noreply@example.com"
+                  defaultValue="noreply@example.com"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="from-name">From Name</Label>
+                <Input
+                  id="from-name"
+                  placeholder="Pascal Analytics"
+                  defaultValue="Pascal Analytics"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="app-url">App URL</Label>
+                <Input
+                  id="app-url"
+                  type="url"
+                  placeholder="https://example.com"
+                  defaultValue="https://example.com"
+                />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-6">Limits</h3>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="daily-limit">Daily Email Limit</Label>
+                <Input
+                  id="daily-limit"
+                  type="number"
+                  placeholder="100"
+                  defaultValue="100"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Maximum emails per day
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Session Insights</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Enable AI-powered session insights
+                  </p>
+                </div>
+                <Switch defaultChecked />
+              </div>
+            </div>
+          </Card>
+
+          <Button className="bg-gradient-hero hover:opacity-90">
+            <Save className="w-4 h-4 mr-2" />
+            Save Configuration
+          </Button>
+          <Button variant="outline" className="ml-2">
+            Send Test Email
+          </Button>
+        </TabsContent>
+
+        {/* Email Stats */}
+        <TabsContent value="stats" className="space-y-6">
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-6">
+              Email Performance - Last 30 Days
+            </h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="p-4 border border-border rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">Sent</p>
+                <p className="text-2xl font-bold">450</p>
+              </div>
+              <div className="p-4 border border-border rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">Delivered</p>
+                <p className="text-2xl font-bold">445</p>
+                <p className="text-xs text-muted-foreground">98.9%</p>
+              </div>
+              <div className="p-4 border border-border rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">Opened</p>
+                <p className="text-2xl font-bold">315</p>
+                <p className="text-xs text-success">70.8%</p>
+              </div>
+              <div className="p-4 border border-border rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">Clicked</p>
+                <p className="text-2xl font-bold">180</p>
+                <p className="text-xs text-success">40.4%</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="font-medium">By Email Type:</p>
+              {[
+                {
+                  type: "Activation nudge",
+                  sent: 200,
+                  open: "75%",
+                  click: "45%",
+                },
+                {
+                  type: "Feature tutorial",
+                  sent: 150,
+                  open: "68%",
+                  click: "38%",
+                },
+                {
+                  type: "Re-engagement",
+                  sent: 100,
+                  open: "65%",
+                  click: "35%",
+                },
+              ].map((stat) => (
+                <div
+                  key={stat.type}
+                  className="flex items-center justify-between p-4 border border-border rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-4 h-4 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">{stat.type}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {stat.sent} sent
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Open</p>
+                      <p className="font-medium">{stat.open}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Click</p>
+                      <p className="font-medium">{stat.click}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-muted/50">
+            <h3 className="text-lg font-semibold mb-4">Issues</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Bounced</span>
+                <Badge variant="outline">5</Badge>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Complained</span>
+                <Badge variant="outline">2</Badge>
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+
         {/* General Settings */}
         <TabsContent value="general" className="space-y-6">
           <Card className="p-6">

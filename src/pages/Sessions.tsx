@@ -56,9 +56,9 @@ const Sessions = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Sessions</h1>
+          <h1 className="text-3xl font-bold mb-2">Session Intelligence Hub</h1>
           <p className="text-muted-foreground">
-            View session replays with AI-powered analysis
+            Session recordings with HEART analysis & AI insights
           </p>
         </div>
         <Button variant="outline">

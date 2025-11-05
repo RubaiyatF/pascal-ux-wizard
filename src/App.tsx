@@ -5,10 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
-import Dashboard from "./pages/Dashboard";
-import Users from "./pages/Users";
+import EmailQueue from "./pages/EmailQueue";
+import Conversations from "./pages/Conversations";
 import Sessions from "./pages/Sessions";
-import Interventions from "./pages/Interventions";
+import Benchmarks from "./pages/Benchmarks";
+import Analytics from "./pages/Analytics";
+import Learning from "./pages/Learning";
 import Settings from "./pages/Settings";
 import Layout from "./components/Layout";
 import NotFound from "./pages/NotFound";
@@ -22,22 +24,22 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/auth" replace />} />
+          <Route path="/" element={<Navigate to="/email-queue" replace />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route
-            path="/dashboard"
+            path="/email-queue"
             element={
               <Layout>
-                <Dashboard />
+                <EmailQueue />
               </Layout>
             }
           />
           <Route
-            path="/users"
+            path="/conversations"
             element={
               <Layout>
-                <Users />
+                <Conversations />
               </Layout>
             }
           />
@@ -50,10 +52,26 @@ const App = () => (
             }
           />
           <Route
-            path="/interventions"
+            path="/benchmarks"
             element={
               <Layout>
-                <Interventions />
+                <Benchmarks />
+              </Layout>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <Layout>
+                <Analytics />
+              </Layout>
+            }
+          />
+          <Route
+            path="/learning"
+            element={
+              <Layout>
+                <Learning />
               </Layout>
             }
           />

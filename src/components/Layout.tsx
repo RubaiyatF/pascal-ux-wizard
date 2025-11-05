@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Users,
-  Video,
   Mail,
+  MessageSquare,
+  Video,
+  Target,
+  BarChart3,
+  Brain,
   Settings,
   Sparkles,
   ChevronRight,
@@ -17,10 +19,12 @@ interface LayoutProps {
 }
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Users", href: "/users", icon: Users },
+  { name: "Email Queue", href: "/email-queue", icon: Mail },
+  { name: "Conversations", href: "/conversations", icon: MessageSquare },
   { name: "Sessions", href: "/sessions", icon: Video },
-  { name: "Interventions", href: "/interventions", icon: Mail },
+  { name: "Benchmarks", href: "/benchmarks", icon: Target },
+  { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  { name: "Learning", href: "/learning", icon: Brain },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
@@ -34,13 +38,13 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-6 border-b border-border">
-            <Link to="/dashboard" className="flex items-center gap-3">
+            <Link to="/email-queue" className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="font-bold text-lg">Pascal</h1>
-                <p className="text-xs text-muted-foreground">Analytics</p>
+                <p className="text-xs text-muted-foreground">AI Agent</p>
               </div>
             </Link>
           </div>
