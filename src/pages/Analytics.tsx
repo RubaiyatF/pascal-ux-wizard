@@ -1,8 +1,20 @@
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Mail, Users, CheckCircle2 } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const Analytics = () => {
+  // Dummy trend data for the last 30 days
+  const trendData = [
+    { date: "Day 1", activeUsers: 780, activation: 62, retention: 78, featureAdoption: 58 },
+    { date: "Day 5", activeUsers: 795, activation: 63, retention: 79, featureAdoption: 59 },
+    { date: "Day 10", activeUsers: 810, activation: 64, retention: 80, featureAdoption: 60 },
+    { date: "Day 15", activeUsers: 835, activation: 65, retention: 80, featureAdoption: 62 },
+    { date: "Day 20", activeUsers: 860, activation: 66, retention: 81, featureAdoption: 63 },
+    { date: "Day 25", activeUsers: 875, activation: 67, retention: 81, featureAdoption: 64 },
+    { date: "Day 30", activeUsers: 890, activation: 68, retention: 82, featureAdoption: 65 },
+  ];
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -74,8 +86,61 @@ const Analytics = () => {
 
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-4">Trends - Last 30 Days</h3>
-            <div className="h-64 flex items-center justify-center text-muted-foreground">
-              [Chart visualization would go here]
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={trendData}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                  <XAxis 
+                    dataKey="date" 
+                    className="text-xs"
+                    stroke="hsl(var(--muted-foreground))"
+                  />
+                  <YAxis 
+                    className="text-xs"
+                    stroke="hsl(var(--muted-foreground))"
+                  />
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                  />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="activeUsers" 
+                    stroke="hsl(var(--primary))" 
+                    strokeWidth={2}
+                    name="Active Users"
+                    dot={{ fill: 'hsl(var(--primary))' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="activation" 
+                    stroke="hsl(var(--success))" 
+                    strokeWidth={2}
+                    name="Activation %"
+                    dot={{ fill: 'hsl(var(--success))' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="retention" 
+                    stroke="hsl(var(--info))" 
+                    strokeWidth={2}
+                    name="Retention %"
+                    dot={{ fill: 'hsl(var(--info))' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="featureAdoption" 
+                    stroke="hsl(var(--warning))" 
+                    strokeWidth={2}
+                    name="Feature Adoption %"
+                    dot={{ fill: 'hsl(var(--warning))' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </Card>
         </TabsContent>
