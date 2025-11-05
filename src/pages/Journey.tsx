@@ -13,7 +13,7 @@ interface User {
   plan: string;
 }
 
-const Conversations = () => {
+const Journey = () => {
   const [selectedUser, setSelectedUser] = useState<string>("sarah@startup.io");
 
   const users: User[] = [
@@ -414,4 +414,4 @@ const Conversations = () => {
   );
 };
 
-export default Conversations;
+export default Journey;

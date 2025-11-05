@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import EmailQueue from "./pages/EmailQueue";
-import Conversations from "./pages/Conversations";
+import Journey from "./pages/Journey";
 import Sessions from "./pages/Sessions";
 import Benchmarks from "./pages/Benchmarks";
 import Analytics from "./pages/Analytics";
@@ -39,7 +39,7 @@ const App = () => (
             path="/conversations"
             element={
               <Layout>
-                <Conversations />
+                <Journey />
               </Layout>
             }
           />
