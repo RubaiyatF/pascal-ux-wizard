@@ -201,23 +201,26 @@ export function TrendsAreaChart() {
             />
             <Area
               dataKey="featureAdoption"
-              type="natural"
+              type="monotone"
               fill="url(#fillFeatureAdoption)"
               stroke="var(--color-featureAdoption)"
+              strokeWidth={2}
               stackId="a"
             />
             <Area
               dataKey="retention"
-              type="natural"
+              type="monotone"
               fill="url(#fillRetention)"
               stroke="var(--color-retention)"
+              strokeWidth={2}
               stackId="a"
             />
             <Area
               dataKey="activation"
-              type="natural"
+              type="monotone"
               fill="url(#fillActivation)"
               stroke="var(--color-activation)"
+              strokeWidth={2}
               stackId="a"
             />
             <ChartLegend content={<ChartLegendContent />} />
