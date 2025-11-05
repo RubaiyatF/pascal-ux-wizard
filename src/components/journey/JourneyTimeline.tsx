@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles } from "lucide-react";
+import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { InlineSessionPlayer } from "./InlineSessionPlayer";
 
@@ -15,7 +15,11 @@ interface TimelineEvent {
   pages?: number;
   events?: number;
   journeyStage?: string;
+  visualDescription?: string;
   aiSummary?: string;
+  keyInsights?: string[];
+  activationSignals?: string[];
+  concerns?: string[];
   heartBreakdown?: {
     happiness: number;
     engagement: number;
@@ -181,13 +185,91 @@ export const JourneyTimeline = ({
                     />
                   )}
 
-                  {/* AI Summary */}
-                  {event.aiSummary && !compact && (
-                    <div className="bg-muted/50 rounded-lg p-3 flex items-start gap-2">
-                      <Sparkles className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                      <p className="text-sm text-muted-foreground">{event.aiSummary}</p>
-                    </div>
-                  )}
+                      {/* AI Summary */}
+                      {event.aiSummary && !compact && (
+                        <div className="space-y-2">
+                          {event.visualDescription && (
+                            <div className="bg-muted/50 rounded-lg p-3">
+                              <div className="flex items-start gap-2">
+                                <Sparkles className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                <div className="flex-1">
+                                  <p className="text-xs font-semibold mb-1">Session Overview</p>
+                                  <p className="text-sm text-muted-foreground">{event.visualDescription}</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 border border-primary/20">
+                            <div className="flex items-start gap-2">
+                              <TrendingUp className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                              <div className="flex-1">
+                                <p className="text-xs font-semibold mb-1">AI Analysis</p>
+                                <p className="text-sm text-muted-foreground whitespace-pre-line">{event.aiSummary}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Key Insights */}
+                      {event.keyInsights && event.keyInsights.length > 0 && !compact && (
+                        <div className="bg-card rounded-lg p-3 border">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CheckCircle2 className="w-4 h-4 text-success" />
+                            <p className="text-xs font-semibold">Key Insights</p>
+                          </div>
+                          <ul className="space-y-1.5">
+                            {event.keyInsights.map((insight, i) => (
+                              <li key={i} className="flex items-start gap-2 text-xs">
+                                <span className="text-success mt-0.5">•</span>
+                                <span className="text-muted-foreground">{insight}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Activation Signals */}
+                      {event.activationSignals && event.activationSignals.length > 0 && !compact && (
+                        <div className="bg-success/5 rounded-lg p-3 border border-success/20">
+                          <div className="flex items-center gap-2 mb-2">
+                            <TrendingUp className="w-4 h-4 text-success" />
+                            <p className="text-xs font-semibold">Activation Signals</p>
+                            <Badge variant="outline" className="ml-auto bg-success/10 text-success border-success/20 text-xs">
+                              {event.activationSignals.length}
+                            </Badge>
+                          </div>
+                          <ul className="space-y-1.5">
+                            {event.activationSignals.map((signal, i) => (
+                              <li key={i} className="flex items-start gap-2 text-xs">
+                                <CheckCircle2 className="w-3 h-3 text-success mt-0.5 shrink-0" />
+                                <span className="text-muted-foreground">{signal}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Concerns */}
+                      {event.concerns && event.concerns.length > 0 && !compact && (
+                        <div className="bg-warning/5 rounded-lg p-3 border border-warning/20">
+                          <div className="flex items-center gap-2 mb-2">
+                            <AlertTriangle className="w-4 h-4 text-warning" />
+                            <p className="text-xs font-semibold">Areas to Monitor</p>
+                            <Badge variant="outline" className="ml-auto bg-warning/10 text-warning border-warning/20 text-xs">
+                              {event.concerns.length}
+                            </Badge>
+                          </div>
+                          <ul className="space-y-1.5">
+                            {event.concerns.map((concern, i) => (
+                              <li key={i} className="flex items-start gap-2 text-xs">
+                                <span className="text-warning mt-0.5">⚠</span>
+                                <span className="text-muted-foreground">{concern}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                   {/* HEART Breakdown */}
                   {event.heartBreakdown && !compact && (

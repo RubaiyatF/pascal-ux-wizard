@@ -66,7 +66,22 @@ const Journey = () => {
           pages: 5,
           events: 89,
           journeyStage: "Onboarding",
-          aiSummary: "User explored dashboard features, completed initial setup steps.",
+          visualDescription: "User navigated 4-step onboarding (Welcome → Connect → Create → See Data). Explored dashboard. Connected Stripe. Viewed first transaction within 10 min. Smooth navigation.",
+          aiSummary: "STRONG ACTIVATION SESSION. User reached 'aha moment' quickly by seeing real transaction data. High task success rate with zero friction.",
+          keyInsights: [
+            "User reached 'aha moment' in first 10 minutes",
+            "Completed onboarding with zero friction or errors",
+            "Strong interest in integrations (power user indicator)"
+          ],
+          activationSignals: [
+            "Completed first core action (created project)",
+            "Connected paid integration (Stripe)",
+            "Viewed real data (not demo/sample)"
+          ],
+          concerns: [
+            "Hesitated on pricing page for 3 minutes",
+            "Did not invite team members (solo user?)"
+          ],
           heartBreakdown: {
             happiness: 60,
             engagement: 65,
@@ -96,7 +111,22 @@ const Journey = () => {
           pages: 7,
           events: 134,
           journeyStage: "Evaluation",
-          aiSummary: "Strong engagement with pricing and product comparison tools.",
+          visualDescription: "User spent significant time on pricing page and feature comparison. Explored advanced features and API documentation.",
+          aiSummary: "Strong engagement with pricing and product comparison tools. User researching advanced capabilities.",
+          keyInsights: [
+            "Deep research behavior (8+ minutes on docs)",
+            "Price conscious but interested in advanced features",
+            "Comparing with competitors"
+          ],
+          activationSignals: [
+            "Explored advanced features (API docs)",
+            "Long session duration (high engagement)",
+            "Multiple pages viewed"
+          ],
+          concerns: [
+            "Price sensitivity evident",
+            "Comparing with competitors"
+          ],
           heartBreakdown: {
             happiness: 70,
             engagement: 75,
