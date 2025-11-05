@@ -37,8 +37,8 @@ const Analytics = () => {
 
             <Card className="p-6">
               <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-success/10">
-                  <TrendingUp className="w-5 h-5 text-success" />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <TrendingUp className="w-5 h-5 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-success">+5.2%</span>
               </div>
@@ -50,8 +50,8 @@ const Analytics = () => {
 
             <Card className="p-6">
               <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-info/10">
-                  <CheckCircle2 className="w-5 h-5 text-info" />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <CheckCircle2 className="w-5 h-5 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-success">+3.1%</span>
               </div>
@@ -61,8 +61,8 @@ const Analytics = () => {
 
             <Card className="p-6">
               <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-warning/10">
-                  <TrendingUp className="w-5 h-5 text-warning" />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <TrendingUp className="w-5 h-5 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-success">+8%</span>
               </div>
@@ -117,8 +117,8 @@ const Analytics = () => {
             </Card>
 
             <Card className="p-6">
-              <div className="p-2 rounded-lg bg-success/10 w-fit mb-3">
-                <Mail className="w-5 h-5 text-success" />
+              <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
+                <Mail className="w-5 h-5 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground mb-1">Delivered</p>
               <p className="text-2xl font-bold">445</p>
@@ -126,8 +126,8 @@ const Analytics = () => {
             </Card>
 
             <Card className="p-6">
-              <div className="p-2 rounded-lg bg-info/10 w-fit mb-3">
-                <CheckCircle2 className="w-5 h-5 text-info" />
+              <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
+                <CheckCircle2 className="w-5 h-5 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground mb-1">Opened</p>
               <p className="text-2xl font-bold">315</p>
@@ -135,8 +135,8 @@ const Analytics = () => {
             </Card>
 
             <Card className="p-6">
-              <div className="p-2 rounded-lg bg-warning/10 w-fit mb-3">
-                <TrendingUp className="w-5 h-5 text-warning" />
+              <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
+                <TrendingUp className="w-5 h-5 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground mb-1">Clicked</p>
               <p className="text-2xl font-bold">180</p>
