@@ -2,10 +2,14 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, Search, Calendar } from "lucide-react";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 import { DraftAIResponseModal } from "@/components/journey/DraftAIResponseModal";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 interface User {
   name: string;
@@ -14,6 +18,7 @@ interface User {
   sessions: number;
   heartScore: number;
   plan: string;
+  lastActivity: string;
 }
 
 const Journey = () => {
@@ -23,6 +28,9 @@ const Journey = () => {
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
   const [draftModalOpen, setDraftModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
 
   const users: User[] = [
     {
@@ -32,6 +40,7 @@ const Journey = () => {
       sessions: 6,
       heartScore: 80,
       plan: "Free",
+      lastActivity: "2024-01-18",
     },
     {
       name: "Liam Chen",
@@ -40,6 +49,7 @@ const Journey = () => {
       sessions: 3,
       heartScore: 65,
       plan: "Free",
+      lastActivity: "2024-01-15",
     },
     {
       name: "Nora Khan",
@@ -48,8 +58,22 @@ const Journey = () => {
       sessions: 8,
       heartScore: 92,
       plan: "Pro Trial",
+      lastActivity: "2024-01-12",
     },
   ];
+
+  // Filter users based on search query and date range
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = searchQuery === "" || 
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const userDate = new Date(user.lastActivity);
+    const matchesDateFrom = !dateFrom || userDate >= dateFrom;
+    const matchesDateTo = !dateTo || userDate <= dateTo;
+    
+    return matchesSearch && matchesDateFrom && matchesDateTo;
+  });
 
   const conversations: Record<string, any> = {
     "sarah@startup.io": {
@@ -357,8 +381,72 @@ const Journey = () => {
         <div className="col-span-12 lg:col-span-4 space-y-4 relative">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Users</h2>
+            
+            {/* Search and Filter Controls */}
+            <div className="space-y-3 mb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by email or name..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              
+              <div className="flex gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {dateFrom ? format(dateFrom, "MMM d") : "From"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-background" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={dateFrom}
+                      onSelect={setDateFrom}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {dateTo ? format(dateTo, "MMM d") : "To"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-background" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={dateTo}
+                      onSelect={setDateTo}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                
+                {(searchQuery || dateFrom || dateTo) && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setDateFrom(undefined);
+                      setDateTo(undefined);
+                    }}
+                  >
+                    Clear
+                  </Button>
+                )}
+              </div>
+            </div>
+            
             <div className="space-y-2">
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <div
                   key={user.email}
                   onClick={() => setSelectedUser(user.email)}
