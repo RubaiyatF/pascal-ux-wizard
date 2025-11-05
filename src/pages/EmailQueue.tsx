@@ -173,8 +173,8 @@ const EmailQueue = () => {
         onReject={handleBulkReject}
       />
 
-      {/* Email Queue */}
-      <div className="space-y-4">
+      {/* Email Queue - Compact Table-like View */}
+      <div className="border rounded-lg overflow-hidden bg-card">
         {queuedEmails.map((email) => (
           <EmailCard
             key={email.id}

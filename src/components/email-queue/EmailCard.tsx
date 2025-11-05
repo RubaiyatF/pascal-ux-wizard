@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Play, Eye, Sparkles, MessageSquare } from "lucide-react";
+import { Play, Eye, Sparkles, MessageSquare, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 
 export interface QueuedEmail {
   id: string;
@@ -41,110 +41,96 @@ export const EmailCard = ({
   onViewRecording,
   onViewThread,
 }: EmailCardProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <Card className="p-6 hover:shadow-elevated transition-all">
-      <div className="space-y-4">
-        <div className="flex items-start gap-4">
-          <Checkbox
-            checked={isSelected}
-            onCheckedChange={() => onToggleSelect(email.id)}
-            className="mt-1"
-          />
+    <div className="border-b border-border hover:bg-accent/5 transition-colors">
+      <div className="flex items-start gap-3 p-3">
+        {/* Checkbox */}
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={() => onToggleSelect(email.id)}
+          className="mt-1"
+        />
 
-          <div className="flex-1 space-y-3">
-            {/* User Info & Confidence */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h3 className="font-semibold text-lg">{email.email}</h3>
-                <Badge
-                  variant="outline"
-                  className="bg-success/10 text-success border-success/20"
-                >
-                  {email.confidence}% confidence
+        {/* Main Content - Grid Layout */}
+        <div className="flex-1 grid grid-cols-[1fr_auto] gap-3 min-w-0">
+          {/* Left: Email Info */}
+          <div className="min-w-0">
+            {/* Header Row */}
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <span className="font-semibold text-sm truncate">{email.email}</span>
+              <Badge variant="outline" className="bg-success/10 text-success border-success/20 text-xs px-1.5 py-0">
+                {email.confidence}%
+              </Badge>
+              <Badge variant="outline" className="text-xs px-1.5 py-0">♥ {email.heartScore}</Badge>
+              {email.type === "reply" && (
+                <Badge variant="outline" className="bg-info/10 text-info border-info/20 text-xs px-1.5 py-0">
+                  Reply
                 </Badge>
-                <Badge variant="outline">Score: {email.heartScore}</Badge>
-                {email.type === "reply" && (
-                  <Badge
-                    variant="outline"
-                    className="bg-info/10 text-info border-info/20"
-                  >
-                    Reply Thread
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {/* Email Content */}
-            <div className="space-y-2">
-              <p className="font-medium">Subject: "{email.subject}"</p>
-              <p className="text-sm text-muted-foreground">
-                Preview: {email.preview}
-              </p>
-            </div>
-
-            {/* AI Reasoning */}
-            <div className="bg-secondary/50 rounded-lg p-4 border border-border">
-              <div className="flex items-start gap-2">
-                <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium mb-1">🧠 AI Reasoning</p>
-                  <p className="text-sm text-muted-foreground">
-                    {email.aiReasoning}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Conversation Stage (for replies) */}
-            {email.conversationStage && (
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-muted-foreground">
-                  💬 Stage: {email.conversationStage}
-                </span>
-                <span className="text-muted-foreground">
-                  😊 Sentiment: {email.sentiment}
-                </span>
-                <span className="text-muted-foreground">
-                  Intent: {email.intent}
-                </span>
-              </div>
-            )}
-
-            {/* Session Trigger */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Play className="w-4 h-4" />
-              <span>
-                📹 Triggered by: Session {email.sessionId} ({email.sessionTime})
+              )}
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <Play className="w-3 h-3" />
+                {email.sessionTime}
               </span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-2 pt-2">
+            {/* Subject */}
+            <div className="mb-1.5">
+              <span className="text-sm font-medium">"{email.subject}"</span>
+            </div>
+
+            {/* Email Body Preview/Full */}
+            <div className="text-sm text-muted-foreground mb-2">
+              {email.preview}
+            </div>
+
+            {/* AI Reasoning - Compact */}
+            <div className="bg-secondary/30 rounded px-2 py-1.5 mb-1.5">
+              <div className="flex items-start gap-1.5">
+                <Sparkles className="w-3 h-3 text-primary shrink-0 mt-0.5" />
+                <p className="text-xs text-muted-foreground leading-relaxed">{email.aiReasoning}</p>
+              </div>
+            </div>
+
+            {/* Conversation Metadata */}
+            {email.conversationStage && (
+              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-1">
+                <span>Stage: {email.conversationStage}</span>
+                <span>Sentiment: {email.sentiment}</span>
+                <span>Intent: {email.intent}</span>
+              </div>
+            )}
+
+            {/* Quick Actions Row */}
+            <div className="flex items-center gap-1.5 mt-2">
               <Button
                 size="sm"
-                className="bg-gradient-hero hover:opacity-90"
+                className="bg-gradient-hero hover:opacity-90 h-7 text-xs px-3"
                 onClick={() => onApprove(email.id)}
               >
                 Approve
               </Button>
-              <Button size="sm" variant="outline" onClick={() => onEdit(email.id)}>
-                Edit & Approve
+              <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onEdit(email.id)}>
+                Edit
               </Button>
-              <Button size="sm" variant="outline" onClick={() => onReject(email.id)}>
+              <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onReject(email.id)}>
                 Reject
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => onViewRecording(email.id)}>
-                <Eye className="w-4 h-4 mr-2" />
-                Watch Recording
+              <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewRecording(email.id)}>
+                <Eye className="w-3 h-3 mr-1" />
+                Session
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => onViewThread(email.id)}>
-                <MessageSquare className="w-4 h-4 mr-2" />
-                View Thread
-              </Button>
+              {email.type === "reply" && (
+                <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewThread(email.id)}>
+                  <MessageSquare className="w-3 h-3 mr-1" />
+                  Thread
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
