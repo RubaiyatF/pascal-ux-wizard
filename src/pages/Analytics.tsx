@@ -107,46 +107,6 @@ const Analytics = () => {
               <p className="text-xs text-muted-foreground mt-1">Last 30 days</p>
             </Card>
           </div>
-
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">
-              By Intervention Type
-            </h3>
-            <div className="space-y-4">
-              {[
-                {
-                  type: "Activation nudge",
-                  conversion: "25%",
-                  score: "+12.5",
-                },
-                {
-                  type: "Feature tutorial",
-                  conversion: "18%",
-                  score: "+8.2",
-                },
-                {
-                  type: "Re-engagement",
-                  conversion: "15%",
-                  score: "+6.1",
-                },
-              ].map((item) => (
-                <div
-                  key={item.type}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg"
-                >
-                  <span className="font-medium">{item.type}</span>
-                  <div className="flex gap-6 text-sm">
-                    <span className="text-muted-foreground">
-                      {item.conversion} conversion
-                    </span>
-                    <span className="text-success font-medium">
-                      {item.score} score
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
         </TabsContent>
 
         {/* Email Stats Tab */}
