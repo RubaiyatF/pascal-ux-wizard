@@ -20,7 +20,7 @@ interface LayoutProps {
 
 const navigation = [
   { name: "Email Queue", href: "/email-queue", icon: Mail },
-  { name: "Conversations", href: "/conversations", icon: MessageSquare },
+  { name: "Journey", href: "/conversations", icon: MessageSquare },
   { name: "Sessions", href: "/sessions", icon: Video },
   { name: "Benchmarks", href: "/benchmarks", icon: Target },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
