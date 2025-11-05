@@ -3,8 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Star, Plus, TrendingUp } from "lucide-react";
+import { useState } from "react";
+import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
+import { UserJourneyModal } from "@/components/home/UserJourneyModal";
+import { UserDetailsModal } from "@/components/home/UserDetailsModal";
 
 const Home = () => {
+  const [addBenchmarkOpen, setAddBenchmarkOpen] = useState(false);
+  const [benchmarkEmail, setBenchmarkEmail] = useState("");
+  const [journeyOpen, setJourneyOpen] = useState(false);
+  const [selectedUserEmail, setSelectedUserEmail] = useState("");
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedSimilarUser, setSelectedSimilarUser] = useState<{
+    email: string;
+    similarity: number;
+    reason: string;
+  } | null>(null);
+
   const benchmarkUsers = [
     {
       email: "john@company.com",
@@ -114,8 +129,15 @@ const Home = () => {
             <Input
               placeholder="Add benchmark user by email..."
               className="w-64"
+              value={benchmarkEmail}
+              onChange={(e) => setBenchmarkEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setAddBenchmarkOpen(true);
+                }
+              }}
             />
-            <Button size="sm">
+            <Button size="sm" onClick={() => setAddBenchmarkOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Add
             </Button>
@@ -138,7 +160,14 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-              <Button size="sm" variant="ghost">
+              <Button 
+                size="sm" 
+                variant="ghost"
+                onClick={() => {
+                  setSelectedUserEmail(user.email);
+                  setJourneyOpen(true);
+                }}
+              >
                 View Journey
               </Button>
             </div>
@@ -178,11 +207,25 @@ const Home = () => {
                 >
                   {user.similarity}% similarity
                 </Badge>
-                <Button size="sm" variant="default">
+                <Button 
+                  size="sm" 
+                  variant="default"
+                  onClick={() => {
+                    setBenchmarkEmail(user.email);
+                    setAddBenchmarkOpen(true);
+                  }}
+                >
                   <Star className="w-4 h-4 mr-2" />
                   Add as Benchmark
                 </Button>
-                <Button size="sm" variant="outline">
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedSimilarUser(user);
+                    setDetailsOpen(true);
+                  }}
+                >
                   View Details
                 </Button>
               </div>
@@ -196,6 +239,29 @@ const Home = () => {
           </p>
         </div>
       </Card>
+
+      {/* Modals */}
+      <AddBenchmarkModal
+        open={addBenchmarkOpen}
+        onOpenChange={setAddBenchmarkOpen}
+        initialEmail={benchmarkEmail}
+      />
+      
+      <UserJourneyModal
+        open={journeyOpen}
+        onOpenChange={setJourneyOpen}
+        userEmail={selectedUserEmail}
+      />
+      
+      {selectedSimilarUser && (
+        <UserDetailsModal
+          open={detailsOpen}
+          onOpenChange={setDetailsOpen}
+          userEmail={selectedSimilarUser.email}
+          similarity={selectedSimilarUser.similarity}
+          reason={selectedSimilarUser.reason}
+        />
+      )}
     </div>
   );
 };
