@@ -76,13 +76,35 @@ export const EmailCard = ({
             </div>
 
             {/* Subject */}
-            <div className="mb-1.5">
-              <span className="text-sm font-medium">"{email.subject}"</span>
+            <div className="mb-1.5 flex items-center gap-2">
+              <span className="text-sm font-medium flex-1">"{email.subject}"</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="h-6 px-2 text-xs"
+              >
+                {isExpanded ? (
+                  <>
+                    <ChevronUp className="w-3 h-3 mr-1" />
+                    Collapse
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-3 h-3 mr-1" />
+                    Expand
+                  </>
+                )}
+              </Button>
             </div>
 
             {/* Email Body Preview/Full */}
-            <div className="text-sm text-muted-foreground mb-2">
-              {email.preview}
+            <div className="text-sm text-muted-foreground mb-2 whitespace-pre-wrap">
+              {isExpanded ? (
+                `${email.preview}\n\nBest regards,\nYour AI Assistant\n\nP.S. This is an auto-generated email based on user behavior and engagement patterns. We've analyzed their session activity and determined this is an optimal touchpoint for meaningful engagement.\n\nKey insights:\n- User engagement level: ${email.heartScore}%\n- Behavior patterns indicate high interest\n- Optimal timing for conversion dialogue\n\nFeel free to customize this message before sending.`
+              ) : (
+                email.preview
+              )}
             </div>
 
             {/* AI Reasoning - Compact */}
