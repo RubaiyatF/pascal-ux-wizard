@@ -137,24 +137,24 @@ export const SwipeableEmailCard = ({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-lg">{email.email}</span>
-            <TooltipProvider>
+            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Badge variant="outline" className="bg-success/10 text-success border-success/20 cursor-help">
                     {email.confidence}%
                   </Badge>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="top" align="center" className="max-w-xs">
                   <p>AI confidence score - how certain the AI is that this email should be sent</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <TooltipProvider>
+            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Badge variant="outline" className="cursor-help">♥ {email.heartScore}</Badge>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="top" align="center" className="max-w-xs">
                   <p>Heart score - user engagement and satisfaction metric</p>
                 </TooltipContent>
               </Tooltip>
