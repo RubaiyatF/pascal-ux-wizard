@@ -137,9 +137,9 @@ export const SwipeableEmailCard = ({
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-lg">{email.email}</span>
             <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-              {email.confidence}%
+              Confidence Score: {email.confidence}%
             </Badge>
-            <Badge variant="outline">♥ {email.heartScore}</Badge>
+            <Badge variant="outline">HEART Score: {email.heartScore}</Badge>
           </div>
           {email.type === "reply" && (
             <Badge variant="outline" className="bg-info/10 text-info border-info/20">
