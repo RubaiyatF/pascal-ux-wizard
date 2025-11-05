@@ -88,7 +88,6 @@ const Settings = () => {
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="tracking">Tracking</TabsTrigger>
           <TabsTrigger value="email">Email Config</TabsTrigger>
-          <TabsTrigger value="ai">AI Settings</TabsTrigger>
         </TabsList>
 
         {/* Email Setup */}
@@ -678,93 +677,6 @@ const tracker = new PascalTracker({
           </Card>
         </TabsContent>
 
-        {/* AI Settings */}
-        <TabsContent value="ai" className="space-y-6">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="aiAnalysis">AI Session Analysis</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Analyze sessions with Google Gemini 1.5 Pro
-                  </p>
-                </div>
-                <Switch
-                  id="aiAnalysis"
-                  checked={aiAnalysisEnabled}
-                  onCheckedChange={setAiAnalysisEnabled}
-                />
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Success Benchmarks</Label>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Define benchmark users to compare against
-                  </p>
-                  <Button variant="outline">
-                    <Database className="w-4 h-4 mr-2" />
-                    Manage Benchmarks
-                  </Button>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <Label>HEART Framework Weights</Label>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Customize scoring weights for each dimension
-                  </p>
-                  <div className="space-y-3">
-                    {[
-                      { label: "Happiness", value: 25 },
-                      { label: "Engagement", value: 20 },
-                      { label: "Adoption", value: 30 },
-                      { label: "Retention", value: 15 },
-                      { label: "Task Success", value: 10 },
-                    ].map((metric) => (
-                      <div
-                        key={metric.label}
-                        className="flex items-center justify-between"
-                      >
-                        <Label className="text-sm">{metric.label}</Label>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            type="number"
-                            defaultValue={metric.value}
-                            className="w-20"
-                            min="0"
-                            max="100"
-                          />
-                          <span className="text-sm text-muted-foreground">
-                            %
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6 bg-secondary/50">
-            <div className="flex items-start gap-3">
-              <Shield className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold mb-1">Data Privacy</h3>
-                <p className="text-sm text-muted-foreground">
-                  All session data is encrypted at rest and in transit. AI
-                  analysis is performed on anonymized data only. We are
-                  GDPR-compliant and respect user consent preferences.
-                </p>
-              </div>
-            </div>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Save Button */}
