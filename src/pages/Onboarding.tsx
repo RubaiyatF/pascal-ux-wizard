@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Check, Copy, Sparkles, Code, CheckCircle2 } from "lucide-react";
+import { Check, Copy, Code, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import pascalLogo from "@/assets/pascal-logo.png";
 
 const Onboarding = () => {
   const [step, setStep] = useState(1);
@@ -52,8 +53,8 @@ const Onboarding = () => {
       <div className="max-w-4xl mx-auto py-12">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-hero mb-4 shadow-glow">
-            <Sparkles className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4 shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+            <img src={pascalLogo} alt="Pascal Logo" className="w-12 h-12" />
           </div>
           <h1 className="text-3xl font-bold mb-2">Welcome to Pascal</h1>
           <p className="text-muted-foreground">
