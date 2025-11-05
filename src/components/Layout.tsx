@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Mail, MessageSquare, Target, BarChart3, Settings, Sparkles, ChevronRight, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import pascalLogo from "@/assets/pascal-logo.png";
 interface LayoutProps {
   children: ReactNode;
 }
@@ -38,8 +39,8 @@ const Layout = ({
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <Link to="/home" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-glow">
+                <img src={pascalLogo} alt="Pascal Logo" className="w-7 h-7" />
               </div>
               <div>
                 <h1 className="font-bold text-lg">Pascal</h1>
