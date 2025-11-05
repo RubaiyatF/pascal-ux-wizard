@@ -50,6 +50,16 @@ const Home = () => {
 
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Success Benchmarks</h1>
+          <p className="text-muted-foreground">
+            12 benchmark users · 47 similar users found
+          </p>
+        </div>
+      </div>
+
       {/* Success Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {metrics.map((metric) => (
@@ -63,16 +73,6 @@ const Home = () => {
             </div>
           </Card>
         ))}
-      </div>
-
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Success Benchmarks</h1>
-          <p className="text-muted-foreground">
-            12 benchmark users · 47 similar users found
-          </p>
-        </div>
       </div>
 
       {/* Benchmark Users */}
