@@ -449,8 +449,6 @@ const Journey = () => {
             <Button className="bg-gradient-hero hover:opacity-90">
               Draft AI Response
             </Button>
-            <Button variant="outline">Assign to Human</Button>
-            <Button variant="outline">Mark Resolved</Button>
           </div>
 
           {/* HEART Analysis */}
