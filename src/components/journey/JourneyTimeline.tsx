@@ -165,7 +165,11 @@ export const JourneyTimeline = ({
                     {!compact && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-hero hover:opacity-90 transition-opacity shrink-0"
+                        variant={expandedSession === event.id ? "outline" : "default"}
+                        className={expandedSession === event.id 
+                          ? "border-destructive text-destructive hover:bg-destructive/10 shrink-0" 
+                          : "bg-gradient-hero hover:opacity-90 transition-opacity shrink-0"
+                        }
                         onClick={(e) => {
                           e.stopPropagation();
                           setExpandedSession(expandedSession === event.id ? null : event.id);
