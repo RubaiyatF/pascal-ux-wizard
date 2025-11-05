@@ -1,8 +1,6 @@
-import { Search, Bell, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,28 +34,8 @@ export const TopNavbar = () => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Search */}
-      <div className="flex-1 max-w-md relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="Search..."
-          className="pl-10 bg-muted/50 border-border"
-        />
-      </div>
-
       {/* Right Actions */}
       <div className="flex items-center gap-3 ml-auto">
-        {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="w-5 h-5" />
-          <Badge
-            variant="destructive"
-            className="absolute -top-1 -right-1 w-5 h-5 rounded-full p-0 flex items-center justify-center text-xs"
-          >
-            3
-          </Badge>
-        </Button>
-
         {/* User Avatar */}
         <Avatar className="w-8 h-8 cursor-pointer">
           <AvatarImage src="" />
