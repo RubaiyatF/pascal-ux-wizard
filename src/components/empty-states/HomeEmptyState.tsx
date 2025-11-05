@@ -17,33 +17,33 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
           <Star className="w-10 h-10 text-primary" />
         </div>
         
-        <h2 className="text-3xl font-bold mb-4">Define Your Success Benchmarks</h2>
+        <h2 className="text-3xl font-bold mb-4">Pascal Agent is Processing</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Great! Your tracking is live and events are flowing in. The next step is to mark users who represent success, so Pascal AI can identify similar users and help activate them.
+          Great! Your events are flowing in and Pascal agent is analyzing the data. This takes 5-15 minutes to populate everything. Meanwhile, record a session showcasing your best activation scenario to set the benchmark.
         </p>
 
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8 text-left">
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
             <div>
-              <h4 className="font-semibold mb-2">What Makes a Good Benchmark User?</h4>
+              <h4 className="font-semibold mb-2">What is a Benchmark Session?</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Active users who regularly engage with key features</span>
+                  <span>Record a complete user journey from signup to key activation moment</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Paying customers or users on premium plans</span>
+                  <span>Show the ideal path: feature discovery, engagement, and success</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Users who achieved their goals using your product</span>
+                  <span>Capture the "aha moment" where users realize your product&apos;s value</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>High retention users who keep coming back</span>
+                  <span>Pascal AI will use this to identify and activate similar users</span>
                 </li>
               </ul>
             </div>
@@ -53,11 +53,11 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
         <div className="flex gap-3 justify-center">
           <Button
             size="lg"
-            onClick={() => navigate("/conversations")}
+            onClick={() => navigate("/journey")}
             variant="outline"
             className="gap-2"
           >
-            View User Activity
+            View Sessions
           </Button>
           <Button
             size="lg"
@@ -65,7 +65,7 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
             className="gap-2 bg-primary hover:bg-primary/90"
           >
             <Star className="w-4 h-4" />
-            Mark First Benchmark
+            Record Benchmark Session
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>

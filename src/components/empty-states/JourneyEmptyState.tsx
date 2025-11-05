@@ -16,7 +16,7 @@ export const JourneyEmptyState = () => {
         <h2 className="text-3xl font-bold mb-4">User Journeys Building</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Excellent! Your tracking is live and sessions are being recorded. Complete journey timelines with session replays and email history will appear here as users interact with your product.
+          Excellent! Your tracking is live and sessions are being recorded. Pascal agent is processing (5-15 minutes). Record a benchmark session to showcase your ideal activation path, then journey timelines will appear here.
         </p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">

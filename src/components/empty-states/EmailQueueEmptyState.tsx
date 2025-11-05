@@ -16,7 +16,7 @@ export const EmailQueueEmptyState = () => {
         <h2 className="text-3xl font-bold mb-4">AI Email Drafts Coming Soon</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Your events are flowing in! Pascal AI is analyzing behavior patterns. Mark your benchmark users, and AI will generate personalized email drafts to help activate similar users.
+          Your events are flowing in! Pascal agent is processing data (5-15 minutes). Once you record a benchmark session, AI will generate personalized email drafts to help activate similar users.
         </p>
 
         <div className="grid grid-cols-1 gap-4 mb-8">

@@ -16,7 +16,7 @@ export const AnalyticsEmptyState = () => {
         <h2 className="text-3xl font-bold mb-4">Analytics Building</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Perfect! Data is flowing in from your tracking. Mark benchmark users to establish success patterns, and comprehensive analytics will populate here within 48-72 hours.
+          Perfect! Data is flowing in from your tracking. Pascal agent is processing (5-15 minutes). Record a benchmark session to establish success patterns, and comprehensive analytics will populate here within 48-72 hours.
         </p>
 
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-6 text-left">
