@@ -291,6 +291,73 @@ const Settings = () => {
             </div>
           </Card>
 
+          {/* API Keys */}
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold">API Keys</h2>
+              <Button onClick={generateNewKey} className="bg-gradient-hero hover:opacity-90">
+                <Plus className="w-4 h-4 mr-2" />
+                Generate New Key
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              {apiKeys.map((apiKey) => (
+                <div key={apiKey.id} className="border border-border rounded-lg p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold">{apiKey.name}</h3>
+                        <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                          {apiKey.status}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <code className="text-sm text-muted-foreground font-mono">
+                          {visibleKeys.has(apiKey.id) ? apiKey.fullKey : apiKey.key}
+                        </code>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => toggleKeyVisibility(apiKey.id)}
+                        >
+                          {visibleKeys.has(apiKey.id) ? (
+                            <EyeOff className="w-3 h-3" />
+                          ) : (
+                            <Eye className="w-3 h-3" />
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(apiKey.fullKey)}
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Created {apiKey.created}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        View
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                        onClick={() => revokeKey(apiKey.id)}
+                      >
+                        Revoke
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
           {/* Quick Start - Simple Script Tag */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Quick Start - Simple Script Tag</h2>
@@ -437,72 +504,6 @@ const tracker = new PascalTracker({
             </div>
           </Card>
 
-          {/* API Keys */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">API Keys</h2>
-              <Button onClick={generateNewKey} className="bg-gradient-hero hover:opacity-90">
-                <Plus className="w-4 h-4 mr-2" />
-                Generate New Key
-              </Button>
-            </div>
-            
-            <div className="space-y-4">
-              {apiKeys.map((apiKey) => (
-                <div key={apiKey.id} className="border border-border rounded-lg p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold">{apiKey.name}</h3>
-                        <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                          {apiKey.status}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <code className="text-sm text-muted-foreground font-mono">
-                          {visibleKeys.has(apiKey.id) ? apiKey.fullKey : apiKey.key}
-                        </code>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => toggleKeyVisibility(apiKey.id)}
-                        >
-                          {visibleKeys.has(apiKey.id) ? (
-                            <EyeOff className="w-3 h-3" />
-                          ) : (
-                            <Eye className="w-3 h-3" />
-                          )}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => copyToClipboard(apiKey.fullKey)}
-                        >
-                          <Copy className="w-3 h-3" />
-                        </Button>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Created {apiKey.created}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
-                        onClick={() => revokeKey(apiKey.id)}
-                      >
-                        Revoke
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
         </TabsContent>
 
       </Tabs>
