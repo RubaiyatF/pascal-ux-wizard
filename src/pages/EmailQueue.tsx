@@ -29,16 +29,54 @@ const EmailQueue = () => {
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
-  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([]);
+  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
+    {
+      id: "email_1",
+      email: "john@company.com",
+      confidence: 94,
+      heartScore: 85,
+      subject: "You're making great progress, John!",
+      preview: "Hi John, I noticed you completed 3 new workflows today. Your engagement is fantastic! Would love to show you some advanced features that could help you save even more time...",
+      aiReasoning: "User showing high activation signals. Completed core workflow. Perfect timing for upgrade.",
+      sessionId: "sess_xyz789",
+      sessionTime: "12 min ago",
+      type: "first_touch",
+      status: "queued",
+    },
+    {
+      id: "email_2",
+      email: "sarah@startup.io",
+      confidence: 87,
+      heartScore: 72,
+      subject: "Re: Your question about integrations",
+      preview: "Thread: 3 messages | Last reply: 'What about API limits?'",
+      aiReasoning: "User actively engaged in technical questions. Ongoing dialogue shows high interest.",
+      sessionId: "sess_abc456",
+      sessionTime: "25 min ago",
+      type: "reply",
+      status: "queued",
+      conversationStage: "ongoing_dialogue",
+      sentiment: "positive",
+      intent: "question",
+    },
+    {
+      id: "email_3",
+      email: "mike@tech.com",
+      confidence: 91,
+      heartScore: 78,
+      subject: "Great session today - here's what's next",
+      preview: "Hi Mike, I saw you explored our advanced features today. Looks like you're getting serious about automation! Here are some tips to get the most out of...",
+      aiReasoning: "User exploring premium features. High engagement with advanced tools. Strong conversion signal.",
+      sessionId: "sess_def123",
+      sessionTime: "1 hour ago",
+      type: "first_touch",
+      status: "queued",
+    },
+  ]);
   const { toast } = useToast();
 
   // Filter emails based on status
   const filteredEmails = queuedEmailsList.filter(email => email.status === statusFilter);
-
-  // Show empty state if no queued emails
-  if (queuedEmailsList.length === 0) {
-    return <EmailQueueEmptyState />;
-  }
 
   const toggleEmailSelection = (id: string) => {
     setSelectedEmails(prev =>
