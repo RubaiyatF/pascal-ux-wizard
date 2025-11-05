@@ -130,7 +130,7 @@ export const SwipeableEmailCard = ({
       )}
 
       {/* Card Content */}
-      <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm bg-opacity-100">
+      <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm bg-opacity-100 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 flex-wrap">
@@ -171,7 +171,7 @@ export const SwipeableEmailCard = ({
         </div>
 
         {/* Email Preview/Full Content */}
-        <div className={`bg-secondary/30 rounded-lg p-4 mb-4 ${isExpanded ? 'min-h-[200px]' : 'min-h-[100px]'}`}>
+        <div className="bg-secondary/30 rounded-lg p-4 mb-4">
           <p className="text-sm leading-relaxed whitespace-pre-wrap">
             {isExpanded ? (
               // Full email content
@@ -210,7 +210,7 @@ export const SwipeableEmailCard = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2 border-t pt-4">
+        <div className="flex items-center gap-2 pt-4 mt-auto border-t">
           <Button
             size="sm"
             variant="outline"
