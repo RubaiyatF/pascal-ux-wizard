@@ -5,7 +5,6 @@ import {
   MessageSquare,
   Target,
   BarChart3,
-  Brain,
   Settings,
   Sparkles,
   ChevronRight,
@@ -22,7 +21,6 @@ const navigation = [
   { name: "Email Queue", href: "/email-queue", icon: Mail },
   { name: "Journey", href: "/conversations", icon: MessageSquare },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Learning", href: "/learning", icon: Brain },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 

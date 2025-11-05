@@ -9,7 +9,6 @@ import EmailQueue from "./pages/EmailQueue";
 import Journey from "./pages/Journey";
 import Home from "./pages/Home";
 import Analytics from "./pages/Analytics";
-import Learning from "./pages/Learning";
 import Settings from "./pages/Settings";
 import Layout from "./components/Layout";
 import NotFound from "./pages/NotFound";
@@ -55,14 +54,6 @@ const App = () => (
             element={
               <Layout>
                 <Analytics />
-              </Layout>
-            }
-          />
-          <Route
-            path="/learning"
-            element={
-              <Layout>
-                <Learning />
               </Layout>
             }
           />
