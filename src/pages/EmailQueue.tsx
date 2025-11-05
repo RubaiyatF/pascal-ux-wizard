@@ -6,9 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { LayoutGrid, Layers } from "lucide-react";
 import { EmailQueueStats } from "@/components/email-queue/EmailQueueStats";
 import { BulkActions } from "@/components/email-queue/BulkActions";
 import { EmailCard, QueuedEmail } from "@/components/email-queue/EmailCard";
+import { CardStackView } from "@/components/email-queue/CardStackView";
 import { FeedbackModal } from "@/components/email-queue/FeedbackModal";
 import { EditEmailModal } from "@/components/email-queue/EditEmailModal";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
@@ -22,16 +25,15 @@ const EmailQueue = () => {
   const [showRecordingModal, setShowRecordingModal] = useState(false);
   const [showThreadModal, setShowThreadModal] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
-  const { toast } = useToast();
-
-  const queuedEmails: QueuedEmail[] = [
+  const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
+  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
     {
       id: "email_1",
       email: "john@company.com",
       confidence: 94,
       heartScore: 85,
       subject: "You're making great progress, John!",
-      preview: "Hi John, I noticed you completed 3 new...",
+      preview: "Hi John, I noticed you completed 3 new workflows today. Your engagement is fantastic! Would love to show you some advanced features that could help you save even more time...",
       aiReasoning: "User showing high activation signals. Completed core workflow. Perfect timing for upgrade.",
       sessionId: "sess_xyz789",
       sessionTime: "12 min ago",
@@ -58,13 +60,15 @@ const EmailQueue = () => {
       confidence: 91,
       heartScore: 78,
       subject: "Great session today - here's what's next",
-      preview: "Hi Mike, I saw you explored our advanced features...",
+      preview: "Hi Mike, I saw you explored our advanced features today. Looks like you're getting serious about automation! Here are some tips to get the most out of...",
       aiReasoning: "User exploring premium features. High engagement with advanced tools. Strong conversion signal.",
       sessionId: "sess_def123",
       sessionTime: "1 hour ago",
       type: "first_touch",
     },
-  ];
+  ]);
+  const { toast } = useToast();
+
 
   const toggleEmailSelection = (id: string) => {
     setSelectedEmails(prev =>
@@ -77,10 +81,12 @@ const EmailQueue = () => {
       title: "Email Approved",
       description: "Email has been queued for sending.",
     });
+    // Remove from queue
+    setQueuedEmailsList(prev => prev.filter(e => e.id !== id));
   };
 
   const handleEdit = (id: string) => {
-    const email = queuedEmails.find(e => e.id === id);
+    const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
       setCurrentEmail(email);
       setShowEditModal(true);
@@ -93,7 +99,7 @@ const EmailQueue = () => {
   };
 
   const handleViewRecording = (id: string) => {
-    const email = queuedEmails.find(e => e.id === id);
+    const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
       setCurrentEmail(email);
       setShowRecordingModal(true);
@@ -101,7 +107,7 @@ const EmailQueue = () => {
   };
 
   const handleViewThread = (id: string) => {
-    const email = queuedEmails.find(e => e.id === id);
+    const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
       setCurrentEmail(email);
       setShowThreadModal(true);
@@ -125,6 +131,8 @@ const EmailQueue = () => {
       title: "Feedback Submitted",
       description: `Rejected ${selectedEmails.length} emails with feedback.`,
     });
+    // Remove rejected emails from queue
+    setQueuedEmailsList(prev => prev.filter(e => !selectedEmails.includes(e.id)));
     setShowFeedbackModal(false);
     setSelectedEmails([]);
   };
@@ -134,6 +142,8 @@ const EmailQueue = () => {
       title: "Email Updated & Approved",
       description: "Your edited email has been queued for sending.",
     });
+    // Remove from queue after editing and approving
+    setQueuedEmailsList(prev => prev.filter(e => e.id !== emailId));
     setShowEditModal(false);
     setCurrentEmail(null);
   };
@@ -149,6 +159,28 @@ const EmailQueue = () => {
           </p>
         </div>
         <div className="flex items-center gap-4">
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+            <Button
+              variant={viewMode === "stack" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("stack")}
+              className="h-8"
+            >
+              <Layers className="w-4 h-4 mr-2" />
+              Stack
+            </Button>
+            <Button
+              variant={viewMode === "list" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className="h-8"
+            >
+              <LayoutGrid className="w-4 h-4 mr-2" />
+              List
+            </Button>
+          </div>
+
           <Select defaultValue="all">
             <SelectTrigger className="w-48">
               <SelectValue />
@@ -166,29 +198,42 @@ const EmailQueue = () => {
       {/* Stats Cards */}
       <EmailQueueStats />
 
-      {/* Bulk Actions */}
-      <BulkActions
-        selectedCount={selectedEmails.length}
-        onApprove={handleBulkApprove}
-        onReject={handleBulkReject}
-      />
+      {/* Conditional Bulk Actions (List View Only) */}
+      {viewMode === "list" && (
+        <BulkActions
+          selectedCount={selectedEmails.length}
+          onApprove={handleBulkApprove}
+          onReject={handleBulkReject}
+        />
+      )}
 
-      {/* Email Queue - Compact Table-like View */}
-      <div className="border rounded-lg overflow-hidden bg-card">
-        {queuedEmails.map((email) => (
-          <EmailCard
-            key={email.id}
-            email={email}
-            isSelected={selectedEmails.includes(email.id)}
-            onToggleSelect={toggleEmailSelection}
-            onApprove={handleApprove}
-            onEdit={handleEdit}
-            onReject={handleReject}
-            onViewRecording={handleViewRecording}
-            onViewThread={handleViewThread}
-          />
-        ))}
-      </div>
+      {/* Email Queue Views */}
+      {viewMode === "stack" ? (
+        <CardStackView
+          emails={queuedEmailsList}
+          onApprove={handleApprove}
+          onEdit={handleEdit}
+          onReject={handleReject}
+          onViewRecording={handleViewRecording}
+          onViewThread={handleViewThread}
+        />
+      ) : (
+        <div className="border rounded-lg overflow-hidden bg-card">
+          {queuedEmailsList.map((email) => (
+            <EmailCard
+              key={email.id}
+              email={email}
+              isSelected={selectedEmails.includes(email.id)}
+              onToggleSelect={toggleEmailSelection}
+              onApprove={handleApprove}
+              onEdit={handleEdit}
+              onReject={handleReject}
+              onViewRecording={handleViewRecording}
+              onViewThread={handleViewThread}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Feedback Modal */}
       <FeedbackModal
