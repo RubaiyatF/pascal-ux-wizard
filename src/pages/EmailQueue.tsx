@@ -17,6 +17,7 @@ import { FeedbackModal } from "@/components/email-queue/FeedbackModal";
 import { EditEmailModal } from "@/components/email-queue/EditEmailModal";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { ConversationThreadModal } from "@/components/email-queue/ConversationThreadModal";
+import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { useToast } from "@/hooks/use-toast";
 
 const EmailQueue = () => {
@@ -25,6 +26,7 @@ const EmailQueue = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRecordingModal, setShowRecordingModal] = useState(false);
   const [showThreadModal, setShowThreadModal] = useState(false);
+  const [showJourneyModal, setShowJourneyModal] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
@@ -136,7 +138,7 @@ const EmailQueue = () => {
     const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
       setCurrentEmail(email);
-      setShowRecordingModal(true);
+      setShowJourneyModal(true);
     }
   };
 
@@ -348,6 +350,13 @@ const EmailQueue = () => {
           setShowThreadModal(false);
           setCurrentEmail(null);
         }}
+      />
+
+      {/* User Journey Modal */}
+      <UserJourneyModal
+        open={showJourneyModal}
+        onOpenChange={setShowJourneyModal}
+        userEmail={currentEmail?.email || ""}
       />
     </div>
   );
