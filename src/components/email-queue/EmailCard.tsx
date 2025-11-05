@@ -15,6 +15,8 @@ export interface QueuedEmail {
   sessionId: string;
   sessionTime: string;
   type: "first_touch" | "reply";
+  status?: "pending" | "ready" | "draft" | "rejected" | "needs-feedback";
+  rejectionReason?: string;
   conversationStage?: string;
   sentiment?: string;
   intent?: string;
