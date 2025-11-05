@@ -397,35 +397,39 @@ const Journey = () => {
               <div className="flex gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button variant="outline" size="sm" className="flex-1 justify-start text-left font-normal">
                       <Calendar className="w-4 h-4 mr-2" />
-                      {dateFrom ? format(dateFrom, "MMM d") : "From"}
+                      {dateFrom && dateTo 
+                        ? `${format(dateFrom, "MMM d")} - ${format(dateTo, "MMM d")}`
+                        : dateFrom 
+                        ? `From ${format(dateFrom, "MMM d")}`
+                        : dateTo
+                        ? `To ${format(dateTo, "MMM d")}`
+                        : "Date Range"
+                      }
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0 bg-background" align="start">
-                    <CalendarComponent
-                      mode="single"
-                      selected={dateFrom}
-                      onSelect={setDateFrom}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {dateTo ? format(dateTo, "MMM d") : "To"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-background" align="start">
-                    <CalendarComponent
-                      mode="single"
-                      selected={dateTo}
-                      onSelect={setDateTo}
-                      initialFocus
-                    />
+                    <div className="p-4 space-y-4">
+                      <div>
+                        <p className="text-sm font-medium mb-2">From</p>
+                        <CalendarComponent
+                          mode="single"
+                          selected={dateFrom}
+                          onSelect={setDateFrom}
+                          className="pointer-events-auto"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium mb-2">To</p>
+                        <CalendarComponent
+                          mode="single"
+                          selected={dateTo}
+                          onSelect={setDateTo}
+                          className="pointer-events-auto"
+                        />
+                      </div>
+                    </div>
                   </PopoverContent>
                 </Popover>
                 
