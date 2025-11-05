@@ -1,10 +1,54 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Mail, Reply } from "lucide-react";
 
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  heartScore: number;
+  sessions: number;
+  threadCount: number;
+  lastActivity: string;
+}
+
 const Conversations = () => {
-  const conversation = {
+  const [selectedUser, setSelectedUser] = useState<string>("sarah@startup.io");
+
+  const users: User[] = [
+    {
+      id: "user_456",
+      email: "sarah@startup.io",
+      name: "Sarah Johnson",
+      heartScore: 80,
+      sessions: 12,
+      threadCount: 4,
+      lastActivity: "Today 10:23am",
+    },
+    {
+      id: "user_123",
+      email: "john@company.com",
+      name: "John Smith",
+      heartScore: 85,
+      sessions: 24,
+      threadCount: 2,
+      lastActivity: "12 min ago",
+    },
+    {
+      id: "user_789",
+      email: "mike@tech.com",
+      name: "Mike Davis",
+      heartScore: 78,
+      sessions: 8,
+      threadCount: 1,
+      lastActivity: "1 hour ago",
+    },
+  ];
+
+  const conversations = {
+    "sarah@startup.io": {
     email: "sarah@startup.io",
     userId: "user_456",
     thread: [
@@ -68,25 +112,141 @@ const Conversations = () => {
       taskSuccess: 85,
       overall: 80,
     },
-    stage: "ongoing_dialogue",
-    summary: "User actively engaged, asking technical questions.",
+      stage: "ongoing_dialogue",
+      summary: "User actively engaged, asking technical questions.",
+    },
+    "john@company.com": {
+      email: "john@company.com",
+      userId: "user_123",
+      thread: [
+        {
+          day: 1,
+          type: "sent",
+          subject: "You're making great progress!",
+          content: "Hi John, noticed you completed 3 workflows today...",
+          opened: true,
+        },
+      ],
+      sessions: [
+        {
+          id: "sess_xyz789",
+          time: "12 min ago",
+          duration: "15:42",
+          score: 85,
+          actions: ["Completed workflows", "Explored features"],
+        },
+      ],
+      heartAnalysis: {
+        happiness: 80,
+        engagement: 90,
+        adoption: 75,
+        retention: 85,
+        taskSuccess: 88,
+        overall: 85,
+      },
+      stage: "adoption",
+      summary: "Power user, high engagement.",
+    },
+    "mike@tech.com": {
+      email: "mike@tech.com",
+      userId: "user_789",
+      thread: [
+        {
+          day: 1,
+          type: "sent",
+          subject: "Great session today",
+          content: "Hi Mike, saw you explored advanced features...",
+          opened: true,
+        },
+      ],
+      sessions: [
+        {
+          id: "sess_def123",
+          time: "1 hour ago",
+          duration: "10:15",
+          score: 78,
+          actions: ["Explored premium features"],
+        },
+      ],
+      heartAnalysis: {
+        happiness: 70,
+        engagement: 85,
+        adoption: 72,
+        retention: 80,
+        taskSuccess: 75,
+        overall: 78,
+      },
+      stage: "exploration",
+      summary: "Exploring premium features.",
+    },
   };
+
+  const conversation = conversations[selectedUser as keyof typeof conversations];
 
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">
-          Conversation: {conversation.email}
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">Conversations</h1>
         <p className="text-muted-foreground">
-          User ID: {conversation.userId} · Full thread with session context
+          View user conversations with full thread and session context
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Email Thread */}
-        <div className="lg:col-span-2 space-y-4">
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-12 gap-6">
+        {/* Left Column - Users */}
+        <div className="col-span-4">
+          <div className="border rounded-lg overflow-hidden bg-card sticky top-6">
+            <div className="p-4 border-b bg-muted/50">
+              <h2 className="font-semibold">Users</h2>
+              <p className="text-sm text-muted-foreground">Select to view conversation</p>
+            </div>
+            <div className="divide-y">
+              {users.map((user) => (
+                <button
+                  key={user.id}
+                  onClick={() => setSelectedUser(user.email)}
+                  className={`w-full p-4 text-left transition-all hover:bg-accent/50 relative ${
+                    selectedUser === user.email
+                      ? "bg-primary/5 border-l-4 border-primary"
+                      : ""
+                  }`}
+                >
+                  {/* Connection Line Indicator */}
+                  {selectedUser === user.email && (
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-0.5 bg-primary" />
+                  )}
+                  
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm truncate">{user.name}</div>
+                      <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+                    </div>
+                    <div className="ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 shrink-0">
+                      <span className="text-xs font-semibold text-primary">{user.heartScore}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                    <span>{user.sessions} sessions</span>
+                    <span>·</span>
+                    <span>{user.threadCount} {user.threadCount === 1 ? 'thread' : 'threads'}</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {user.lastActivity}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column - Conversation Thread */}
+        <div className="col-span-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Email Thread */}
+            <div className="lg:col-span-2 space-y-4">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Email Thread</h2>
             <div className="space-y-4">
@@ -241,6 +401,8 @@ const Conversations = () => {
               </div>
             </div>
           </Card>
+        </div>
+      </div>
         </div>
       </div>
     </div>
