@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Sparkles, ArrowRight } from "lucide-react";
+import { Mail, Sparkles, ArrowRight, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const EmailQueueEmptyState = () => {
@@ -16,33 +16,42 @@ export const EmailQueueEmptyState = () => {
         <h2 className="text-3xl font-bold mb-4">No Email Drafts Yet</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Once you have benchmark users and Pascal starts detecting similar behavior patterns, AI-generated personalized email drafts will appear here.
+          Pascal AI is analyzing user behavior patterns. Once you mark benchmark users, AI will start generating personalized email drafts for similar users showing activation potential.
         </p>
 
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8 text-left">
-          <div className="flex items-start gap-3">
-            <Sparkles className="w-5 h-5 text-primary shrink-0 mt-1" />
-            <div>
-              <h4 className="font-semibold mb-2">How Email Drafts Work</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Pascal analyzes user behavior and identifies activation opportunities</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>AI generates personalized emails based on user context and session data</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>You review, edit, and approve before sending</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Track engagement and activation success</span>
-                </li>
-              </ul>
+        <div className="grid grid-cols-1 gap-4 mb-8">
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 text-left">
+            <div className="flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-primary shrink-0 mt-1" />
+              <div>
+                <h4 className="font-semibold mb-2">How It Works</h4>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary font-medium">1.</span>
+                    <span>Mark your successful users as benchmarks</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary font-medium">2.</span>
+                    <span>AI identifies users with similar behavior patterns</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary font-medium">3.</span>
+                    <span>Personalized emails are drafted based on their journey</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary font-medium">4.</span>
+                    <span>Review, edit, and approve before sending</span>
+                  </li>
+                </ol>
+              </div>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 text-left">
+            <Clock className="w-5 h-5 text-primary shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">Tip:</span> Email drafts typically appear within 24 hours after marking your first benchmark users.
+            </p>
           </div>
         </div>
 
@@ -51,7 +60,7 @@ export const EmailQueueEmptyState = () => {
           onClick={() => navigate("/home")}
           className="gap-2 bg-primary hover:bg-primary/90"
         >
-          Set Up Benchmarks
+          Mark Benchmark Users
           <ArrowRight className="w-4 h-4" />
         </Button>
       </Card>

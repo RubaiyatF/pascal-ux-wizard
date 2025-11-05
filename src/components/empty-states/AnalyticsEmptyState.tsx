@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart3, TrendingUp, ArrowRight } from "lucide-react";
+import { BarChart3, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const AnalyticsEmptyState = () => {
@@ -13,13 +13,13 @@ export const AnalyticsEmptyState = () => {
           <BarChart3 className="w-10 h-10 text-primary" />
         </div>
         
-        <h2 className="text-3xl font-bold mb-4">No Analytics Data Yet</h2>
+        <h2 className="text-3xl font-bold mb-4">Analytics Coming Soon</h2>
         
         <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Once you have tracking installed and users engaging with your product, you will see powerful analytics and insights here.
+          Your data is being collected! Once you have benchmark users and enough activity data, powerful analytics and insights will appear here.
         </p>
 
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8 text-left">
+        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-6 text-left">
           <div className="flex items-start gap-3">
             <TrendingUp className="w-5 h-5 text-primary shrink-0 mt-1" />
             <div>
@@ -31,7 +31,7 @@ export const AnalyticsEmptyState = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>User retention and engagement metrics</span>
+                  <span>User retention and engagement metrics over time</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
@@ -39,11 +39,18 @@ export const AnalyticsEmptyState = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Feature adoption and success benchmarks</span>
+                  <span>Feature adoption across benchmark vs. other users</span>
                 </li>
               </ul>
             </div>
           </div>
+        </div>
+
+        <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 text-left mb-8">
+          <Clock className="w-5 h-5 text-primary shrink-0" />
+          <p className="text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">Typical Timeline:</span> Analytics become available within 48-72 hours after marking benchmark users and having sufficient user activity.
+          </p>
         </div>
 
         <Button
@@ -51,7 +58,7 @@ export const AnalyticsEmptyState = () => {
           onClick={() => navigate("/home")}
           className="gap-2 bg-primary hover:bg-primary/90"
         >
-          Get Started
+          Mark Benchmark Users
           <ArrowRight className="w-4 h-4" />
         </Button>
       </Card>
