@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import pascalLogo from "@/assets/pascal-logo.png";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -22,8 +22,8 @@ const Auth = () => {
       <div className="w-full max-w-md animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4 shadow-[0_0_20px_rgba(34,197,94,0.4)]">
-            <img src={pascalLogo} alt="Pascal Logo" className="w-12 h-12" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card mb-4 shadow-lg overflow-hidden">
+            <AnimatedLogo />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">Pascal</h1>
           <p className="text-muted-foreground mt-2">Customer Success Agent that activates and upsell</p>
