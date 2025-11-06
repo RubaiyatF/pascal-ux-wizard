@@ -1,22 +1,102 @@
+import { useEffect, useRef, useState } from "react";
 import pascalLogo from "@/assets/pascal-logo.png";
 
+declare global {
+  interface Window {
+    UnicornStudio: {
+      addScene: (config: any) => Promise<any>;
+    };
+  }
+}
+
 export const AnimatedLogo = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<any>(null);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const script = document.createElement('script');
+    script.src = '/unicornStudio.umd.js';
+    script.async = true;
+
+    script.onload = () => {
+      console.log("Unicorn Studio library loaded");
+      
+      if (!containerRef.current) {
+        console.error("Container ref is null");
+        setHasError(true);
+        setIsLoading(false);
+        return;
+      }
+      
+      if (!window.UnicornStudio) {
+        console.error("UnicornStudio not found on window");
+        setHasError(true);
+        setIsLoading(false);
+        return;
+      }
+
+      const uniqueId = `unicorn-${Math.random().toString(36).substr(2, 9)}`;
+      containerRef.current.id = uniqueId;
+      
+      console.log("Initializing WebGL scene with ID:", uniqueId);
+
+      window.UnicornStudio.addScene({
+        elementId: uniqueId,
+        fps: 60,
+        scale: 1,
+        dpi: 1.5,
+        filePath: '/pascal-orb.json',
+        altText: "Pascal AI Logo",
+        ariaLabel: "Animated Pascal AI logo with aurora orb effect",
+      }).then((scene) => {
+        console.log("WebGL scene initialized successfully", scene);
+        sceneRef.current = scene;
+        setIsLoading(false);
+      }).catch((error) => {
+        console.error("Failed to initialize Unicorn Studio scene:", error);
+        setHasError(true);
+        setIsLoading(false);
+      });
+    };
+
+    script.onerror = () => {
+      console.error("Failed to load Unicorn Studio library");
+      setHasError(true);
+      setIsLoading(false);
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      if (sceneRef.current && sceneRef.current.destroy) {
+        sceneRef.current.destroy();
+      }
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  if (hasError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-primary/10 rounded-full">
+        <img src={pascalLogo} alt="Pascal Logo" className="w-3/4 h-3/4 object-contain" />
+      </div>
+    );
+  }
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-full">
-      {/* Aurora-like animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-primary/10 animate-pulse" 
-           style={{ animationDuration: '3s' }} />
-      
-      {/* Rotating glow */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/30 to-transparent animate-spin" 
-           style={{ animationDuration: '8s' }} />
-      
-      {/* Logo */}
-      <img 
-        src={pascalLogo} 
-        alt="Pascal Logo" 
-        className="relative z-10 w-2/3 h-2/3 object-contain drop-shadow-lg"
-      />
+    <div className="relative w-full h-full">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-primary/5 rounded-full">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+      <div ref={containerRef} className="w-full h-full" />
     </div>
   );
 };
