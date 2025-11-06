@@ -8,6 +8,7 @@ import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 import { DraftAIResponseModal } from "@/components/journey/DraftAIResponseModal";
+import { GenerateEmailModal } from "@/components/journey/GenerateEmailModal";
 import { JourneyEmptyState } from "@/components/empty-states/JourneyEmptyState";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -30,6 +31,7 @@ const Journey = () => {
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
   const [draftModalOpen, setDraftModalOpen] = useState(false);
+  const [generateEmailModalOpen, setGenerateEmailModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
@@ -726,10 +728,7 @@ const Journey = () => {
             <div className="mt-4 flex justify-end">
               <Button 
                 className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
-                onClick={() => {
-                  // TODO: Implement Pascal AI generation
-                  console.log("Generate with Pascal clicked");
-                }}
+                onClick={() => setGenerateEmailModalOpen(true)}
               >
                 <div className="w-4 h-4 mr-2 rounded-full overflow-hidden">
                   <AnimatedLogo />
@@ -810,6 +809,12 @@ const Journey = () => {
         isOpen={draftModalOpen}
         conversation={conversation}
         onClose={() => setDraftModalOpen(false)}
+      />
+
+      <GenerateEmailModal
+        isOpen={generateEmailModalOpen}
+        conversation={conversation}
+        onClose={() => setGenerateEmailModalOpen(false)}
       />
     </>
   );
