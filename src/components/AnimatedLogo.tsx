@@ -90,13 +90,13 @@ export const AnimatedLogo = () => {
   }
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full bg-white rounded-full">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       )}
-      <div ref={containerRef} className="w-full h-full" />
+      <div ref={containerRef} className="w-full h-full rounded-full overflow-hidden" />
     </div>
   );
 };
