@@ -572,22 +572,41 @@ const Journey = () => {
                                   NEW
                                 </Badge>}
                             </div>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(event.timestamp).toLocaleString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit'
-                          })}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(event.timestamp).toLocaleString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit'
+                            })}
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 px-2"
+                                onClick={() => {
+                                  setSelectedEmail(event);
+                                  setEmailModalOpen(true);
+                                }}
+                              >
+                                <Eye className="w-3 h-3" />
+                              </Button>
+                            </div>
                           </div>
                           
                           <p className="font-medium text-sm mb-2">"{event.subject}"</p>
                           
                           {/* Email Content - Inbox Style */}
-                          <div className="bg-background border border-border rounded-lg overflow-hidden mb-3">
+                          <div 
+                            className="bg-background border border-border rounded-lg overflow-hidden mb-3 cursor-pointer hover:border-primary/50 transition-colors"
+                            onClick={() => {
+                              setSelectedEmail(event);
+                              setEmailModalOpen(true);
+                            }}
+                          >
                             <div className="px-3 py-3 bg-white">
-                              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap line-clamp-3">
                                 {event.content}
                               </div>
                             </div>
