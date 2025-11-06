@@ -120,6 +120,14 @@ const Home = () => {
       } catch (e) {
         console.error('Error loading onboarding progress:', e);
       }
+    } else {
+      // No saved progress - clear any stale completion flags
+      localStorage.removeItem(`pascal-benchmark-added-${currentProject}`);
+      localStorage.removeItem(`pascal-journey-visited-${currentProject}`);
+      localStorage.removeItem(`pascal-email-provider-${currentProject}`);
+      localStorage.removeItem(`pascal-email-queue-visited-${currentProject}`);
+      localStorage.removeItem(`pascal-analytics-visited-${currentProject}`);
+      localStorage.removeItem(`pascal-settings-visited-${currentProject}`);
     }
   }, [currentProject]);
 
