@@ -134,18 +134,15 @@ export const EmailCard = ({
                     </div>
                   </div>
                 ) : (
-                  // Preview only
-                  <div className="space-y-2">
-                    <p>Hi there,</p>
-                    
-                    <p>{email.preview}</p>
-
-                    <div 
-                      className="text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
+                  // Preview only - compact format
+                  <div>
+                    Hi there, {email.preview}
+                    <span 
+                      className="ml-2 text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
                       onClick={() => setIsExpanded(true)}
                     >
                       click to see the full email...
-                    </div>
+                    </span>
                   </div>
                 )}
               </div>
