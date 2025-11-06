@@ -83,7 +83,7 @@ export const AnimatedLogo = () => {
 
   if (hasError) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-primary/10 rounded-full">
+      <div className="w-full h-full flex items-center justify-center">
         <img src={pascalLogo} alt="Pascal Logo" className="w-3/4 h-3/4 object-contain" />
       </div>
     );
@@ -92,7 +92,7 @@ export const AnimatedLogo = () => {
   return (
     <div className="relative w-full h-full">
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-primary/5 rounded-full">
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       )}
