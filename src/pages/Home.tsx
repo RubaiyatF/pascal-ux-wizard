@@ -79,8 +79,6 @@ const Home = () => {
   };
 
   const handleTrackerVerified = () => {
-    // Mark onboarding as started when user verifies tracker
-    localStorage.setItem(`pascal-onboarding-started-${currentProject}`, 'true');
     markStepComplete(1);
   };
 
@@ -100,7 +98,6 @@ const Home = () => {
     setExpandedStep(1);
     
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
-    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -123,29 +120,12 @@ const Home = () => {
       } catch (e) {
         console.error('Error loading onboarding progress:', e);
       }
-    } else {
-      // No saved progress - clear any stale completion flags
-      localStorage.removeItem(`pascal-onboarding-started-${currentProject}`);
-      localStorage.removeItem(`pascal-benchmark-added-${currentProject}`);
-      localStorage.removeItem(`pascal-journey-visited-${currentProject}`);
-      localStorage.removeItem(`pascal-email-provider-${currentProject}`);
-      localStorage.removeItem(`pascal-email-queue-visited-${currentProject}`);
-      localStorage.removeItem(`pascal-analytics-visited-${currentProject}`);
-      localStorage.removeItem(`pascal-settings-visited-${currentProject}`);
     }
   }, [currentProject]);
 
   // Check for step completions from other pages
   useEffect(() => {
     const checkCompletions = () => {
-      // Only check flags if onboarding has been explicitly started
-      const hasOnboardingStarted = localStorage.getItem(`pascal-onboarding-started-${currentProject}`) === 'true';
-      
-      // If onboarding hasn't been explicitly started, ignore all individual completion flags
-      if (!hasOnboardingStarted) {
-        return;
-      }
-      
       const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
       const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
       const emailProviderConfigured = localStorage.getItem(`pascal-email-provider-${currentProject}`);

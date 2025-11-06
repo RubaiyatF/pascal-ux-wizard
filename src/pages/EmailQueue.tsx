@@ -34,15 +34,10 @@ const EmailQueue = () => {
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
   const [typeFilter, setTypeFilter] = useState<"all" | "high" | "replies" | "first">("all");
 
-  // Mark onboarding step 5 as complete when Email Queue is visited (with delay to prevent false triggers)
+  // Mark onboarding step 4 as complete when Email Queue is visited
   useEffect(() => {
-    const timer = setTimeout(() => {
-      localStorage.setItem(`pascal-email-queue-visited-${currentProject}`, 'true');
-    }, 2000); // 2 second delay ensures user is actually viewing the page
-    
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount - page visit, not on project changes
+    localStorage.setItem(`pascal-email-queue-visited-${currentProject}`, 'true');
+  }, [currentProject]);
 
   // Demo data for Pascal Demo project
   const demoEmails: QueuedEmail[] = currentProject === "Pascal Demo" ? [

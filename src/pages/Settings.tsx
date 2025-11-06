@@ -33,15 +33,10 @@ const Settings = () => {
     }
   }, [searchParams]);
 
-  // Mark onboarding step 7 as complete when Settings is visited (with delay to prevent false triggers)
+  // Mark onboarding step 7 as complete when Settings is visited
   useEffect(() => {
-    const timer = setTimeout(() => {
-      localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
-    }, 2000); // 2 second delay ensures user is actually viewing the page
-    
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount - page visit, not on project changes
+    localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
+  }, [currentProject]);
 
   const handleConfigureEmail = () => {
     setEmailConfigured(true);
