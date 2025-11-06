@@ -275,8 +275,20 @@ const EmailQueue = () => {
       <EmailQueueStats />
 
       {/* Instructions */}
-      <div className="text-center text-sm text-muted-foreground py-2">
-        <p>&lt;----- Swipe left and right to approve and reject -------&gt; , you can click for approval at bottom as well</p>
+      <div className="relative py-6 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl p-6 border border-primary/20 shadow-lg animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-pulse rounded-xl"></div>
+            <div className="relative flex items-center justify-center gap-3 text-sm font-medium">
+              <span className="text-destructive animate-pulse">←</span>
+              <span className="text-muted-foreground">Swipe left or right to approve/reject</span>
+              <span className="text-primary animate-pulse">→</span>
+            </div>
+            <div className="relative text-center text-xs text-muted-foreground mt-2">
+              or use the buttons below for quick actions
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Status Filter Tabs (List View Only) */}
