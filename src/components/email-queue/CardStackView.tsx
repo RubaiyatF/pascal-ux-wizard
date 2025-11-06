@@ -35,9 +35,9 @@ export const CardStackView = ({
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Card Stack Container */}
-      <div className={`relative max-w-2xl mx-auto transition-all duration-300 ${isTopCardExpanded ? 'h-[900px]' : 'h-[600px]'}`}>
+      <div className={`relative max-w-2xl mx-auto transition-all duration-300 ${isTopCardExpanded ? 'h-[700px]' : 'h-[450px]'}`}>
         {visibleCards.map((email, index) => {
           const scale = 1 - index * 0.05;
           const yOffset = index * 8;
