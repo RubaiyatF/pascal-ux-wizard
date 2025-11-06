@@ -120,6 +120,14 @@ export default {
             opacity: "1",
           },
         },
+        slideLeftRight: {
+          "0%, 100%": {
+            transform: "translateX(0)",
+          },
+          "50%": {
+            transform: "translateX(8px)",
+          },
+        },
         pulse: {
           "0%, 100%": {
             opacity: "1",

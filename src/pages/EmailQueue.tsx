@@ -274,21 +274,24 @@ const EmailQueue = () => {
       {/* Stats Cards */}
       <EmailQueueStats />
 
-      {/* Instructions */}
-      <div className="relative py-4 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="relative bg-gradient-to-r from-transparent via-primary/5 to-transparent py-3">
-            <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
-              <span className="text-destructive/70 animate-pulse">←</span>
-              <span>Swipe left or right to approve/reject</span>
-              <span className="text-primary/70 animate-pulse">→</span>
-            </div>
-            <div className="relative text-center text-xs text-muted-foreground/60 mt-1">
-              or use the buttons below for quick actions
+      {/* Instructions - Only show in stack view */}
+      {viewMode === "stack" && (
+        <div className="relative py-4 px-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="relative bg-gradient-to-r from-transparent via-primary/5 to-transparent py-3 animate-[slideLeftRight_3s_ease-in-out_infinite]">
+              <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
+                <span className="text-destructive/70 animate-pulse">←</span>
+                <span>Swipe left or right to approve/reject</span>
+                <span className="text-primary/70 animate-pulse">→</span>
+              </div>
+              <div className="relative text-center text-xs text-muted-foreground/60 mt-1">
+                or use the buttons below for quick actions
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
 
       {/* Status Filter Tabs (List View Only) */}
       {viewMode === "list" && (
