@@ -536,9 +536,11 @@ const Journey = () => {
                           </div>
 
                           {/* AI Summary */}
-                          <div className="bg-secondary/50 rounded-lg p-3 border border-border">
+                          <div className="bg-white rounded-lg p-3 border border-border">
                             <div className="flex items-start gap-2">
-                              <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                              <div className="w-4 h-4 shrink-0 mt-0.5 rounded-full overflow-hidden">
+                                <AnimatedLogo />
+                              </div>
                               <div>
                                 <p className="text-xs font-medium mb-1">AI Analysis</p>
                                 <p className="text-xs text-muted-foreground">
