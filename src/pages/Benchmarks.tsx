@@ -10,9 +10,11 @@ import { UserDetailsModal } from "@/components/home/UserDetailsModal";
 import { HomeEmptyState } from "@/components/empty-states/HomeEmptyState";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
+import { useNavigate } from "react-router-dom";
 
 const Benchmarks = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [addBenchmarkOpen, setAddBenchmarkOpen] = useState(false);
   const [benchmarkEmail, setBenchmarkEmail] = useState("");
   const [journeyOpen, setJourneyOpen] = useState(false);
@@ -124,11 +126,15 @@ const Benchmarks = () => {
   };
 
   const metrics = [
-    { label: "Active Users", value: "890", change: "+12" },
-    { label: "Avg Activation", value: "68%", change: "+5.2%" },
-    { label: "Retention", value: "82%", change: "+3.1%" },
-    { label: "Feature Adoption", value: "65%", change: "+8%" },
+    { label: "Active Users", value: "890", change: "+12", key: "activeUsers" },
+    { label: "Avg Activation", value: "68%", change: "+5.2%", key: "activation" },
+    { label: "Retention", value: "82%", change: "+3.1%", key: "retention" },
+    { label: "Feature Adoption", value: "65%", change: "+8%", key: "featureAdoption" },
   ];
+
+  const handleMetricClick = (metricKey: string) => {
+    navigate('/analytics', { state: { selectedMetrics: [metricKey] } });
+  };
 
   // Show empty state if no benchmark users
   if (benchmarkUsers.length === 0) {
@@ -159,7 +165,11 @@ const Benchmarks = () => {
       {/* Success Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {metrics.map((metric) => (
-          <Card key={metric.label} className="p-6">
+          <Card 
+            key={metric.label} 
+            className="p-6 cursor-pointer hover:shadow-lg hover:scale-105 transition-all"
+            onClick={() => handleMetricClick(metric.key)}
+          >
             <p className="text-sm text-muted-foreground mb-1">{metric.label}</p>
             <div className="flex items-baseline gap-2">
               <p className="text-3xl font-bold">{metric.value}</p>

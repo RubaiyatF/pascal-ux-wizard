@@ -3,17 +3,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Mail, Users, CheckCircle2 } from "lucide-react";
 import { TrendsAreaChart } from "@/components/analytics/TrendsAreaChart";
 import { AnalyticsEmptyState } from "@/components/empty-states/AnalyticsEmptyState";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "react-router-dom";
 
 const Analytics = () => {
+  const location = useLocation();
   const [hasData] = useState(true); // Toggle this to show/hide empty state
-  const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
-    "activeUsers",
-    "activation",
-    "retention",
-    "featureAdoption"
-  ]);
+  const [selectedMetrics, setSelectedMetrics] = useState<string[]>(
+    location.state?.selectedMetrics || [
+      "activeUsers",
+      "activation",
+      "retention",
+      "featureAdoption"
+    ]
+  );
+
+  useEffect(() => {
+    if (location.state?.selectedMetrics) {
+      setSelectedMetrics(location.state.selectedMetrics);
+    }
+  }, [location.state]);
 
   const toggleMetric = (metric: string) => {
     setSelectedMetrics(prev => 
