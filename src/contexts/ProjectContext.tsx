@@ -10,8 +10,28 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
-  const [currentProject, setCurrentProject] = useState("Pascal Demo");
-  const [projects, setProjects] = useState(["Pascal Demo"]);
+  // Initialize from localStorage or use defaults
+  const [currentProject, setCurrentProjectState] = useState(() => {
+    const saved = localStorage.getItem('pascal-current-project');
+    return saved || "Pascal Demo";
+  });
+  
+  const [projects, setProjectsState] = useState<string[]>(() => {
+    const saved = localStorage.getItem('pascal-projects');
+    return saved ? JSON.parse(saved) : ["Pascal Demo"];
+  });
+
+  // Persist currentProject to localStorage
+  const setCurrentProject = (project: string) => {
+    setCurrentProjectState(project);
+    localStorage.setItem('pascal-current-project', project);
+  };
+
+  // Persist projects to localStorage
+  const setProjects = (projectsList: string[]) => {
+    setProjectsState(projectsList);
+    localStorage.setItem('pascal-projects', JSON.stringify(projectsList));
+  };
 
   return (
     <ProjectContext.Provider value={{ currentProject, setCurrentProject, projects, setProjects }}>
