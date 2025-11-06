@@ -734,7 +734,7 @@ const Journey = () => {
                 <div className="w-4 h-4 mr-2 rounded-full overflow-hidden">
                   <AnimatedLogo />
                 </div>
-                Generate with Pascal
+                Generate Email to Send with Pascal
               </Button>
             </div>
           </Card>
