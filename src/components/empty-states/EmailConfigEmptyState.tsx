@@ -66,17 +66,8 @@ export const EmailConfigEmptyState = ({
 
         {/* Supported Providers Card */}
         <Card className="p-6 border-border">
-          <h3 className="font-semibold text-lg mb-4">Supported Email Providers</h3>
+          <h3 className="font-semibold text-lg mb-4">Supported Email Provider</h3>
           <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-              <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
-                <Mail className="w-4 h-4 text-primary" />
-              </div>
-              <div className="flex-1">
-                <span className="text-sm font-medium">Resend</span>
-                <p className="text-xs text-muted-foreground">Recommended for best deliverability</p>
-              </div>
-            </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
               <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
                 <Mail className="w-4 h-4 text-primary" />
@@ -84,14 +75,6 @@ export const EmailConfigEmptyState = ({
               <div className="flex-1">
                 <span className="text-sm font-medium">Brevo (formerly Sendinblue)</span>
                 <p className="text-xs text-muted-foreground">Free tier available</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 opacity-60">
-              <div className="w-8 h-8 rounded bg-muted flex items-center justify-center">
-                <Mail className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <span className="text-sm font-medium text-muted-foreground">More providers coming soon</span>
               </div>
             </div>
           </div>
