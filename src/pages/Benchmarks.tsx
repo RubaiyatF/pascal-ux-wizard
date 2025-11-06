@@ -11,10 +11,12 @@ import { BenchmarksEmptyState } from "@/components/empty-states/BenchmarksEmptyS
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { useNavigate } from "react-router-dom";
+import { useProject } from "@/contexts/ProjectContext";
 
 const Benchmarks = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { currentProject } = useProject();
   const [addBenchmarkOpen, setAddBenchmarkOpen] = useState(false);
   const [benchmarkEmail, setBenchmarkEmail] = useState("");
   const [journeyOpen, setJourneyOpen] = useState(false);
@@ -29,11 +31,29 @@ const Benchmarks = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
+  const demoBenchmarks = currentProject === "Pascal Demo" ? [
+    {
+      email: "nora@sample.com",
+      markedDate: "Jan 10",
+      sessionsAnalyzed: 8,
+    },
+    {
+      email: "david@enterprise.co",
+      markedDate: "Jan 12",
+      sessionsAnalyzed: 15,
+    },
+    {
+      email: "melissa@startup.io",
+      markedDate: "Jan 14",
+      sessionsAnalyzed: 12,
+    },
+  ] : [];
+
   const [benchmarkUsers, setBenchmarkUsers] = useState<Array<{
     email: string;
     markedDate: string;
     sessionsAnalyzed: number;
-  }>>([]);
+  }>>(demoBenchmarks);
 
   const handleAddBenchmark = (email: string) => {
     // Check if user is already a benchmark

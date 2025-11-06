@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { ProjectProvider } from "./contexts/ProjectContext";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import EmailQueue from "./pages/EmailQueue";
@@ -20,57 +21,59 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light" storageKey="pascal-theme">
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/email-queue" replace />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route
-            path="/email-queue"
-            element={
-              <Layout>
-                <EmailQueue />
-              </Layout>
-            }
-          />
-          <Route
-            path="/journey"
-            element={
-              <Layout>
-                <Journey />
-              </Layout>
-            }
-          />
-          <Route
-            path="/benchmarks"
-            element={
-              <Layout>
-                <Benchmarks />
-              </Layout>
-            }
-          />
-          <Route
-            path="/analytics"
-            element={
-              <Layout>
-                <Analytics />
-              </Layout>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <Layout>
-                <Settings />
-              </Layout>
-            }
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+        <ProjectProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Navigate to="/email-queue" replace />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route
+                path="/email-queue"
+                element={
+                  <Layout>
+                    <EmailQueue />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/journey"
+                element={
+                  <Layout>
+                    <Journey />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/benchmarks"
+                element={
+                  <Layout>
+                    <Benchmarks />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <Layout>
+                    <Analytics />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <Layout>
+                    <Settings />
+                  </Layout>
+                }
+              />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ProjectProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>

@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CreateProjectModal } from "./CreateProjectModal";
 import { AnimatedLogo } from "./AnimatedLogo";
+import { useProject } from "@/contexts/ProjectContext";
 
 export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
-  const [currentProject, setCurrentProject] = useState("Pascal Demo");
-  const [projects, setProjects] = useState(["Pascal Demo"]);
+  const { currentProject, setCurrentProject, projects, setProjects } = useProject();
   const navigate = useNavigate();
   const { toast } = useToast();
 

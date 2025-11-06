@@ -13,6 +13,8 @@ import { JourneyEmptyState } from "@/components/empty-states/JourneyEmptyState";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import { useProject } from "@/contexts/ProjectContext";
+
 interface User {
   name: string;
   email: string;
@@ -22,7 +24,9 @@ interface User {
   plan: string;
   lastActivity: string;
 }
+
 const Journey = () => {
+  const { currentProject } = useProject();
   const [selectedUser, setSelectedUser] = useState<string>("sarah@startup.io");
   const [sessionModalOpen, setSessionModalOpen] = useState(false);
   const [selectedSession, setSelectedSession] = useState<any>(null);
@@ -34,7 +38,31 @@ const Journey = () => {
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
-  const users: User[] = [];
+  const users: User[] = currentProject === "Pascal Demo" ? [{
+    name: "Sarah Johnson",
+    email: "sarah@startup.io",
+    userId: "user_456",
+    sessions: 12,
+    heartScore: 80,
+    plan: "Pro",
+    lastActivity: "2024-01-18"
+  }, {
+    name: "Liam Chen",
+    email: "liam@sample.com",
+    userId: "user_123",
+    sessions: 3,
+    heartScore: 65,
+    plan: "Free",
+    lastActivity: "2024-01-15"
+  }, {
+    name: "Nora Williams",
+    email: "nora@sample.com",
+    userId: "user_789",
+    sessions: 8,
+    heartScore: 92,
+    plan: "Enterprise",
+    lastActivity: "2024-01-12"
+  }] : [];
 
   // Show empty state if no users
   if (users.length === 0) {

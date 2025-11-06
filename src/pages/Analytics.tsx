@@ -6,10 +6,12 @@ import { AnalyticsEmptyState } from "@/components/empty-states/AnalyticsEmptySta
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
+import { useProject } from "@/contexts/ProjectContext";
 
 const Analytics = () => {
   const location = useLocation();
-  const [hasData] = useState(false); // Toggle this to show/hide empty state
+  const { currentProject } = useProject();
+  const [hasData] = useState(currentProject === "Pascal Demo"); // Show data only for Pascal Demo
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>(
     location.state?.selectedMetrics || [
       "activeUsers",

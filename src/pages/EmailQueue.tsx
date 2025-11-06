@@ -20,8 +20,10 @@ import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { EmailQueueEmptyState } from "@/components/empty-states/EmailQueueEmptyState";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
+import { useProject } from "@/contexts/ProjectContext";
 
 const EmailQueue = () => {
+  const { currentProject } = useProject();
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -31,7 +33,92 @@ const EmailQueue = () => {
   const [viewMode, setViewMode] = useState<"stack" | "list">("list");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
   const [typeFilter, setTypeFilter] = useState<"all" | "high" | "replies" | "first">("all");
-  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([]);
+  // Demo data for Pascal Demo project
+  const demoEmails: QueuedEmail[] = currentProject === "Pascal Demo" ? [
+    {
+      id: "1",
+      email: "sarah@startup.io",
+      status: "queued",
+      subject: "Quick check-in on your API integration",
+      preview: "Hi Sarah, I noticed you explored our API documentation extensively yesterday. How's the integration going?",
+      aiReasoning: "User spent 12+ minutes on API docs and authentication pages, indicating active integration work. High engagement (85 HEART score) suggests they're invested but may need support.",
+      confidence: 92,
+      type: "reply",
+      sessionTime: "2 hours ago",
+      heartScore: 85,
+      sessionId: "sess_abc123",
+      conversationStage: "Technical Exploration",
+      sentiment: "engaged",
+      intent: "support_question",
+    },
+    {
+      id: "2",
+      email: "alex@corp.com",
+      status: "queued",
+      subject: "Welcome to Pascal Analytics!",
+      preview: "Hi Alex, Welcome aboard! I see you just signed up. I'd love to help you get started with your first integration.",
+      aiReasoning: "New user completed signup 5 hours ago. HEART score of 72 indicates good initial engagement. First touch email to establish contact.",
+      confidence: 88,
+      type: "first_touch",
+      sessionTime: "5 hours ago",
+      heartScore: 72,
+      sessionId: "sess_def456",
+      conversationStage: "Onboarding",
+      sentiment: "curious",
+      intent: "getting_started",
+    },
+    {
+      id: "3",
+      email: "emma@agency.co",
+      status: "queued",
+      subject: "Following up on pricing questions",
+      preview: "Hi Emma, I saw you spent some time on our pricing page. Happy to walk you through which plan would work best for your team.",
+      aiReasoning: "User viewed pricing page for extended period, comparing plans. HEART score of 78 shows interest but needs clarification.",
+      confidence: 85,
+      type: "first_touch",
+      sessionTime: "1 day ago",
+      heartScore: 78,
+      sessionId: "sess_ghi789",
+      conversationStage: "Evaluation",
+      sentiment: "considering",
+      intent: "pricing_question",
+    },
+    {
+      id: "4",
+      email: "michael@tech.com",
+      status: "approved",
+      subject: "Great to see you're back!",
+      preview: "Hi Michael, noticed you logged in again today. Let me know if there's anything I can help with!",
+      aiReasoning: "Return user after 2-week absence. High HEART score (88) suggests positive past experience. Good moment to re-engage.",
+      confidence: 90,
+      type: "first_touch",
+      sessionTime: "3 hours ago",
+      heartScore: 88,
+      sessionId: "sess_jkl012",
+      conversationStage: "Re-engagement",
+      sentiment: "positive",
+      intent: "re_engagement",
+    },
+    {
+      id: "5",
+      email: "lisa@company.io",
+      status: "rejected",
+      subject: "Checking in on your trial",
+      preview: "Hi Lisa, just wanted to check in on how your trial is going so far.",
+      aiReasoning: "Generic check-in message. Lower HEART score (65) suggests lower engagement. Email lacks specific behavioral context.",
+      confidence: 75,
+      type: "first_touch",
+      sessionTime: "2 days ago",
+      heartScore: 65,
+      sessionId: "sess_mno345",
+      conversationStage: "Trial",
+      sentiment: "neutral",
+      intent: "check_in",
+      rejectionReason: "Too generic, doesn't reference specific user behavior",
+    },
+  ] : [];
+
+  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>(demoEmails);
   const { toast } = useToast();
 
   // Filter emails based on status and type
