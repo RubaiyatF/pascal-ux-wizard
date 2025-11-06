@@ -274,6 +274,11 @@ const EmailQueue = () => {
       {/* Stats Cards */}
       <EmailQueueStats />
 
+      {/* Instructions */}
+      <div className="text-center text-sm text-muted-foreground py-2">
+        <p>&lt;----- Swipe left and right to approve and reject -------&gt; , you can click for approval at bottom as well</p>
+      </div>
+
       {/* Status Filter Tabs (List View Only) */}
       {viewMode === "list" && (
         <Tabs value={statusFilter} onValueChange={(value) => setStatusFilter(value as "queued" | "approved" | "rejected")} className="w-full">
