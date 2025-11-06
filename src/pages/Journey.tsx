@@ -35,6 +35,7 @@ const Journey = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const users: User[] = [
     {
@@ -83,6 +84,18 @@ const Journey = () => {
     
     return matchesSearch && matchesDateFrom && matchesDateTo;
   });
+
+  // Pagination
+  const USERS_PER_PAGE = 20;
+  const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+  const endIndex = startIndex + USERS_PER_PAGE;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
 
   const conversations: Record<string, any> = {
     "sarah@startup.io": {
@@ -398,7 +411,10 @@ const Journey = () => {
                 <Input
                   placeholder="Search by email or name..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    handleFilterChange();
+                  }}
                   className="pl-9"
                 />
               </div>
@@ -425,7 +441,10 @@ const Journey = () => {
                         <CalendarComponent
                           mode="single"
                           selected={dateFrom}
-                          onSelect={setDateFrom}
+                          onSelect={(date) => {
+                            setDateFrom(date);
+                            handleFilterChange();
+                          }}
                           className="pointer-events-auto"
                         />
                       </div>
@@ -434,7 +453,10 @@ const Journey = () => {
                         <CalendarComponent
                           mode="single"
                           selected={dateTo}
-                          onSelect={setDateTo}
+                          onSelect={(date) => {
+                            setDateTo(date);
+                            handleFilterChange();
+                          }}
                           className="pointer-events-auto"
                         />
                       </div>
@@ -450,6 +472,7 @@ const Journey = () => {
                       setSearchQuery("");
                       setDateFrom(undefined);
                       setDateTo(undefined);
+                      handleFilterChange();
                     }}
                   >
                     Clear
@@ -459,7 +482,7 @@ const Journey = () => {
             </div>
             
             <div className="space-y-2">
-              {filteredUsers.map((user) => (
+              {paginatedUsers.map((user) => (
                 <div
                   key={user.email}
                   onClick={() => setSelectedUser(user.email)}
@@ -499,6 +522,38 @@ const Journey = () => {
                 </div>
               ))}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-4 pt-4 border-t border-border">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    Showing {startIndex + 1}-{Math.min(endIndex, filteredUsers.length)} of {filteredUsers.length}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </Button>
+                    <span className="text-muted-foreground">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </Card>
         </div>
 
