@@ -536,7 +536,13 @@ const Journey = () => {
                           </div>
 
                           {/* AI Summary */}
-                          <div className="bg-white rounded-lg p-3 border border-border">
+                          <div className={`rounded-lg p-3 border ${
+                            event.sentiment === 'positive' 
+                              ? 'bg-success/5 border-success/20' 
+                              : event.sentiment === 'negative' 
+                              ? 'bg-destructive/5 border-destructive/20' 
+                              : 'bg-white border-border'
+                          }`}>
                             <div className="flex items-start gap-2">
                               <div className="w-4 h-4 shrink-0 mt-0.5 rounded-full overflow-hidden">
                                 <AnimatedLogo />
