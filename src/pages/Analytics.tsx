@@ -4,9 +4,24 @@ import { TrendingUp, Mail, Users, CheckCircle2 } from "lucide-react";
 import { TrendsAreaChart } from "@/components/analytics/TrendsAreaChart";
 import { AnalyticsEmptyState } from "@/components/empty-states/AnalyticsEmptyState";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const Analytics = () => {
   const [hasData] = useState(true); // Toggle this to show/hide empty state
+  const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
+    "activeUsers",
+    "activation",
+    "retention",
+    "featureAdoption"
+  ]);
+
+  const toggleMetric = (metric: string) => {
+    setSelectedMetrics(prev => 
+      prev.includes(metric) 
+        ? prev.filter(m => m !== metric)
+        : [...prev, metric]
+    );
+  };
 
   if (!hasData) {
     return <AnalyticsEmptyState />;
@@ -32,56 +47,164 @@ const Analytics = () => {
         {/* Success Metrics Tab */}
         <TabsContent value="success" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Users className="w-5 h-5 text-primary" />
+            <Button
+              variant={selectedMetrics.includes("activeUsers") ? "default" : "outline"}
+              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+                selectedMetrics.includes("activeUsers") 
+                  ? "bg-[oklch(var(--chart-1))] hover:bg-[oklch(var(--chart-1))]/90" 
+                  : ""
+              }`}
+              onClick={() => toggleMetric("activeUsers")}
+            >
+              <div className="flex items-start justify-between w-full mb-3">
+                <div className={`p-2 rounded-lg ${
+                  selectedMetrics.includes("activeUsers") 
+                    ? "bg-white/20" 
+                    : "bg-primary/10"
+                }`}>
+                  <Users className={`w-5 h-5 ${
+                    selectedMetrics.includes("activeUsers") 
+                      ? "text-white" 
+                      : "text-primary"
+                  }`} />
                 </div>
-                <span className="text-sm font-medium text-success">+12%</span>
+                <span className={`text-sm font-medium ${
+                  selectedMetrics.includes("activeUsers") 
+                    ? "text-white" 
+                    : "text-success"
+                }`}>+12%</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">Active Users</p>
-              <p className="text-2xl font-bold">890</p>
-            </Card>
+              <p className={`text-sm mb-1 ${
+                selectedMetrics.includes("activeUsers") 
+                  ? "text-white/80" 
+                  : "text-muted-foreground"
+              }`}>Active Users</p>
+              <p className={`text-2xl font-bold ${
+                selectedMetrics.includes("activeUsers") 
+                  ? "text-white" 
+                  : ""
+              }`}>890</p>
+            </Button>
 
-            <Card className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <TrendingUp className="w-5 h-5 text-primary" />
+            <Button
+              variant={selectedMetrics.includes("activation") ? "default" : "outline"}
+              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+                selectedMetrics.includes("activation") 
+                  ? "bg-[oklch(var(--chart-2))] hover:bg-[oklch(var(--chart-2))]/90" 
+                  : ""
+              }`}
+              onClick={() => toggleMetric("activation")}
+            >
+              <div className="flex items-start justify-between w-full mb-3">
+                <div className={`p-2 rounded-lg ${
+                  selectedMetrics.includes("activation") 
+                    ? "bg-white/20" 
+                    : "bg-primary/10"
+                }`}>
+                  <TrendingUp className={`w-5 h-5 ${
+                    selectedMetrics.includes("activation") 
+                      ? "text-white" 
+                      : "text-primary"
+                  }`} />
                 </div>
-                <span className="text-sm font-medium text-success">+5.2%</span>
+                <span className={`text-sm font-medium ${
+                  selectedMetrics.includes("activation") 
+                    ? "text-white" 
+                    : "text-success"
+                }`}>+5.2%</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">
-                Avg Activation
-              </p>
-              <p className="text-2xl font-bold">68%</p>
-            </Card>
+              <p className={`text-sm mb-1 ${
+                selectedMetrics.includes("activation") 
+                  ? "text-white/80" 
+                  : "text-muted-foreground"
+              }`}>Avg Activation</p>
+              <p className={`text-2xl font-bold ${
+                selectedMetrics.includes("activation") 
+                  ? "text-white" 
+                  : ""
+              }`}>68%</p>
+            </Button>
 
-            <Card className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <CheckCircle2 className="w-5 h-5 text-primary" />
+            <Button
+              variant={selectedMetrics.includes("retention") ? "default" : "outline"}
+              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+                selectedMetrics.includes("retention") 
+                  ? "bg-[oklch(var(--chart-3))] hover:bg-[oklch(var(--chart-3))]/90" 
+                  : ""
+              }`}
+              onClick={() => toggleMetric("retention")}
+            >
+              <div className="flex items-start justify-between w-full mb-3">
+                <div className={`p-2 rounded-lg ${
+                  selectedMetrics.includes("retention") 
+                    ? "bg-white/20" 
+                    : "bg-primary/10"
+                }`}>
+                  <CheckCircle2 className={`w-5 h-5 ${
+                    selectedMetrics.includes("retention") 
+                      ? "text-white" 
+                      : "text-primary"
+                  }`} />
                 </div>
-                <span className="text-sm font-medium text-success">+3.1%</span>
+                <span className={`text-sm font-medium ${
+                  selectedMetrics.includes("retention") 
+                    ? "text-white" 
+                    : "text-success"
+                }`}>+3.1%</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">Retention</p>
-              <p className="text-2xl font-bold">82%</p>
-            </Card>
+              <p className={`text-sm mb-1 ${
+                selectedMetrics.includes("retention") 
+                  ? "text-white/80" 
+                  : "text-muted-foreground"
+              }`}>Retention</p>
+              <p className={`text-2xl font-bold ${
+                selectedMetrics.includes("retention") 
+                  ? "text-white" 
+                  : ""
+              }`}>82%</p>
+            </Button>
 
-            <Card className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <TrendingUp className="w-5 h-5 text-primary" />
+            <Button
+              variant={selectedMetrics.includes("featureAdoption") ? "default" : "outline"}
+              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+                selectedMetrics.includes("featureAdoption") 
+                  ? "bg-[oklch(var(--chart-4))] hover:bg-[oklch(var(--chart-4))]/90" 
+                  : ""
+              }`}
+              onClick={() => toggleMetric("featureAdoption")}
+            >
+              <div className="flex items-start justify-between w-full mb-3">
+                <div className={`p-2 rounded-lg ${
+                  selectedMetrics.includes("featureAdoption") 
+                    ? "bg-white/20" 
+                    : "bg-primary/10"
+                }`}>
+                  <TrendingUp className={`w-5 h-5 ${
+                    selectedMetrics.includes("featureAdoption") 
+                      ? "text-white" 
+                      : "text-primary"
+                  }`} />
                 </div>
-                <span className="text-sm font-medium text-success">+8%</span>
+                <span className={`text-sm font-medium ${
+                  selectedMetrics.includes("featureAdoption") 
+                    ? "text-white" 
+                    : "text-success"
+                }`}>+8%</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">
-                Feature Adoption
-              </p>
-              <p className="text-2xl font-bold">65%</p>
-            </Card>
+              <p className={`text-sm mb-1 ${
+                selectedMetrics.includes("featureAdoption") 
+                  ? "text-white/80" 
+                  : "text-muted-foreground"
+              }`}>Feature Adoption</p>
+              <p className={`text-2xl font-bold ${
+                selectedMetrics.includes("featureAdoption") 
+                  ? "text-white" 
+                  : ""
+              }`}>65%</p>
+            </Button>
           </div>
 
-          <TrendsAreaChart />
+          <TrendsAreaChart selectedMetrics={selectedMetrics} />
         </TabsContent>
 
         {/* Interventions Tab */}

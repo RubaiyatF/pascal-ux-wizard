@@ -67,7 +67,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function TrendsAreaChart() {
+interface TrendsAreaChartProps {
+  selectedMetrics: string[];
+}
+
+export function TrendsAreaChart({ selectedMetrics }: TrendsAreaChartProps) {
   const [timeRange, setTimeRange] = React.useState("90d")
 
   const filteredData = chartData.filter((item) => {
@@ -199,30 +203,46 @@ export function TrendsAreaChart() {
                 />
               }
             />
-            <Area
-              dataKey="featureAdoption"
-              type="monotone"
-              fill="url(#fillFeatureAdoption)"
-              stroke="var(--color-featureAdoption)"
-              strokeWidth={2}
-              stackId="a"
-            />
-            <Area
-              dataKey="retention"
-              type="monotone"
-              fill="url(#fillRetention)"
-              stroke="var(--color-retention)"
-              strokeWidth={2}
-              stackId="a"
-            />
-            <Area
-              dataKey="activation"
-              type="monotone"
-              fill="url(#fillActivation)"
-              stroke="var(--color-activation)"
-              strokeWidth={2}
-              stackId="a"
-            />
+            {selectedMetrics.includes("featureAdoption") && (
+              <Area
+                dataKey="featureAdoption"
+                type="monotone"
+                fill="url(#fillFeatureAdoption)"
+                stroke="var(--color-featureAdoption)"
+                strokeWidth={2}
+                stackId="a"
+              />
+            )}
+            {selectedMetrics.includes("retention") && (
+              <Area
+                dataKey="retention"
+                type="monotone"
+                fill="url(#fillRetention)"
+                stroke="var(--color-retention)"
+                strokeWidth={2}
+                stackId="a"
+              />
+            )}
+            {selectedMetrics.includes("activation") && (
+              <Area
+                dataKey="activation"
+                type="monotone"
+                fill="url(#fillActivation)"
+                stroke="var(--color-activation)"
+                strokeWidth={2}
+                stackId="a"
+              />
+            )}
+            {selectedMetrics.includes("activeUsers") && (
+              <Area
+                dataKey="activeUsers"
+                type="monotone"
+                fill="url(#fillActiveUsers)"
+                stroke="var(--color-activeUsers)"
+                strokeWidth={2}
+                stackId="a"
+              />
+            )}
             <ChartLegend content={<ChartLegendContent />} />
           </AreaChart>
         </ChartContainer>
