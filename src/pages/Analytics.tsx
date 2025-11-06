@@ -64,26 +64,14 @@ const Analytics = () => {
                 }`}>
                   <Users className={`w-5 h-5 ${
                     selectedMetrics.includes("activeUsers") 
-                      ? "text-white" 
+                      ? "text-black" 
                       : "text-primary"
                   }`} />
                 </div>
-                <span className={`text-sm font-medium ${
-                  selectedMetrics.includes("activeUsers") 
-                    ? "text-white" 
-                    : "text-black"
-                }`}>+12%</span>
+                <span className="text-sm font-medium text-black">+12%</span>
               </div>
-              <p className={`text-sm mb-1 ${
-                selectedMetrics.includes("activeUsers") 
-                  ? "text-white/80" 
-                  : "text-black"
-              }`}>Active Users</p>
-              <p className={`text-2xl font-bold ${
-                selectedMetrics.includes("activeUsers") 
-                  ? "text-white" 
-                  : "text-black"
-              }`}>890</p>
+              <p className="text-sm mb-1 text-black">Active Users</p>
+              <p className="text-2xl font-bold text-black">890</p>
             </Button>
 
             <Button
@@ -103,26 +91,14 @@ const Analytics = () => {
                 }`}>
                   <TrendingUp className={`w-5 h-5 ${
                     selectedMetrics.includes("activation") 
-                      ? "text-white" 
+                      ? "text-black" 
                       : "text-primary"
                   }`} />
                 </div>
-                <span className={`text-sm font-medium ${
-                  selectedMetrics.includes("activation") 
-                    ? "text-white" 
-                    : "text-black"
-                }`}>+5.2%</span>
+                <span className="text-sm font-medium text-black">+5.2%</span>
               </div>
-              <p className={`text-sm mb-1 ${
-                selectedMetrics.includes("activation") 
-                  ? "text-white/80" 
-                  : "text-black"
-              }`}>Avg Activation</p>
-              <p className={`text-2xl font-bold ${
-                selectedMetrics.includes("activation") 
-                  ? "text-white" 
-                  : "text-black"
-              }`}>68%</p>
+              <p className="text-sm mb-1 text-black">Avg Activation</p>
+              <p className="text-2xl font-bold text-black">68%</p>
             </Button>
 
             <Button
@@ -142,26 +118,14 @@ const Analytics = () => {
                 }`}>
                   <CheckCircle2 className={`w-5 h-5 ${
                     selectedMetrics.includes("retention") 
-                      ? "text-white" 
+                      ? "text-black" 
                       : "text-primary"
                   }`} />
                 </div>
-                <span className={`text-sm font-medium ${
-                  selectedMetrics.includes("retention") 
-                    ? "text-white" 
-                    : "text-black"
-                }`}>+3.1%</span>
+                <span className="text-sm font-medium text-black">+3.1%</span>
               </div>
-              <p className={`text-sm mb-1 ${
-                selectedMetrics.includes("retention") 
-                  ? "text-white/80" 
-                  : "text-black"
-              }`}>Retention</p>
-              <p className={`text-2xl font-bold ${
-                selectedMetrics.includes("retention") 
-                  ? "text-white" 
-                  : "text-black"
-              }`}>82%</p>
+              <p className="text-sm mb-1 text-black">Retention</p>
+              <p className="text-2xl font-bold text-black">82%</p>
             </Button>
 
             <Button
@@ -181,26 +145,14 @@ const Analytics = () => {
                 }`}>
                   <TrendingUp className={`w-5 h-5 ${
                     selectedMetrics.includes("featureAdoption") 
-                      ? "text-white" 
+                      ? "text-black" 
                       : "text-primary"
                   }`} />
                 </div>
-                <span className={`text-sm font-medium ${
-                  selectedMetrics.includes("featureAdoption") 
-                    ? "text-white" 
-                    : "text-black"
-                }`}>+8%</span>
+                <span className="text-sm font-medium text-black">+8%</span>
               </div>
-              <p className={`text-sm mb-1 ${
-                selectedMetrics.includes("featureAdoption") 
-                  ? "text-white/80" 
-                  : "text-black"
-              }`}>Feature Adoption</p>
-              <p className={`text-2xl font-bold ${
-                selectedMetrics.includes("featureAdoption") 
-                  ? "text-white" 
-                  : "text-black"
-              }`}>65%</p>
+              <p className="text-sm mb-1 text-black">Feature Adoption</p>
+              <p className="text-2xl font-bold text-black">65%</p>
             </Button>
           </div>
 
