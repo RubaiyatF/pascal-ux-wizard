@@ -59,7 +59,7 @@ const Analytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Button
               variant={selectedMetrics.includes("activeUsers") ? "default" : "outline"}
-              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+              className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("activeUsers") 
                   ? "bg-[oklch(var(--chart-1))] hover:bg-[oklch(var(--chart-1))]/90" 
                   : ""
@@ -86,7 +86,7 @@ const Analytics = () => {
 
             <Button
               variant={selectedMetrics.includes("activation") ? "default" : "outline"}
-              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+              className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("activation") 
                   ? "bg-[oklch(var(--chart-2))] hover:bg-[oklch(var(--chart-2))]/90" 
                   : ""
@@ -113,7 +113,7 @@ const Analytics = () => {
 
             <Button
               variant={selectedMetrics.includes("retention") ? "default" : "outline"}
-              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+              className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("retention") 
                   ? "bg-[oklch(var(--chart-3))] hover:bg-[oklch(var(--chart-3))]/90" 
                   : ""
@@ -140,7 +140,7 @@ const Analytics = () => {
 
             <Button
               variant={selectedMetrics.includes("featureAdoption") ? "default" : "outline"}
-              className={`h-auto p-6 flex-col items-start justify-start text-left ${
+              className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("featureAdoption") 
                   ? "bg-[oklch(var(--chart-4))] hover:bg-[oklch(var(--chart-4))]/90" 
                   : ""
