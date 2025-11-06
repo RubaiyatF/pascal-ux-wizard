@@ -476,18 +476,22 @@ const Home = () => {
                       </Badge>
                     )}
                     <ChevronRight 
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
+                      className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ease-in-out ${
                         isExpanded ? 'rotate-90' : ''
                       }`} 
                     />
                   </div>
                 </button>
 
-                {isExpanded && (
-                  <div className="px-6 pb-6 animate-accordion-down">
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="px-6 pb-6">
                     {step.content}
                   </div>
-                )}
+                </div>
               </Card>
             );
           })}
