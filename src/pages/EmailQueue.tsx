@@ -28,7 +28,7 @@ const EmailQueue = () => {
   const [showRecordingModal, setShowRecordingModal] = useState(false);
   const [showJourneyModal, setShowJourneyModal] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
-  const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
+  const [viewMode, setViewMode] = useState<"stack" | "list">("list");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
   const [typeFilter, setTypeFilter] = useState<"all" | "high" | "replies" | "first">("all");
   const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
