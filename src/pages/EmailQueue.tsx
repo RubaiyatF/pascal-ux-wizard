@@ -30,6 +30,7 @@ const EmailQueue = () => {
   const [currentEmail, setCurrentEmail] = useState<QueuedEmail | null>(null);
   const [viewMode, setViewMode] = useState<"stack" | "list">("stack");
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
+  const [typeFilter, setTypeFilter] = useState<"all" | "high" | "replies" | "first">("all");
   const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>([
     {
       id: "1",
@@ -115,8 +116,19 @@ const EmailQueue = () => {
   ]);
   const { toast } = useToast();
 
-  // Filter emails based on status
-  const filteredEmails = queuedEmailsList.filter(email => email.status === statusFilter);
+  // Filter emails based on status and type
+  const filteredEmails = queuedEmailsList.filter(email => {
+    // First filter by status
+    if (email.status !== statusFilter) return false;
+    
+    // Then filter by type/confidence
+    if (typeFilter === "all") return true;
+    if (typeFilter === "high") return email.confidence >= 90;
+    if (typeFilter === "replies") return email.type === "reply";
+    if (typeFilter === "first") return email.type === "first_touch";
+    
+    return true;
+  });
 
   // Show empty state if no queued emails
   if (queuedEmailsList.length === 0) {
@@ -245,7 +257,7 @@ const EmailQueue = () => {
             </Button>
           </div>
 
-          <Select defaultValue="all">
+          <Select value={typeFilter} onValueChange={(value) => setTypeFilter(value as "all" | "high" | "replies" | "first")}>
             <SelectTrigger className="w-48">
               <SelectValue />
             </SelectTrigger>
