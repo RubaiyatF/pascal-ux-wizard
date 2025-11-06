@@ -16,6 +16,8 @@ import { AnimatedLogo } from "./AnimatedLogo";
 
 export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [currentProject, setCurrentProject] = useState("Pascal Demo");
+  const [projects, setProjects] = useState(["Pascal Demo"]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -25,6 +27,21 @@ export const TopNavbar = () => {
       description: "You have been logged out of your account.",
     });
     navigate("/auth");
+  };
+
+  const handleProjectCreated = (projectName: string) => {
+    // Add the new project to the list
+    setProjects([...projects, projectName]);
+    // Set it as the current project
+    setCurrentProject(projectName);
+    // Navigate to email-queue (main page showing empty states for new projects)
+    navigate("/email-queue");
+  };
+
+  const handleProjectSwitch = (projectName: string) => {
+    setCurrentProject(projectName);
+    // Navigate to the main page when switching projects
+    navigate("/email-queue");
   };
 
   return (
@@ -47,12 +64,20 @@ export const TopNavbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2 border-border bg-white">
-                Pascal Demo
+                {currentProject}
                 <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-card border-border">
-              <DropdownMenuItem className="cursor-pointer">Pascal Demo</DropdownMenuItem>
+              {projects.map((project) => (
+                <DropdownMenuItem 
+                  key={project}
+                  className={`cursor-pointer ${currentProject === project ? 'bg-accent' : ''}`}
+                  onClick={() => handleProjectSwitch(project)}
+                >
+                  {project}
+                </DropdownMenuItem>
+              ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem 
                 className="cursor-pointer"
@@ -86,10 +111,7 @@ export const TopNavbar = () => {
       <CreateProjectModal 
         open={isCreateProjectOpen} 
         onOpenChange={setIsCreateProjectOpen}
-        onSuccess={() => {
-          // Navigate to email-queue (main page showing empty states for new projects)
-          navigate("/email-queue");
-        }}
+        onSuccess={handleProjectCreated}
       />
     </>
   );
