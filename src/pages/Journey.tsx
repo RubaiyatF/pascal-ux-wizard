@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +63,13 @@ const Journey = () => {
     plan: "Enterprise",
     lastActivity: "2024-01-12"
   }] : [];
+
+  // Reset selected user when project changes
+  useEffect(() => {
+    if (users.length > 0) {
+      setSelectedUser(users[0].email);
+    }
+  }, [currentProject]);
 
   // Show empty state if no users
   if (users.length === 0) {

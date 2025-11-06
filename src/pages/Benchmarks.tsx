@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Star, Plus, TrendingUp, ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { UserDetailsModal } from "@/components/home/UserDetailsModal";
@@ -54,6 +54,11 @@ const Benchmarks = () => {
     markedDate: string;
     sessionsAnalyzed: number;
   }>>(demoBenchmarks);
+
+  // Reset benchmark users when project changes
+  useEffect(() => {
+    setBenchmarkUsers(demoBenchmarks);
+  }, [currentProject]);
 
   const handleAddBenchmark = (email: string) => {
     // Check if user is already a benchmark

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -120,6 +120,11 @@ const EmailQueue = () => {
 
   const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>(demoEmails);
   const { toast } = useToast();
+
+  // Reset email list when project changes
+  useEffect(() => {
+    setQueuedEmailsList(demoEmails);
+  }, [currentProject]);
 
   // Filter emails based on status and type
   const filteredEmails = queuedEmailsList.filter(email => {

@@ -11,7 +11,7 @@ import { useProject } from "@/contexts/ProjectContext";
 const Analytics = () => {
   const location = useLocation();
   const { currentProject } = useProject();
-  const [hasData] = useState(currentProject === "Pascal Demo"); // Show data only for Pascal Demo
+  const [hasData, setHasData] = useState(currentProject === "Pascal Demo"); // Show data only for Pascal Demo
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>(
     location.state?.selectedMetrics || [
       "activeUsers",
@@ -20,6 +20,11 @@ const Analytics = () => {
       "featureAdoption"
     ]
   );
+
+  // Reset data state when project changes
+  useEffect(() => {
+    setHasData(currentProject === "Pascal Demo");
+  }, [currentProject]);
 
   useEffect(() => {
     if (location.state?.selectedMetrics) {
