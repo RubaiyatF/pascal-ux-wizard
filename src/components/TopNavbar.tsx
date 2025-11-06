@@ -57,16 +57,16 @@ export const TopNavbar = () => {
         {/* Logo - Clickable */}
         <button
           onClick={() => navigate('/home')}
-          className={`flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-colors ${
+          className={`group flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white ${
             isHomeActive 
-              ? 'bg-primary/10 text-primary hover:bg-primary/20' 
-              : 'hover:bg-accent/50'
+              ? 'bg-primary/10 text-primary' 
+              : ''
           }`}
         >
           <div className="w-8 h-8 rounded-full overflow-hidden">
             <AnimatedLogo />
           </div>
-          <span className="font-bold text-lg">Pascal</span>
+          <span className="font-bold text-lg transition-all duration-200 group-hover:font-extrabold">Pascal</span>
         </button>
 
         {/* Spacer */}
