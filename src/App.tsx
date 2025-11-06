@@ -36,7 +36,7 @@ const App = () => (
             }
           />
           <Route
-            path="/conversations"
+            path="/journey"
             element={
               <Layout>
                 <Journey />
