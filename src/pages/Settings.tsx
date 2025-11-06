@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Eye, EyeOff, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ApiKeyModal } from "@/components/ApiKeyModal";
 
 const Settings = () => {
   const { toast } = useToast();
@@ -20,6 +21,8 @@ const Settings = () => {
     { id: 2, name: "Default API Key", key: "pk_55629ba77...", fullKey: "pk_55629ba77987654321", status: "active", created: "11/4/2025" }
   ]);
   const [visibleKeys, setVisibleKeys] = useState<Set<number>>(new Set());
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [newGeneratedKey, setNewGeneratedKey] = useState("");
 
   const handleSave = () => {
     toast({
@@ -49,19 +52,18 @@ const Settings = () => {
   };
 
   const generateNewKey = () => {
+    const fullKey = `pk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
     const newKey = {
       id: apiKeys.length + 1,
       name: `API Key ${apiKeys.length + 1}`,
       key: `pk_${Math.random().toString(36).substring(2, 15)}...`,
-      fullKey: `pk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`,
+      fullKey: fullKey,
       status: "active",
       created: new Date().toLocaleDateString()
     };
     setApiKeys([...apiKeys, newKey]);
-    toast({
-      title: "API Key generated",
-      description: "Your new API key has been created.",
-    });
+    setNewGeneratedKey(fullKey);
+    setShowApiKeyModal(true);
   };
 
   const revokeKey = (keyId: number) => {
@@ -518,6 +520,13 @@ const tracker = new PascalTracker({
           Save Changes
         </Button>
       </div>
+
+      {/* API Key Modal */}
+      <ApiKeyModal
+        isOpen={showApiKeyModal}
+        apiKey={newGeneratedKey}
+        onClose={() => setShowApiKeyModal(false)}
+      />
     </div>
   );
 };
