@@ -40,6 +40,8 @@ const Settings = () => {
 
   const handleConfigureEmail = () => {
     setEmailConfigured(true);
+    // Mark step 4 as complete
+    localStorage.setItem(`pascal-email-provider-${currentProject}`, 'true');
   };
 
   const [apiKeys, setApiKeys] = useState([
