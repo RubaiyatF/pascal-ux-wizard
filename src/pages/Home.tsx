@@ -81,7 +81,6 @@ const Home = () => {
   const handleTrackerVerified = () => {
     // Mark onboarding as started when user verifies tracker
     localStorage.setItem(`pascal-onboarding-started-${currentProject}`, 'true');
-    console.log('[Home] Onboarding started - tracker verified');
     markStepComplete(1);
   };
 
@@ -96,29 +95,16 @@ const Home = () => {
 
   // Load initial completed steps from localStorage
   useEffect(() => {
-    console.log('[Home] Loading onboarding for project:', currentProject);
-    console.log('[Home] Current completedSteps before reset:', completedSteps);
-    
     // Always reset state first when project changes to prevent state leakage
     setCompletedSteps([]);
     setExpandedStep(1);
     
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
-    console.log('[Home] Saved onboarding data:', saved);
-    
-    // Log ALL localStorage keys for this project
-    const allKeys = Object.keys(localStorage).filter(key => key.includes(currentProject));
-    console.log('[Home] All localStorage keys for this project:', allKeys);
-    allKeys.forEach(key => {
-      console.log(`  ${key}:`, localStorage.getItem(key));
-    });
     
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        console.log('[Home] Parsed onboarding data:', parsed);
         if (parsed.completedSteps && Array.isArray(parsed.completedSteps)) {
-          console.log('[Home] Setting completedSteps to:', parsed.completedSteps);
           setCompletedSteps(parsed.completedSteps);
           
           // Find first incomplete step to expand
@@ -138,7 +124,6 @@ const Home = () => {
         console.error('Error loading onboarding progress:', e);
       }
     } else {
-      console.log('[Home] No saved progress - clearing all flags');
       // No saved progress - clear any stale completion flags
       localStorage.removeItem(`pascal-onboarding-started-${currentProject}`);
       localStorage.removeItem(`pascal-benchmark-added-${currentProject}`);
@@ -153,16 +138,11 @@ const Home = () => {
   // Check for step completions from other pages
   useEffect(() => {
     const checkCompletions = () => {
-      // NEW APPROACH: Only check flags if onboarding has been explicitly started
-      // Onboarding is "started" when user verifies tracker or completes step 1
+      // Only check flags if onboarding has been explicitly started
       const hasOnboardingStarted = localStorage.getItem(`pascal-onboarding-started-${currentProject}`) === 'true';
       
-      console.log('[Home] checkCompletions - hasOnboardingStarted:', hasOnboardingStarted);
-      
       // If onboarding hasn't been explicitly started, ignore all individual completion flags
-      // This prevents false completions from stale data or premature flag setting
       if (!hasOnboardingStarted) {
-        console.log('[Home] Onboarding not started - ignoring all flags');
         return;
       }
       
@@ -172,15 +152,6 @@ const Home = () => {
       const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
       const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
       const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
-
-      console.log('[Home] Checking flags:', {
-        benchmarkAdded: !!benchmarkAdded,
-        journeyVisited: !!journeyVisited,
-        emailProviderConfigured: !!emailProviderConfigured,
-        emailQueueVisited: !!emailQueueVisited,
-        analyticsVisited: !!analyticsVisited,
-        settingsVisited: !!settingsVisited
-      });
 
       setCompletedSteps(prev => {
         const newSteps = [...prev];
@@ -209,10 +180,6 @@ const Home = () => {
         if (settingsVisited && !prev.includes(7)) {
           newSteps.push(7);
           hasChanges = true;
-        }
-
-        if (hasChanges) {
-          console.log('[Home] Steps changed, new steps:', newSteps);
         }
 
         // If steps changed, update expanded step to next incomplete one
@@ -283,13 +250,10 @@ const Home = () => {
 
   // Save completed steps to localStorage
   useEffect(() => {
-    console.log('[Home] Save effect triggered - completedSteps:', completedSteps);
     if (completedSteps.length > 0) {
-      const dataToSave = JSON.stringify({ completedSteps });
-      console.log('[Home] Saving to localStorage:', dataToSave);
       localStorage.setItem(
         `pascal-onboarding-${currentProject}`,
-        dataToSave
+        JSON.stringify({ completedSteps })
       );
     }
   }, [completedSteps, currentProject]);
