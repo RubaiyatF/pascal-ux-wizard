@@ -394,7 +394,7 @@ const Journey = () => {
             </div>
             
             <div className="space-y-2">
-              {paginatedUsers.map(user => <div key={user.email} onClick={() => setSelectedUser(user.email)} className={`p-4 rounded-lg border cursor-pointer transition-all relative ${selectedUser === user.email ? "border-accent bg-accent/10 shadow-md ring-2 ring-accent/20" : "border-border hover:border-accent/30 hover:bg-accent/5"}`}>
+              {paginatedUsers.map(user => <div key={user.email} onClick={() => setSelectedUser(user.email)} className={`p-4 rounded-lg border cursor-pointer transition-all relative ${selectedUser === user.email ? "border-success bg-white shadow-lg shadow-success/20 ring-2 ring-success/20" : "border-border hover:border-accent/30 hover:bg-accent/5"}`}>
                   {selectedUser === user.email && <>
                       <div className="absolute -right-[1.75rem] top-1/2 -translate-y-1/2 w-7 h-0.5 bg-gradient-to-r from-accent to-accent/50 z-10" />
                       <div className="absolute -right-[1.6rem] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent shadow-lg shadow-accent/50" />
