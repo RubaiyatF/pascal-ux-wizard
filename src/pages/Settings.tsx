@@ -171,27 +171,27 @@ const Settings = () => {
               <Card className="p-6">
                 <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-4 bg-white border border-success/20 rounded-lg">
-                    <CheckCircle2 className="w-5 h-5 text-success" />
-                    <div>
-                      <p className="font-medium">✅ Connected</p>
-                      <p className="text-sm text-muted-foreground">
-                        Account: premium
-                      </p>
-                    </div>
-                  </div>
-
                   <div>
                     <Label htmlFor="brevo-key">API Key</Label>
                     <div className="flex gap-2">
                       <Input
                         id="brevo-key"
                         type="password"
-                        placeholder="xkeysib-abc123..."
-                        defaultValue="xkeysib-abc123..."
+                        placeholder="Enter your Brevo API key..."
                       />
                       <Button variant="outline">Verify</Button>
                     </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Get your API key from{" "}
+                      <a
+                        href="https://app.brevo.com/settings/keys/api"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        Brevo Dashboard
+                      </a>
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -205,17 +205,21 @@ const Settings = () => {
                       id="from-email"
                       type="email"
                       placeholder="noreply@example.com"
-                      defaultValue="noreply@example.com"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Email address that will appear as the sender
+                    </p>
                   </div>
 
                   <div>
                     <Label htmlFor="from-name">From Name</Label>
                     <Input
                       id="from-name"
-                      placeholder="Pascal Analytics"
-                      defaultValue="Pascal Analytics"
+                      placeholder="Your Company Name"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Name that will appear as the sender
+                    </p>
                   </div>
 
                   <div>
@@ -224,14 +228,16 @@ const Settings = () => {
                       id="app-url"
                       type="url"
                       placeholder="https://example.com"
-                      defaultValue="https://example.com"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Your application's base URL for links in emails
+                    </p>
                   </div>
                 </div>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-6">Limits</h3>
+                <h3 className="text-lg font-semibold mb-6">Email Limits</h3>
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="daily-limit">Daily Email Limit</Label>
@@ -239,10 +245,9 @@ const Settings = () => {
                       id="daily-limit"
                       type="number"
                       placeholder="100"
-                      defaultValue="100"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Maximum emails per day
+                      Maximum number of emails to send per day
                     </p>
                   </div>
 
@@ -250,10 +255,10 @@ const Settings = () => {
                     <div>
                       <Label>Session Insights</Label>
                       <p className="text-sm text-muted-foreground">
-                        Enable AI-powered session insights
+                        Include AI-powered session insights in emails
                       </p>
                     </div>
-                    <Switch defaultChecked />
+                    <Switch />
                   </div>
                 </div>
               </Card>
