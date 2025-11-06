@@ -22,6 +22,7 @@ const Settings = () => {
   ]);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [newGeneratedKey, setNewGeneratedKey] = useState("");
+  const [projectId] = useState("proj_demo_abc123");
 
   const handleSave = () => {
     toast({
@@ -338,7 +339,7 @@ const Settings = () => {
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
 {`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
-  data-project-id="f98d132b-22b9-4d99-a075-e06c780eafc3"
+  data-project-id="${projectId}"
   data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
   data-recording="true"
   async
@@ -350,7 +351,7 @@ const Settings = () => {
                     className="absolute top-2 right-2"
                     onClick={() => copyToClipboard(`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
-  data-project-id="f98d132b-22b9-4d99-a075-e06c780eafc3"
+  data-project-id="${projectId}"
   data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
   data-recording="true"
   async
@@ -419,7 +420,7 @@ const Settings = () => {
 {`import { PascalTracker } from '@pascal/tracker';
 
 const tracker = new PascalTracker({
-  projectId: 'f98d132b-22b9-4d99-a075-e06c780eafc3',
+  projectId: '${projectId}',
   apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`}
@@ -431,7 +432,7 @@ const tracker = new PascalTracker({
                     onClick={() => copyToClipboard(`import { PascalTracker } from '@pascal/tracker';
 
 const tracker = new PascalTracker({
-  projectId: 'f98d132b-22b9-4d99-a075-e06c780eafc3',
+  projectId: '${projectId}',
   apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`)}
