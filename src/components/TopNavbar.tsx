@@ -57,9 +57,9 @@ export const TopNavbar = () => {
         {/* Logo - Clickable */}
         <button
           onClick={() => navigate('/home')}
-          className={`flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-all ${
+          className={`flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-colors ${
             isHomeActive 
-              ? 'bg-primary/10 backdrop-blur-sm shadow-[0_4px_16px_rgba(0,0,0,0.25)]' 
+              ? 'bg-[hsl(67,100%,88%)] text-foreground' 
               : 'hover:bg-accent/50'
           }`}
         >
