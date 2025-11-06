@@ -238,22 +238,22 @@ const Home = () => {
     <div className="min-h-screen bg-background p-6 md:p-12">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Welcome Section */}
-        <div className="flex items-start gap-6">
-          <div className="flex-1 space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground">
               Your quick start guide
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm md:text-base text-muted-foreground">
               Get set up and start engaging with your customers in minutes
             </p>
           </div>
-          <Card className="flex items-start gap-4 p-6 bg-card border-border shadow-card">
-            <div className="w-16 h-16 rounded-full bg-gradient-hero flex items-center justify-center shrink-0">
+          <Card className="flex flex-col sm:flex-row items-start gap-4 p-4 md:p-6 bg-gradient-subtle border-border shadow-card">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-hero flex items-center justify-center shrink-0">
               <AnimatedLogo />
             </div>
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">Pascal AI</p>
-              <p className="text-sm font-medium">
+            <div className="space-y-1 flex-1 min-w-0">
+              <p className="text-xs text-muted-foreground font-medium">Pascal AI</p>
+              <p className="text-sm md:text-base text-foreground leading-relaxed">
                 Hi there! I'm Pascal. I'm here to help you get set up and start engaging with your customers. Let's go!
               </p>
             </div>
