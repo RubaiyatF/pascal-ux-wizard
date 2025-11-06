@@ -444,7 +444,7 @@ const Home = () => {
             <div className="space-y-1 flex-1 min-w-0">
               <p className="text-xs text-muted-foreground font-medium">Pascal AI</p>
               <p className="text-sm md:text-base text-foreground leading-relaxed">
-                Hi there! I'm Pascal. I'm here to help you get set up and start engaging with your customers. Let's go!
+                Hi! I'm Pascal, your AI revenue activation agent. I analyze every user session to help convert free users to paid, boost engagement, and drive upgrades. Let's activate your revenue together!
               </p>
             </div>
           </Card>
