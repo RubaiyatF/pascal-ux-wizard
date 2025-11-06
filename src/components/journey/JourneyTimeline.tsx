@@ -5,6 +5,7 @@ import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, TrendingUp, Aler
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { InlineSessionPlayer } from "./InlineSessionPlayer";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 interface TimelineEvent {
   id: number;
@@ -201,9 +202,17 @@ export const JourneyTimeline = ({
                               </div>
                             </div>
                           )}
-                          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 border border-primary/20">
+                          <div className={`rounded-lg p-3 border ${
+                            event.score! >= 70 
+                              ? "bg-success/5 border-success/20" 
+                              : event.score! < 50 
+                              ? "bg-destructive/5 border-destructive/20" 
+                              : "bg-white border-border"
+                          }`}>
                             <div className="flex items-start gap-2">
-                              <TrendingUp className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                              <div className="w-4 h-4 mt-0.5 shrink-0">
+                                <AnimatedLogo />
+                              </div>
                               <div className="flex-1">
                                 <p className="text-xs font-semibold mb-1">AI Analysis</p>
                                 <p className="text-sm text-muted-foreground whitespace-pre-line">{event.aiSummary}</p>
