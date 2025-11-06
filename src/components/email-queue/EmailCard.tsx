@@ -72,32 +72,99 @@ export const EmailCard = ({
           </div>
 
           {/* Subject Line */}
-          <div className="mb-2">
+          <div className="mb-2 flex items-center justify-between gap-2">
             <span className="text-sm font-medium">"{email.subject}"</span>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="h-7 text-xs px-2 shrink-0"
+            >
+              {isExpanded ? (
+                <>
+                  <ChevronUp className="w-3 h-3 mr-1" />
+                  Collapse
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-3 h-3 mr-1" />
+                  Expand
+                </>
+              )}
+            </Button>
           </div>
 
-          {/* Preview/Expanded Content */}
-          {!isExpanded ? (
-            <div className="text-sm text-muted-foreground line-clamp-2 mb-2">
-              {email.preview}
-            </div>
-          ) : (
-            <>
-              {/* Full Email Body */}
-              <div className="text-sm text-muted-foreground mb-3 whitespace-pre-wrap bg-secondary/20 rounded p-3">
-                {`${email.preview}\n\nBest regards,\nYour AI Assistant\n\nP.S. This is an auto-generated email based on user behavior and engagement patterns. We've analyzed their session activity and determined this is an optimal touchpoint for meaningful engagement.\n\nKey insights:\n- User engagement level: ${email.heartScore}%\n- Behavior patterns indicate high interest\n- Optimal timing for conversion dialogue\n\nFeel free to customize this message before sending.`}
+          {/* Email Preview/Full Content - Inbox Style */}
+          <div className="bg-background border border-border rounded-lg overflow-hidden mb-2">
+            {/* Email Header - Inbox Style */}
+            <div className="bg-muted/30 px-3 py-1.5 border-b border-border">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">
+                    {email.email.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="font-medium text-foreground">{email.email}</div>
+                    <div className="text-muted-foreground">to: customer@example.com</div>
+                  </div>
+                </div>
+                <div className="text-muted-foreground">
+                  {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </div>
               </div>
+            </div>
+            
+            {/* Email Body */}
+            <div className="px-3 py-3 bg-white">
+              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-normal">
+                {isExpanded ? (
+                  // Full email content
+                  <>
+                    Hi there,
 
-              {/* AI Reasoning */}
-              <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded px-3 py-2 mb-3 border border-primary/20">
+                    {email.preview}
+
+                    I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!
+
+                    Best regards,
+                    Sarah Thompson
+                    Customer Success Team
+                    support@company.com
+                  </>
+                ) : (
+                  // Preview only
+                  <>
+                    Hi there,
+
+                    {email.preview}
+
+                    <div 
+                      className="mt-2 text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => setIsExpanded(true)}
+                    >
+                      click to see the full email...
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* AI Reasoning - Show in expanded view */}
+          {isExpanded && (
+            <>
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded px-3 py-2 mb-2 border border-primary/20">
                 <div className="flex items-start gap-2">
                   <Sparkles className="w-3 h-3 text-primary shrink-0 mt-0.5" />
-                  <p className="text-xs text-muted-foreground leading-relaxed">{email.aiReasoning}</p>
+                  <div>
+                    <p className="text-xs font-medium mb-0.5">AI Reasoning</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{email.aiReasoning}</p>
+                  </div>
                 </div>
               </div>
 
               {/* Metadata - Only in expanded view */}
-              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3 flex-wrap">
+              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2 flex-wrap">
                 <span className="flex items-center gap-1">
                   <Play className="w-3 h-3" />
                   Session: {email.sessionId}
@@ -126,24 +193,6 @@ export const EmailCard = ({
 
           {/* Actions Row */}
           <div className="flex items-center gap-1.5">
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="h-7 text-xs px-2"
-            >
-              {isExpanded ? (
-                <>
-                  <ChevronUp className="w-3 h-3 mr-1" />
-                  Collapse
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-3 h-3 mr-1" />
-                  Expand
-                </>
-              )}
-            </Button>
             {email.status === "queued" && (
               <>
                 <Button
