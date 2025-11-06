@@ -34,31 +34,7 @@ const Journey = () => {
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
-  const users: User[] = [{
-    name: "Sarah Johnson",
-    email: "sarah@startup.io",
-    userId: "user_456",
-    sessions: 12,
-    heartScore: 80,
-    plan: "Pro",
-    lastActivity: "2024-01-18"
-  }, {
-    name: "Liam Chen",
-    email: "liam@sample.com",
-    userId: "user_123",
-    sessions: 3,
-    heartScore: 65,
-    plan: "Free",
-    lastActivity: "2024-01-15"
-  }, {
-    name: "Nora Williams",
-    email: "nora@sample.com",
-    userId: "user_789",
-    sessions: 8,
-    heartScore: 92,
-    plan: "Enterprise",
-    lastActivity: "2024-01-12"
-  }];
+  const users: User[] = [];
 
   // Show empty state if no users
   if (users.length === 0) {

@@ -39,22 +39,25 @@ export const CreateProjectModal = ({ open, onOpenChange, onSuccess }: CreateProj
 
     setIsCreating(true);
     
+    const createdProjectName = projectName;
+    
     // Simulate project creation
     setTimeout(() => {
       toast({
         title: "Project Created",
-        description: `"${projectName}" has been created successfully.`,
+        description: `"${createdProjectName}" has been created successfully.`,
       });
       
       setIsCreating(false);
-      const createdProjectName = projectName;
       setProjectName("");
       onOpenChange(false);
       
-      // Navigate to new project
-      if (onSuccess) {
-        onSuccess(createdProjectName);
-      }
+      // Navigate after modal closes
+      setTimeout(() => {
+        if (onSuccess) {
+          onSuccess(createdProjectName);
+        }
+      }, 300);
     }, 1000);
   };
 

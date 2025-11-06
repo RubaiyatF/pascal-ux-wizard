@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 
 const Analytics = () => {
   const location = useLocation();
-  const [hasData] = useState(true); // Toggle this to show/hide empty state
+  const [hasData] = useState(false); // Toggle this to show/hide empty state
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>(
     location.state?.selectedMetrics || [
       "activeUsers",
