@@ -35,9 +35,9 @@ export const CardStackView = ({
   }
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-12">
       {/* Card Stack Container */}
-      <div className={`relative w-full max-w-2xl transition-all duration-300 ${isTopCardExpanded ? 'h-[700px]' : 'h-[450px]'}`}>
+      <div className={`relative w-full max-w-2xl transition-all duration-300 ${isTopCardExpanded ? 'min-h-[700px]' : 'min-h-[450px]'}`}>
         {visibleCards.map((email, index) => {
           const scale = 1 - index * 0.05;
           const yOffset = index * 8;
