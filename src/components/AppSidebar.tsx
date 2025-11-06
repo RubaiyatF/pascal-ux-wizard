@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { title: "Benchmarks", url: "/benchmarks", icon: Target },
   { title: "Email Queue", url: "/email-queue", icon: Mail },
+  { title: "Benchmarks", url: "/benchmarks", icon: Target },
   { title: "Journey", url: "/journey", icon: Route },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Settings", url: "/settings", icon: Settings },
