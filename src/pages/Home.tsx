@@ -157,6 +157,9 @@ const Home = () => {
       });
     };
 
+    // Check immediately on mount
+    checkCompletions();
+
     // Poll for updates every 2 seconds
     const interval = setInterval(checkCompletions, 2000);
 
