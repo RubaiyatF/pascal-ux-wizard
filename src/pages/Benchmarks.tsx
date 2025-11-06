@@ -229,7 +229,7 @@ const Benchmarks = () => {
           {benchmarkUsers.map((user) => (
             <div
               key={user.email}
-              className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+              className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <button
