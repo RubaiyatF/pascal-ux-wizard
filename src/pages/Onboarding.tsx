@@ -62,9 +62,11 @@ const Onboarding = () => {
       <div className="max-w-4xl mx-auto py-12">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="w-16 h-16 mx-auto mb-4">
-            <img src={pascalLogo} alt="Pascal Logo" className="w-full h-full object-contain" />
-          </div>
+          <img 
+            src={pascalLogo} 
+            alt="Pascal Logo" 
+            className="w-16 h-16 mx-auto mb-4 object-contain"
+          />
           <h1 className="text-3xl font-bold mb-2">Welcome to Pascal</h1>
           <p className="text-muted-foreground">
             Get started in 3 simple steps
@@ -284,7 +286,11 @@ const Onboarding = () => {
                         <p className="text-sm text-muted-foreground mb-3">
                           Pascal is now tracking user behavior and will start generating AI insights within minutes.
                         </p>
-                        <Button size="sm" className="bg-primary hover:bg-primary/90" onClick={() => navigate("/home")}>
+                        <Button 
+                          size="sm" 
+                          className="bg-primary hover:bg-primary/90" 
+                          onClick={() => navigate("/home")}
+                        >
                           Go to Dashboard
                         </Button>
                       </div>
@@ -307,11 +313,16 @@ const Onboarding = () => {
             <Button
               onClick={handleNext}
               disabled={
-                (step === 1 && (!projectName || !website)) || (step === 3 && !eventsDetected)
+                (step === 1 && (!projectName || !website)) || 
+                (step === 3 && !eventsDetected)
               }
               className="bg-gradient-hero hover:opacity-90 transition-opacity"
             >
-              {step === 3 && !eventsDetected ? "Waiting..." : step === 3 ? "Complete" : "Continue"}
+              {step === 3 && !eventsDetected 
+                ? "Waiting..." 
+                : step === 3 
+                ? "Complete" 
+                : "Continue"}
             </Button>
           </div>
         </Card>
