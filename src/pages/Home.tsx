@@ -27,7 +27,23 @@ const Home = () => {
     email: string;
     markedDate: string;
     sessionsAnalyzed: number;
-  }>>([]);
+  }>>([
+    {
+      email: "nora@sample.com",
+      markedDate: "Jan 10",
+      sessionsAnalyzed: 8,
+    },
+    {
+      email: "david@enterprise.co",
+      markedDate: "Jan 12",
+      sessionsAnalyzed: 15,
+    },
+    {
+      email: "melissa@startup.io",
+      markedDate: "Jan 14",
+      sessionsAnalyzed: 12,
+    },
+  ]);
 
   const handleAddBenchmark = (email: string) => {
     // Check if user is already a benchmark

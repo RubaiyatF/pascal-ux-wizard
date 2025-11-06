@@ -6,7 +6,7 @@ import { AnalyticsEmptyState } from "@/components/empty-states/AnalyticsEmptySta
 import { useState } from "react";
 
 const Analytics = () => {
-  const [hasData] = useState(false); // Toggle this to show/hide empty state
+  const [hasData] = useState(true); // Toggle this to show/hide empty state
 
   if (!hasData) {
     return <AnalyticsEmptyState />;
