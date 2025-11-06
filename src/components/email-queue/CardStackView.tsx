@@ -65,7 +65,7 @@ export const CardStackView = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-center gap-6 pt-4">
+      <div className="flex items-center justify-center gap-6 pt-4 relative z-50">
         <Button
           size="lg"
           variant="outline"
