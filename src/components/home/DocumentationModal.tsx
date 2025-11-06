@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Brain, Users, TrendingUp, Mail, Zap, Shield, Code, BarChart3 } from "lucide-react";
+import { Brain, Users, TrendingUp, Mail, Zap, Shield, BarChart3 } from "lucide-react";
 
 interface DocumentationModalProps {
   open: boolean;
@@ -19,12 +19,11 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
         </DialogHeader>
         
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="features">Features</TabsTrigger>
             <TabsTrigger value="classification">Classification</TabsTrigger>
             <TabsTrigger value="metrics">Metrics</TabsTrigger>
-            <TabsTrigger value="technical">Technical</TabsTrigger>
           </TabsList>
 
           <ScrollArea className="h-[calc(85vh-160px)] mt-4">
@@ -367,124 +366,6 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
               </div>
             </TabsContent>
 
-            {/* Technical Tab */}
-            <TabsContent value="technical" className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Code className="w-5 h-5 text-primary" />
-                  Technical Architecture
-                </h3>
-                
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold mb-3">Core Components</h4>
-                    <div className="grid gap-2">
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                        <span className="text-sm font-medium">Session Recording</span>
-                        <Badge variant="secondary">rrweb</Badge>
-                      </div>
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                        <span className="text-sm font-medium">AI Analysis</span>
-                        <Badge variant="secondary">Gemini 1.5 Pro</Badge>
-                      </div>
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                        <span className="text-sm font-medium">Memory System</span>
-                        <Badge variant="secondary">Mem0 + OpenAI</Badge>
-                      </div>
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                        <span className="text-sm font-medium">Decision Engine</span>
-                        <Badge variant="secondary">GPT-4o-mini</Badge>
-                      </div>
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                        <span className="text-sm font-medium">Email Generation</span>
-                        <Badge variant="secondary">GPT-4o</Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <h4 className="font-semibold mb-3">Infrastructure</h4>
-                    <div className="grid gap-2">
-                      <div className="flex items-center gap-2 border rounded-lg p-3">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        <span className="text-sm">ClickHouse for analytics storage</span>
-                      </div>
-                      <div className="flex items-center gap-2 border rounded-lg p-3">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        <span className="text-sm">Redpanda/Kafka for event streaming</span>
-                      </div>
-                      <div className="flex items-center gap-2 border rounded-lg p-3">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        <span className="text-sm">Redis for caching and real-time data</span>
-                      </div>
-                      <div className="flex items-center gap-2 border rounded-lg p-3">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        <span className="text-sm">Cloud Run for scalable API deployment</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      Security & Compliance
-                    </h4>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                        <span>AES-256 encryption for all data</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                        <span>GDPR compliant with consent management</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                        <span>Multi-tenant isolation architecture</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                        <span>Secure unsubscribe token system</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <h4 className="font-semibold mb-3">Integration</h4>
-                    <div className="border rounded-lg p-4 bg-muted/30">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge>5.9KB</Badge>
-                        <span className="text-sm font-medium">Lightweight JavaScript Tracker</span>
-                      </div>
-                      <ul className="space-y-2 text-sm text-muted-foreground">
-                        <li className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
-                          Simple JavaScript tracking code installation
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
-                          Configurable user identification system
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
-                          API access for custom implementations
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-muted-foreground"></div>
-                          Multi-tenant architecture support
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
           </ScrollArea>
         </Tabs>
       </DialogContent>
