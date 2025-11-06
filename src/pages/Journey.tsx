@@ -340,7 +340,7 @@ const Journey = () => {
 
       <div className="grid grid-cols-12 gap-6 relative items-start">
         {/* Left Column - Users List */}
-        <div className="col-span-12 lg:col-span-4 space-y-4 relative">
+        <div className="col-span-12 lg:col-span-4 relative">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Users</h2>
             
@@ -444,7 +444,7 @@ const Journey = () => {
         </div>
 
         {/* Right Column - Journey Timeline */}
-        <div className="col-span-12 lg:col-span-8 space-y-4 relative">
+        <div className="col-span-12 lg:col-span-8 relative">
           {/* Connection indicator on the left edge */}
           <div className="hidden lg:block absolute -left-3 top-8 w-1 h-12 bg-gradient-to-b from-accent/50 to-transparent rounded-full" />
           
