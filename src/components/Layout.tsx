@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TopNavbar } from "./TopNavbar";
 import { AppSidebar } from "./AppSidebar";
+import { SupportChat } from "./SupportChat";
 
 interface LayoutProps {
   children: ReactNode;
@@ -20,6 +21,8 @@ const Layout = ({ children }: LayoutProps) => {
             {children}
           </main>
         </div>
+        
+        <SupportChat />
       </div>
     </SidebarProvider>
   );
