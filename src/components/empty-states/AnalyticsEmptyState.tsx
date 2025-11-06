@@ -146,7 +146,7 @@ export const AnalyticsEmptyState = () => {
             </div>
             <Button
               size="lg"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/benchmarks")}
               className="gap-2 bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 shrink-0"
             >
               Define Benchmarks
