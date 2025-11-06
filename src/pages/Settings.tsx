@@ -140,7 +140,7 @@ const Settings = () => {
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
             <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 bg-success/10 border border-success/20 rounded-lg">
+              <div className="flex items-center gap-3 p-4 bg-white border border-success/20 rounded-lg">
                 <CheckCircle2 className="w-5 h-5 text-success" />
                 <div>
                   <p className="font-medium">✅ Connected</p>
