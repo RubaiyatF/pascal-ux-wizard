@@ -35,9 +35,9 @@ export const CardStackView = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col items-center gap-8">
       {/* Card Stack Container */}
-      <div className={`relative max-w-2xl mx-auto transition-all duration-300 ${isTopCardExpanded ? 'h-[700px]' : 'h-[450px]'}`}>
+      <div className={`relative w-full max-w-2xl transition-all duration-300 ${isTopCardExpanded ? 'h-[700px]' : 'h-[450px]'}`}>
         {visibleCards.map((email, index) => {
           const scale = 1 - index * 0.05;
           const yOffset = index * 8;
@@ -65,7 +65,7 @@ export const CardStackView = ({
       </div>
 
       {/* Action Controls Group */}
-      <div className="space-y-4 pt-12 mt-10">
+      <div className="space-y-4 w-full">
         {/* Action Buttons */}
         <div className="flex items-center justify-center gap-6 relative z-50">
           <Button
