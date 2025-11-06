@@ -97,6 +97,7 @@ const Home = () => {
   // Load initial completed steps from localStorage
   useEffect(() => {
     console.log('[Home] Loading onboarding for project:', currentProject);
+    console.log('[Home] Current completedSteps before reset:', completedSteps);
     
     // Always reset state first when project changes to prevent state leakage
     setCompletedSteps([]);
@@ -105,10 +106,19 @@ const Home = () => {
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
     console.log('[Home] Saved onboarding data:', saved);
     
+    // Log ALL localStorage keys for this project
+    const allKeys = Object.keys(localStorage).filter(key => key.includes(currentProject));
+    console.log('[Home] All localStorage keys for this project:', allKeys);
+    allKeys.forEach(key => {
+      console.log(`  ${key}:`, localStorage.getItem(key));
+    });
+    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        console.log('[Home] Parsed onboarding data:', parsed);
         if (parsed.completedSteps && Array.isArray(parsed.completedSteps)) {
+          console.log('[Home] Setting completedSteps to:', parsed.completedSteps);
           setCompletedSteps(parsed.completedSteps);
           
           // Find first incomplete step to expand
@@ -273,10 +283,13 @@ const Home = () => {
 
   // Save completed steps to localStorage
   useEffect(() => {
+    console.log('[Home] Save effect triggered - completedSteps:', completedSteps);
     if (completedSteps.length > 0) {
+      const dataToSave = JSON.stringify({ completedSteps });
+      console.log('[Home] Saving to localStorage:', dataToSave);
       localStorage.setItem(
         `pascal-onboarding-${currentProject}`,
-        JSON.stringify({ completedSteps })
+        dataToSave
       );
     }
   }, [completedSteps, currentProject]);
