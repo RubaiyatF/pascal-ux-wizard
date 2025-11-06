@@ -206,14 +206,22 @@ export const SwipeableEmailCard = ({
           </div>
           
           {/* Email Body */}
-          <div className="px-4 py-4 bg-card">
+          <div className="px-4 py-4 bg-white">
             <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-normal">
               {isExpanded ? (
                 // Full email content
                 `${email.preview}\n\nBest regards,\nYour AI Assistant\n\nP.S. This is an auto-generated email based on user behavior and engagement patterns. We've analyzed their session activity and determined this is an optimal touchpoint for meaningful engagement.\n\nKey insights:\n- User engagement level: ${email.heartScore}%\n- Behavior patterns indicate high interest\n- Optimal timing for conversion dialogue\n\nFeel free to customize this message before sending.`
               ) : (
                 // Preview only
-                email.preview
+                <>
+                  {email.preview}
+                  <div 
+                    className="mt-3 text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
+                    onClick={handleExpandToggle}
+                  >
+                    click to see the full email...
+                  </div>
+                </>
               )}
             </div>
           </div>
