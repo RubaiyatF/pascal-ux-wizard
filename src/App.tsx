@@ -8,7 +8,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import EmailQueue from "./pages/EmailQueue";
 import Journey from "./pages/Journey";
-import Home from "./pages/Home";
+import Benchmarks from "./pages/Benchmarks";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Layout from "./components/Layout";
@@ -24,7 +24,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/" element={<Navigate to="/benchmarks" replace />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route
@@ -44,10 +44,10 @@ const App = () => (
             }
           />
           <Route
-            path="/home"
+            path="/benchmarks"
             element={
               <Layout>
-                <Home />
+                <Benchmarks />
               </Layout>
             }
           />

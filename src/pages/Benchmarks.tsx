@@ -10,7 +10,7 @@ import { UserDetailsModal } from "@/components/home/UserDetailsModal";
 import { HomeEmptyState } from "@/components/empty-states/HomeEmptyState";
 import { useToast } from "@/hooks/use-toast";
 
-const Home = () => {
+const Benchmarks = () => {
   const { toast } = useToast();
   const [addBenchmarkOpen, setAddBenchmarkOpen] = useState(false);
   const [benchmarkEmail, setBenchmarkEmail] = useState("");
@@ -395,4 +395,4 @@ const Home = () => {
 };
 
 
-export default Home;
+export default Benchmarks;
