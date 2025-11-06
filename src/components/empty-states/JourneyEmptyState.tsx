@@ -1,64 +1,192 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Users, Activity, ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { MessageSquare, Users, Activity, ArrowRight, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const JourneyEmptyState = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in">
-      <Card className="max-w-2xl p-12 text-center border-2 border-dashed border-border">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-6">
-          <MessageSquare className="w-10 h-10 text-primary" />
-        </div>
-        
-        <h2 className="text-3xl font-bold mb-4">User Journeys Building</h2>
-        
-        <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Excellent! Your tracking is live and sessions are being recorded. Pascal agent is processing (5-15 minutes). Record a benchmark session to showcase your ideal activation path, then journey timelines will appear here.
-        </p>
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in px-4">
+      <div className="max-w-4xl w-full">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
+            <MessageSquare className="w-12 h-12 text-primary" />
+          </div>
+          
+          <h1 className="text-4xl font-bold mb-4">User Journey Timelines</h1>
+          
+          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Complete visual history of every user's path to activation
+          </p>
 
-        <div className="grid grid-cols-2 gap-4 mb-8">
-          <div className="p-6 rounded-lg bg-muted/50 text-left">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 mb-3">
-              <Activity className="w-5 h-5 text-primary" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/20">
+            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+            <span className="text-sm font-medium text-success">Tracking active • Sessions recording</span>
+          </div>
+        </div>
+
+        {/* Feature Cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
+              <Activity className="w-6 h-6 text-primary" />
             </div>
-            <h4 className="font-semibold mb-2">Session Recordings</h4>
-            <p className="text-sm text-muted-foreground">
-              Watch complete user sessions with event timeline and AI insights
+            <h3 className="font-semibold text-lg mb-2">Session Replays</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              Watch exactly what users do in your app
             </p>
-          </div>
-
-          <div className="p-6 rounded-lg bg-muted/50 text-left">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 mb-3">
-              <MessageSquare className="w-5 h-5 text-primary" />
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Pixel-perfect recordings</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Event timeline overlay</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>AI-generated insights</span>
+              </div>
             </div>
-            <h4 className="font-semibold mb-2">Email Timeline</h4>
-            <p className="text-sm text-muted-foreground">
-              Track all communications and their impact on activation
+          </Card>
+
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-500/10 mb-4">
+              <MessageSquare className="w-6 h-6 text-purple-500" />
+            </div>
+            <h3 className="font-semibold text-lg mb-2">Email History</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              Track all communications and responses
             </p>
-          </div>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Sent email log</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Open & click tracking</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Response correlation</span>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-500/10 mb-4">
+              <Users className="w-6 h-6 text-orange-500" />
+            </div>
+            <h3 className="font-semibold text-lg mb-2">Behavior Insights</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              Understand patterns and blockers
+            </p>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Feature engagement</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Drop-off points</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-primary" />
+                <span>Success indicators</span>
+              </div>
+            </div>
+          </Card>
         </div>
 
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-4 mb-8 text-left">
-          <div className="flex items-start gap-3">
-            <Users className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-            <p className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">Coming Soon:</span> As users interact with your product, their complete journey will be visualized here with session recordings, behavioral insights, and email engagement.
-            </p>
-          </div>
-        </div>
+        {/* Preview Section */}
+        <Card className="p-8 mb-8 border-2">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold mb-1">Timeline Preview</h3>
+                <p className="text-sm text-muted-foreground">
+                  Here's what a user journey will look like
+                </p>
+              </div>
+              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                Coming Soon
+              </Badge>
+            </div>
 
-        <Button
-          size="lg"
-          onClick={() => navigate("/home")}
-          className="gap-2 bg-primary hover:bg-primary/90"
-        >
-          Define Success Benchmarks
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </Card>
+            <div className="space-y-4 pl-4 border-l-2 border-primary/20">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <div className="w-2 h-2 rounded-full bg-success" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">User signed up</p>
+                  <p className="text-xs text-muted-foreground">Session recording available</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <Activity className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Completed onboarding flow</p>
+                  <p className="text-xs text-muted-foreground">5 minutes after signup</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <Mail className="w-4 h-4 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">AI email sent</p>
+                  <p className="text-xs text-muted-foreground">Personalized activation tip • Opened</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <div className="w-2 h-2 rounded-full bg-orange-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Exploring features</p>
+                  <p className="text-xs text-muted-foreground">Active session in progress</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* CTA Section */}
+        <Card className="p-8 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-primary/20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-start gap-4 text-left">
+              <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Start Tracking User Journeys</h3>
+                <p className="text-muted-foreground">
+                  Define benchmarks to see which users are on the path to activation
+                </p>
+              </div>
+            </div>
+            <Button
+              size="lg"
+              onClick={() => navigate("/home")}
+              className="gap-2 bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 shrink-0"
+            >
+              Set Benchmarks
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -7,61 +7,154 @@ export const AnalyticsEmptyState = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in">
-      <Card className="max-w-2xl p-12 text-center border-2 border-dashed border-border">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-6">
-          <BarChart3 className="w-10 h-10 text-primary" />
-        </div>
-        
-        <h2 className="text-3xl font-bold mb-4">Analytics Building</h2>
-        
-        <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-          Perfect! Data is flowing in from your tracking. Pascal agent is processing (5-15 minutes). Record a benchmark session to establish success patterns, and comprehensive analytics will populate here within 48-72 hours.
-        </p>
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in px-4">
+      <div className="max-w-4xl w-full">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
+            <BarChart3 className="w-12 h-12 text-primary" />
+          </div>
+          
+          <h1 className="text-4xl font-bold mb-4">Your Analytics Dashboard</h1>
+          
+          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Building comprehensive insights from your user data
+          </p>
 
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-6 text-left">
-          <div className="flex items-start gap-3">
-            <TrendingUp className="w-5 h-5 text-primary shrink-0 mt-1" />
-            <div>
-              <h4 className="font-semibold mb-2">What You will See</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Activation rates and time-to-activation trends</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>User retention and engagement metrics over time</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Email campaign performance and conversion rates</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Feature adoption across benchmark vs. other users</span>
-                </li>
-              </ul>
-            </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <Clock className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Available in 48-72 hours</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 text-left mb-8">
-          <Clock className="w-5 h-5 text-primary shrink-0" />
-          <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Typical Timeline:</span> Analytics become available within 48-72 hours after marking benchmark users and having sufficient user activity.
-          </p>
+        {/* Preview Cards */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-success" />
+                </div>
+                <h3 className="font-semibold text-lg">Activation Metrics</h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Activation rate trends over time</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Time-to-activation distribution</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Conversion funnel analysis</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg">User Behavior</h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Feature adoption patterns</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Retention cohort analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Engagement metrics</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-lg">Email Performance</h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Campaign conversion rates</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Email engagement metrics</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>A/B test results</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-lg">Benchmark Insights</h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Success pattern comparison</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>User similarity scoring</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                  <span>Predictive activation models</span>
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
 
-        <Button
-          size="lg"
-          onClick={() => navigate("/home")}
-          className="gap-2 bg-primary hover:bg-primary/90"
-        >
-          Mark Benchmark Users
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </Card>
+        {/* CTA Section */}
+        <Card className="p-8 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-primary/20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-start gap-4 text-left">
+              <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Accelerate Your Analytics</h3>
+                <p className="text-muted-foreground">
+                  Mark benchmark users now to start seeing insights sooner
+                </p>
+              </div>
+            </div>
+            <Button
+              size="lg"
+              onClick={() => navigate("/home")}
+              className="gap-2 bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 shrink-0"
+            >
+              Define Benchmarks
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };
