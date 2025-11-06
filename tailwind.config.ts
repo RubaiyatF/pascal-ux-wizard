@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      screens: {
+        xs: "475px",
+      },
       fontFamily: {
         sans: ["Aldrich", "ui-sans-serif", "sans-serif", "system-ui"],
       },

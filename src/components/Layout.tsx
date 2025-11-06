@@ -9,14 +9,14 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={false}>
       <div className="min-h-screen w-full flex flex-col bg-background">
         <TopNavbar />
         
         <div className="flex flex-1 pt-16">
           <AppSidebar />
           
-          <main className="flex-1 p-8 transition-all">
+          <main className="flex-1 p-4 sm:p-6 md:p-8 transition-all">
             {children}
           </main>
         </div>

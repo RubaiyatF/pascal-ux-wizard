@@ -13,20 +13,20 @@ interface DocumentationModalProps {
 export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[85vh]">
+      <DialogContent className="max-w-4xl max-h-[90vh] w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)]">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Pascal Documentation</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl md:text-2xl">Pascal Documentation</DialogTitle>
         </DialogHeader>
         
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="features">Features</TabsTrigger>
-            <TabsTrigger value="classification">Classification</TabsTrigger>
-            <TabsTrigger value="metrics">Metrics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="features" className="text-xs sm:text-sm">Features</TabsTrigger>
+            <TabsTrigger value="classification" className="text-xs sm:text-sm">Classification</TabsTrigger>
+            <TabsTrigger value="metrics" className="text-xs sm:text-sm">Metrics</TabsTrigger>
           </TabsList>
 
-          <ScrollArea className="h-[calc(85vh-160px)] mt-4">
+          <ScrollArea className="h-[calc(90vh-140px)] sm:h-[calc(85vh-160px)] mt-4">
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6">
               <div>
