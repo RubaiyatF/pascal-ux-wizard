@@ -17,7 +17,6 @@ import { useProject } from "@/contexts/ProjectContext";
 
 export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
-  const [isSwitching, setIsSwitching] = useState(false);
   const { currentProject, setCurrentProject, projects, setProjects } = useProject();
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,18 +42,13 @@ export const TopNavbar = () => {
   };
 
   const handleProjectSwitch = (projectName: string) => {
-    setIsSwitching(true);
     setCurrentProject(projectName);
-    
-    // Small delay to ensure context updates before navigation
-    setTimeout(() => {
-      if (projectName === "Pascal Demo") {
-        navigate("/email-queue");
-      } else {
-        navigate("/home");
-      }
-      setIsSwitching(false);
-    }, 50);
+    // Navigate to home for new projects, email-queue for Pascal Demo
+    if (projectName === "Pascal Demo") {
+      navigate("/email-queue");
+    } else {
+      navigate("/home");
+    }
   };
 
   return (
@@ -83,7 +77,7 @@ export const TopNavbar = () => {
           {/* Project Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2 border-border bg-white" disabled={isSwitching}>
+              <Button variant="outline" className="gap-2 border-border bg-white">
                 {currentProject}
                 <ChevronDown className="w-4 h-4" />
               </Button>
