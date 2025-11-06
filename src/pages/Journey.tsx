@@ -636,14 +636,21 @@ const Journey = () => {
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-border">
-              <p className="text-sm font-medium mb-1">Journey Summary</p>
-              <p className="text-sm text-muted-foreground mb-2">
-                {conversation.summary}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Stage: {conversation.stage}
-              </p>
+            <div className="mt-6 p-4 bg-white rounded-lg border border-border">
+              <div className="flex items-start gap-2">
+                <div className="w-4 h-4 mt-0.5 shrink-0">
+                  <AnimatedLogo />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold mb-1">Journey Summary</p>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {conversation.summary}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Stage: {conversation.stage}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Generate with Pascal Button */}
