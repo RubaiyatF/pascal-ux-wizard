@@ -116,6 +116,10 @@ const Home = () => {
       } catch (e) {
         console.error('Error loading onboarding progress:', e);
       }
+    } else {
+      // No saved data for this project - reset to initial state
+      setCompletedSteps([]);
+      setExpandedStep(1);
     }
   }, [currentProject]);
 
