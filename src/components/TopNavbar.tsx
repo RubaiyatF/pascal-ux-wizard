@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +16,16 @@ import { AnimatedLogo } from "./AnimatedLogo";
 
 export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account.",
+    });
+    navigate("/auth");
+  };
 
   return (
     <>
@@ -62,7 +74,7 @@ export const TopNavbar = () => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-card border-border">
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
               </DropdownMenuItem>
