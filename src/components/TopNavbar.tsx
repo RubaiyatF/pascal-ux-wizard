@@ -34,7 +34,7 @@ export const TopNavbar = () => {
           {/* Project Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2 border-border bg-muted/50">
+              <Button variant="outline" className="gap-2 border-border bg-white">
                 Pascal Demo
                 <ChevronDown className="w-4 h-4" />
               </Button>
