@@ -227,13 +227,6 @@ const Settings = () => {
             </div>
           </Card>
 
-          <Button className="bg-gradient-hero hover:opacity-90">
-            <Save className="w-4 h-4 mr-2" />
-            Save Configuration
-          </Button>
-          <Button variant="outline" className="ml-2">
-            Send Test Email
-          </Button>
         </TabsContent>
 
         {/* General Settings */}
@@ -277,6 +270,17 @@ const Settings = () => {
               </div>
             </div>
           </Card>
+
+          {/* Save Button */}
+          <div className="flex justify-end">
+            <Button
+              onClick={handleSave}
+              className="bg-gradient-hero hover:opacity-90 transition-opacity"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              Save Changes
+            </Button>
+          </div>
         </TabsContent>
 
         {/* Team Management */}
@@ -627,17 +631,6 @@ const tracker = new PascalTracker({
         </TabsContent>
 
       </Tabs>
-
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <Button
-          onClick={handleSave}
-          className="bg-gradient-hero hover:opacity-90 transition-opacity"
-        >
-          <Save className="w-4 h-4 mr-2" />
-          Save Changes
-        </Button>
-      </div>
 
       {/* API Key Modal */}
       <ApiKeyModal
