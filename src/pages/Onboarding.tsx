@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Check, Copy, Code, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { AnimatedLogo } from "@/components/AnimatedLogo";
+import pascalLogo from "@/assets/pascal-logo.png";
 
 const Onboarding = () => {
   const [step, setStep] = useState(1);
@@ -63,7 +63,7 @@ const Onboarding = () => {
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
           <div className="w-16 h-16 mx-auto mb-4">
-            <AnimatedLogo />
+            <img src={pascalLogo} alt="Pascal Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-bold mb-2">Welcome to Pascal</h1>
           <p className="text-muted-foreground">

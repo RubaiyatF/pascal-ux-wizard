@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { AnimatedLogo } from "@/components/AnimatedLogo";
+import pascalLogo from "@/assets/pascal-logo.png";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ const Auth = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 mx-auto mb-4">
-            <AnimatedLogo />
+            <img src={pascalLogo} alt="Pascal Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">Pascal</h1>
           <p className="text-muted-foreground mt-2">Customer Success Agent that activates and upsell</p>
