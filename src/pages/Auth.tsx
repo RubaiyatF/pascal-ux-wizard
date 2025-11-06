@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import pascalLogo from "@/assets/pascal-logo.png";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -26,11 +26,9 @@ const Auth = () => {
       <div className="w-full max-w-md animate-fade-in">
         {/* Logo Section */}
         <div className="text-center mb-8">
-          <img 
-            src={pascalLogo} 
-            alt="Pascal Logo" 
-            className="w-16 h-16 mx-auto mb-4 object-contain"
-          />
+          <div className="w-16 h-16 mx-auto mb-4">
+            <AnimatedLogo />
+          </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
             Pascal
           </h1>
