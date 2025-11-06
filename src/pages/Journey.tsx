@@ -537,10 +537,14 @@ const Journey = () => {
 
                           {/* AI Summary */}
                           <div className={`rounded-lg p-3 border ${
-                            event.sentiment === 'positive' 
+                            event.type === 'session' && event.score >= 70
                               ? 'bg-success/5 border-success/20' 
-                              : event.sentiment === 'negative' 
+                              : event.type === 'session' && event.score < 50
                               ? 'bg-destructive/5 border-destructive/20' 
+                              : event.sentiment === 'positive'
+                              ? 'bg-success/5 border-success/20'
+                              : event.sentiment === 'negative'
+                              ? 'bg-destructive/5 border-destructive/20'
                               : 'bg-white border-border'
                           }`}>
                             <div className="flex items-start gap-2">
