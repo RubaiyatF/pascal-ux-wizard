@@ -30,8 +30,8 @@ export const AppSidebar = () => {
     <Sidebar
       collapsible="icon"
       className={cn(
-        "fixed left-0 top-16 h-[calc(100vh-4rem)] border-r border-border bg-card transition-all",
-        isCollapsed ? "w-14" : "w-48"
+        "fixed left-0 top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] border-r border-border bg-card transition-all z-40",
+        isCollapsed ? "w-0 md:w-14" : "w-48 md:w-60"
       )}
     >
       <SidebarContent className="flex flex-col h-full">

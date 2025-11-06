@@ -29,20 +29,20 @@ export const QuickGuidesModal = ({ open, onOpenChange }: QuickGuidesModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[85vh]">
+      <DialogContent className="max-w-4xl max-h-[90vh] w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)]">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Quick Guides</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl md:text-2xl">Quick Guides</DialogTitle>
         </DialogHeader>
         
         <Tabs defaultValue="getting-started" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="getting-started">Getting Started</TabsTrigger>
-            <TabsTrigger value="api">API Reference</TabsTrigger>
-            <TabsTrigger value="tutorials">Tutorials</TabsTrigger>
-            <TabsTrigger value="best-practices">Best Practices</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+            <TabsTrigger value="getting-started" className="text-xs sm:text-sm">Getting Started</TabsTrigger>
+            <TabsTrigger value="api" className="text-xs sm:text-sm">API Reference</TabsTrigger>
+            <TabsTrigger value="tutorials" className="text-xs sm:text-sm">Tutorials</TabsTrigger>
+            <TabsTrigger value="best-practices" className="text-xs sm:text-sm">Best Practices</TabsTrigger>
           </TabsList>
 
-          <ScrollArea className="h-[calc(85vh-160px)] mt-4">
+          <ScrollArea className="h-[calc(90vh-140px)] sm:h-[calc(85vh-160px)] mt-4">
             {/* Getting Started Tab */}
             <TabsContent value="getting-started" className="space-y-6">
               <div>
