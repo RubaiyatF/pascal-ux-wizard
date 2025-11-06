@@ -234,10 +234,10 @@ const Benchmarks = () => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => handleRemoveBenchmark(user.email)}
-                  className="group transition-all hover:scale-110 active:scale-95 hover:rotate-12 cursor-pointer"
+                  className="group transition-all hover:scale-110 active:scale-95 hover:rotate-12 cursor-pointer animate-shake"
                   title="Click to remove from benchmarks"
                 >
-                  <Star className="w-5 h-5 text-warning fill-warning group-hover:fill-transparent transition-all" />
+                  <Star className="w-5 h-5 text-primary fill-primary group-hover:fill-transparent transition-all" />
                 </button>
                 <div>
                   <p className="font-medium">{user.email}</p>

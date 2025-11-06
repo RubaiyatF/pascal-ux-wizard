@@ -136,6 +136,17 @@ export default {
             opacity: "0.5",
           },
         },
+        shake: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+          },
+          "25%": {
+            transform: "rotate(-5deg)",
+          },
+          "75%": {
+            transform: "rotate(5deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -143,6 +154,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        shake: "shake 2s ease-in-out infinite",
       },
     },
   },
