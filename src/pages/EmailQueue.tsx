@@ -19,6 +19,7 @@ import { SessionRecordingModal } from "@/components/email-queue/SessionRecording
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { EmailQueueEmptyState } from "@/components/empty-states/EmailQueueEmptyState";
 import { useToast } from "@/hooks/use-toast";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 const EmailQueue = () => {
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
@@ -211,7 +212,12 @@ const EmailQueue = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Mission Control</h1>
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+            Mission Control
+            <div className="w-8 h-8 rounded-full overflow-hidden">
+              <AnimatedLogo />
+            </div>
+          </h1>
           <p className="text-muted-foreground">
             Email Queue Dashboard · Human-in-the-Loop Command Center
           </p>
