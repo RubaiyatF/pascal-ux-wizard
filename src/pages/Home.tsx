@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Star, Plus, TrendingUp } from "lucide-react";
+import { Star, Plus, TrendingUp, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
@@ -22,6 +22,7 @@ const Home = () => {
     similarity: number;
     reason: string;
   } | null>(null);
+  const [showAllSimilarUsers, setShowAllSimilarUsers] = useState(false);
 
   const [benchmarkUsers, setBenchmarkUsers] = useState<Array<{
     email: string;
@@ -80,23 +81,20 @@ const Home = () => {
     });
   };
 
-  const similarUsers = [
-    {
-      email: "sarah@example.com",
-      similarity: 85,
-      reason: "Similar usage pattern",
-    },
-    {
-      email: "alex@corp.com",
-      similarity: 82,
-      reason: "Comparable engagement",
-    },
-    {
-      email: "emma@agency.co",
-      similarity: 78,
-      reason: "Matching feature use",
-    },
+  const allSimilarUsers = [
+    { email: "sarah@example.com", similarity: 85, reason: "Similar usage pattern" },
+    { email: "alex@corp.com", similarity: 82, reason: "Comparable engagement" },
+    { email: "emma@agency.co", similarity: 78, reason: "Matching feature use" },
+    { email: "james@tech.io", similarity: 76, reason: "Similar activation time" },
+    { email: "lisa@digital.com", similarity: 74, reason: "Comparable feature adoption" },
+    { email: "mike@startup.co", similarity: 72, reason: "Similar session frequency" },
+    { email: "olivia@brand.com", similarity: 70, reason: "Matching engagement pattern" },
+    { email: "noah@enterprise.io", similarity: 68, reason: "Similar workflow" },
+    { email: "sophia@agency.net", similarity: 67, reason: "Comparable activity level" },
+    { email: "william@corp.co", similarity: 65, reason: "Similar feature usage" },
   ];
+
+  const similarUsers = showAllSimilarUsers ? allSimilarUsers : allSimilarUsers.slice(0, 3);
 
   const metrics = [
     { label: "Active Users", value: "890", change: "+12" },
@@ -293,9 +291,21 @@ const Home = () => {
         </div>
 
         <div className="mt-4 pt-4 border-t border-border">
-          <p className="text-sm text-muted-foreground text-center">
-            Showing 3 of 47 similar users
-          </p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full text-sm text-muted-foreground hover:text-foreground"
+            onClick={() => setShowAllSimilarUsers(!showAllSimilarUsers)}
+          >
+            <span>
+              Showing {similarUsers.length} of {allSimilarUsers.length} similar users
+            </span>
+            {showAllSimilarUsers ? (
+              <ChevronUp className="w-4 h-4 ml-2" />
+            ) : (
+              <ChevronDown className="w-4 h-4 ml-2" />
+            )}
+          </Button>
         </div>
       </Card>
 
