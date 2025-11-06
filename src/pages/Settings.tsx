@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,11 +17,21 @@ import { useProject } from "@/contexts/ProjectContext";
 const Settings = () => {
   const { toast } = useToast();
   const { currentProject } = useProject();
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState("general");
   const [recordingEnabled, setRecordingEnabled] = useState(true);
   const [emailInsightsEnabled, setEmailInsightsEnabled] = useState(true);
   const [aiAnalysisEnabled, setAiAnalysisEnabled] = useState(true);
 
-  // Mark onboarding step 6 as complete when Settings is visited
+  // Set active tab from URL parameter on mount
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['general', 'team', 'tracking', 'email'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
+
+  // Mark onboarding step 7 as complete when Settings is visited
   useEffect(() => {
     localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
   }, [currentProject]);
@@ -135,7 +146,7 @@ const Settings = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="general" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="team">Team</TabsTrigger>
