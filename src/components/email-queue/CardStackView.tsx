@@ -2,7 +2,7 @@ import { QueuedEmail } from "./EmailCard";
 import { SwipeableEmailCard } from "./SwipeableEmailCard";
 import { Button } from "@/components/ui/button";
 import { X, Check, RotateCcw } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 interface CardStackViewProps {
   emails: QueuedEmail[];
@@ -21,15 +21,6 @@ export const CardStackView = ({
 }: CardStackViewProps) => {
   const visibleCards = emails.slice(0, 3);
   const [isTopCardExpanded, setIsTopCardExpanded] = useState(false);
-  const [topCardHeight, setTopCardHeight] = useState(450);
-  const topCardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (topCardRef.current) {
-      const height = topCardRef.current.offsetHeight;
-      setTopCardHeight(height + 20); // Add small buffer
-    }
-  }, [isTopCardExpanded, emails[0]?.id]);
 
   if (emails.length === 0) {
     return (
@@ -46,37 +37,29 @@ export const CardStackView = ({
   return (
     <div className="flex flex-col items-center gap-12">
       {/* Card Stack Container */}
-      <div 
-        className="relative w-full max-w-2xl transition-all duration-300"
-        style={{ minHeight: topCardHeight }}
-      >
+      <div className={`relative w-full max-w-2xl transition-all duration-300 ${isTopCardExpanded ? 'h-[820px]' : 'h-[520px]'}`}>
         {visibleCards.map((email, index) => {
           const scale = 1 - index * 0.05;
           const yOffset = index * 8;
           const opacity = 1 - index * 0.2;
-          const isTopCard = index === 0;
 
           return (
-            <div 
+            <SwipeableEmailCard
               key={email.id}
-              ref={isTopCard ? topCardRef : null}
-            >
-              <SwipeableEmailCard
-                email={email}
-                onApprove={onApprove}
-                onEdit={onEdit}
-                onReject={onReject}
-                onViewRecording={onViewRecording}
-                zIndex={visibleCards.length - index}
-                isExpanded={isTopCard ? isTopCardExpanded : false}
-                onExpandChange={isTopCard ? setIsTopCardExpanded : undefined}
-                style={{
-                  transform: `translateY(${yOffset}px) scale(${scale})`,
-                  opacity,
-                  transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
-                }}
-              />
-            </div>
+              email={email}
+              onApprove={onApprove}
+              onEdit={onEdit}
+              onReject={onReject}
+              onViewRecording={onViewRecording}
+              zIndex={visibleCards.length - index}
+              isExpanded={index === 0 ? isTopCardExpanded : false}
+              onExpandChange={index === 0 ? setIsTopCardExpanded : undefined}
+              style={{
+                transform: `translateY(${yOffset}px) scale(${scale})`,
+                opacity,
+                transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
+              }}
+            />
           );
         })}
       </div>
