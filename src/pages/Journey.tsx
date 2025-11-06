@@ -582,10 +582,16 @@ const Journey = () => {
                             </span>
                           </div>
                           
-                          <p className="font-medium text-sm mb-2">{event.subject}</p>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            {event.content}
-                          </p>
+                          <p className="font-medium text-sm mb-2">"{event.subject}"</p>
+                          
+                          {/* Email Content - Inbox Style */}
+                          <div className="bg-background border border-border rounded-lg overflow-hidden mb-3">
+                            <div className="px-3 py-3 bg-white">
+                              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                                {event.content}
+                              </div>
+                            </div>
+                          </div>
                           
                           {event.direction === "sent" && <div className="flex gap-3 text-xs text-muted-foreground">
                               {event.opened && <span className="flex items-center gap-1">✓ Opened</span>}
