@@ -23,6 +23,7 @@ const Home = () => {
     reason: string;
   } | null>(null);
   const [showAllSimilarUsers, setShowAllSimilarUsers] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [benchmarkUsers, setBenchmarkUsers] = useState<Array<{
     email: string;
@@ -92,9 +93,24 @@ const Home = () => {
     { email: "noah@enterprise.io", similarity: 68, reason: "Similar workflow" },
     { email: "sophia@agency.net", similarity: 67, reason: "Comparable activity level" },
     { email: "william@corp.co", similarity: 65, reason: "Similar feature usage" },
+    { email: "ava@platform.io", similarity: 63, reason: "Similar usage pattern" },
+    { email: "ethan@saas.com", similarity: 62, reason: "Comparable engagement" },
+    { email: "mia@cloud.co", similarity: 60, reason: "Matching feature use" },
+    { email: "lucas@app.io", similarity: 58, reason: "Similar activation time" },
+    { email: "isabella@tool.com", similarity: 57, reason: "Comparable feature adoption" },
   ];
 
-  const similarUsers = showAllSimilarUsers ? allSimilarUsers : allSimilarUsers.slice(0, 3);
+  const USERS_PER_PAGE = 10;
+  const totalPages = Math.ceil(allSimilarUsers.length / USERS_PER_PAGE);
+  
+  const similarUsers = showAllSimilarUsers 
+    ? allSimilarUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE)
+    : allSimilarUsers.slice(0, 3);
+  
+  const handleToggleShowAll = () => {
+    setShowAllSimilarUsers(!showAllSimilarUsers);
+    setCurrentPage(1); // Reset to first page when toggling
+  };
 
   const metrics = [
     { label: "Active Users", value: "890", change: "+12" },
@@ -290,15 +306,15 @@ const Home = () => {
           ))}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className="mt-4 pt-4 border-t border-border space-y-3">
           <Button
             variant="ghost"
             size="sm"
             className="w-full text-sm text-muted-foreground hover:text-foreground"
-            onClick={() => setShowAllSimilarUsers(!showAllSimilarUsers)}
+            onClick={handleToggleShowAll}
           >
             <span>
-              Showing {similarUsers.length} of {allSimilarUsers.length} similar users
+              Showing {showAllSimilarUsers ? `${(currentPage - 1) * USERS_PER_PAGE + 1}-${Math.min(currentPage * USERS_PER_PAGE, allSimilarUsers.length)}` : similarUsers.length} of {allSimilarUsers.length} similar users
             </span>
             {showAllSimilarUsers ? (
               <ChevronUp className="w-4 h-4 ml-2" />
@@ -306,6 +322,30 @@ const Home = () => {
               <ChevronDown className="w-4 h-4 ml-2" />
             )}
           </Button>
+          
+          {showAllSimilarUsers && totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+              <span className="text-sm text-muted-foreground">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
 
