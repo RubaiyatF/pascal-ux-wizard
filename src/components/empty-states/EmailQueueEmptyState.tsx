@@ -22,8 +22,8 @@ export const EmailQueueEmptyState = () => {
           setCompletedSteps(parsed.completedSteps);
           
           // Determine the current step to show (first incomplete step)
-          let nextStep = 7; // Default to completed
-          for (let i = 1; i <= 6; i++) {
+          let nextStep = 8; // Default to completed
+          for (let i = 1; i <= 7; i++) {
             if (!parsed.completedSteps.includes(i)) {
               nextStep = i;
               break;
@@ -45,8 +45,8 @@ export const EmailQueueEmptyState = () => {
           if (parsed.completedSteps && Array.isArray(parsed.completedSteps)) {
             setCompletedSteps(parsed.completedSteps);
             
-            let nextStep = 7;
-            for (let i = 1; i <= 6; i++) {
+            let nextStep = 8;
+            for (let i = 1; i <= 7; i++) {
               if (!parsed.completedSteps.includes(i)) {
                 nextStep = i;
                 break;
@@ -86,27 +86,34 @@ export const EmailQueueEmptyState = () => {
       path: "/journey"
     },
     4: {
+      icon: Settings,
+      title: "Step 4: Integrate Email Provider",
+      description: "Configure your email service to start sending emails from Pascal",
+      action: "Go to Email Config",
+      path: "/settings?tab=email"
+    },
+    5: {
       icon: Mail,
-      title: "You're on Step 4!",
+      title: "You're on Step 5!",
       description: "This is the Email Queue page. Once you complete the previous steps, Pascal will start generating emails here automatically.",
       action: "Continue Setup",
       path: "/home"
     },
-    5: {
+    6: {
       icon: BarChart3,
-      title: "Step 5: Explore Analytics",
+      title: "Step 6: Explore Analytics",
       description: "View detailed metrics and insights about user engagement and email performance",
       action: "View Analytics",
       path: "/analytics"
     },
-    6: {
+    7: {
       icon: Settings,
-      title: "Step 6: Configure Reply Email",
+      title: "Step 7: Configure Reply Email",
       description: "Set up your reply email address to track customer responses in user journeys",
       action: "Go to Settings",
       path: "/settings"
     },
-    7: {
+    8: {
       icon: CheckCircle2,
       title: "Setup Complete! Waiting for AI Emails",
       description: "Great job! You've completed all setup steps. Pascal is now analyzing user behavior and will generate personalized emails automatically. Check back soon!",
@@ -128,11 +135,11 @@ export const EmailQueueEmptyState = () => {
           </div>
           
           <h1 className="text-3xl font-bold mb-4">
-            {currentStep === 7 ? 'All Set!' : 'Complete Your Setup'}
+            {currentStep === 8 ? 'All Set!' : 'Complete Your Setup'}
           </h1>
           
           <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-            {currentStep === 7 
+            {currentStep === 8 
               ? "Pascal will automatically generate personalized emails once user activity is detected"
               : "Follow the steps to start receiving AI-generated emails for user activation"
             }
@@ -140,7 +147,7 @@ export const EmailQueueEmptyState = () => {
 
           {/* Progress Indicator */}
           <div className="flex items-center justify-center gap-2 mb-8">
-            {[1, 2, 3, 4, 5, 6].map((step) => (
+            {[1, 2, 3, 4, 5, 6, 7].map((step) => (
               <div
                 key={step}
                 className={`h-2 w-12 rounded-full transition-all duration-300 ${
@@ -159,10 +166,10 @@ export const EmailQueueEmptyState = () => {
         <Card className="p-8 border-border bg-gradient-subtle">
           <div className="flex items-start gap-6">
             <div className={`w-16 h-16 rounded-full flex items-center justify-center shrink-0 ${
-              currentStep === 7 ? 'bg-success/10' : 'bg-primary/10'
+              currentStep === 8 ? 'bg-success/10' : 'bg-primary/10'
             }`}>
               <StepIcon className={`w-8 h-8 ${
-                currentStep === 7 ? 'text-success' : 'text-primary'
+                currentStep === 8 ? 'text-success' : 'text-primary'
               }`} />
             </div>
             
@@ -186,10 +193,10 @@ export const EmailQueueEmptyState = () => {
         </Card>
 
         {/* Completed Steps Summary */}
-        {completedSteps.length > 0 && currentStep < 7 && (
+        {completedSteps.length > 0 && currentStep < 8 && (
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              {completedSteps.length} of 6 setup steps completed
+              {completedSteps.length} of 7 setup steps completed
             </p>
           </div>
         )}

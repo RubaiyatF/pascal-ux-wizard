@@ -62,13 +62,13 @@ const Home = () => {
       
       // Auto-expand next step after a short delay
       setTimeout(() => {
-        if (step < 7) {
+        if (step < 8) {
           setExpandedStep(step + 1);
         }
       }, 300);
       
-      // Show celebration modal if this is the last required step (step 6)
-      if (step === 6 && newCompleted.length === 6) {
+      // Show celebration modal if this is the last required step (step 7)
+      if (step === 7 && newCompleted.length === 7) {
         setTimeout(() => {
           setIsCelebrationModalOpen(true);
         }, 500);
@@ -101,8 +101,8 @@ const Home = () => {
           setCompletedSteps(parsed.completedSteps);
           
           // Find first incomplete step to expand
-          if (parsed.completedSteps.length < 6) {
-            for (let i = 1; i <= 6; i++) {
+          if (parsed.completedSteps.length < 7) {
+            for (let i = 1; i <= 7; i++) {
               if (!parsed.completedSteps.includes(i)) {
                 setExpandedStep(i);
                 break;
@@ -110,7 +110,7 @@ const Home = () => {
             }
           } else {
             // All steps complete, expand the final "You're all set" step
-            setExpandedStep(7);
+            setExpandedStep(8);
           }
         }
       } catch (e) {
@@ -124,6 +124,7 @@ const Home = () => {
     const checkCompletions = () => {
       const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
       const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
+      const emailProviderConfigured = localStorage.getItem(`pascal-email-provider-${currentProject}`);
       const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
       const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
       const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
@@ -140,16 +141,20 @@ const Home = () => {
           newSteps.push(3);
           hasChanges = true;
         }
-        if (emailQueueVisited && !prev.includes(4)) {
+        if (emailProviderConfigured && !prev.includes(4)) {
           newSteps.push(4);
           hasChanges = true;
         }
-        if (analyticsVisited && !prev.includes(5)) {
+        if (emailQueueVisited && !prev.includes(5)) {
           newSteps.push(5);
           hasChanges = true;
         }
-        if (settingsVisited && !prev.includes(6)) {
+        if (analyticsVisited && !prev.includes(6)) {
           newSteps.push(6);
+          hasChanges = true;
+        }
+        if (settingsVisited && !prev.includes(7)) {
+          newSteps.push(7);
           hasChanges = true;
         }
 
@@ -158,8 +163,8 @@ const Home = () => {
           const sortedSteps = newSteps.sort((a, b) => a - b);
           
           // Find first incomplete step
-          let nextStep = 7; // Default to final step
-          for (let i = 1; i <= 6; i++) {
+          let nextStep = 8; // Default to final step
+          for (let i = 1; i <= 7; i++) {
             if (!sortedSteps.includes(i)) {
               nextStep = i;
               break;
@@ -201,9 +206,9 @@ const Home = () => {
     
     // Show toast for each newly completed step
     if (newlyCompleted.length > 0 && prevCompleted.length > 0) {
-      const stepNames = ['', 'Tracker', 'Benchmarks', 'Journey', 'Email Queue', 'Analytics', 'Settings'];
+      const stepNames = ['', 'Tracker', 'Benchmarks', 'Journey', 'Email Provider', 'Email Queue', 'Analytics', 'Settings'];
       newlyCompleted.forEach(step => {
-        if (step >= 1 && step <= 6) {
+        if (step >= 1 && step <= 7) {
           toast({
             title: "Step completed! ✓",
             description: `${stepNames[step]} step is now complete`,
@@ -305,9 +310,30 @@ const Home = () => {
     },
     {
       id: 4,
+      title: "Integrate email provider",
+      description: "Connect your email service to start sending emails from Pascal",
+      icon: Mail,
+      estimatedTime: "5 min",
+      content: (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Configure your email provider settings to enable Pascal to send personalized activation emails on your behalf.
+          </p>
+          <Button 
+            onClick={() => handleNavigateToPage(4, '/settings?tab=email')} 
+            className="w-full"
+          >
+            Go to Email Config
+            <ChevronRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      )
+    },
+    {
+      id: 5,
       title: "Review email queue",
       description: "Accept or reject Pascal's suggested emails to activate users",
-      icon: Mail,
+      icon: Sparkles,
       estimatedTime: "5 min",
       content: (
         <div className="space-y-4">
@@ -315,7 +341,7 @@ const Home = () => {
             Pascal generates personalized emails based on user behavior. Review, edit, and approve emails before they're sent to help users reach activation.
           </p>
           <Button 
-            onClick={() => handleNavigateToPage(4, '/email-queue')} 
+            onClick={() => handleNavigateToPage(5, '/email-queue')} 
             className="w-full"
           >
             Go to Email Queue
@@ -325,7 +351,7 @@ const Home = () => {
       )
     },
     {
-      id: 5,
+      id: 6,
       title: "Explore analytics",
       description: "View detailed metrics and insights about user engagement",
       icon: BarChart3,
@@ -336,7 +362,7 @@ const Home = () => {
             Track key metrics like active users, engagement rates, feature adoption, and email performance to measure your success.
           </p>
           <Button 
-            onClick={() => handleNavigateToPage(5, '/analytics')} 
+            onClick={() => handleNavigateToPage(6, '/analytics')} 
             className="w-full"
           >
             Go to Analytics
@@ -346,7 +372,7 @@ const Home = () => {
       )
     },
     {
-      id: 6,
+      id: 7,
       title: "Configure reply email",
       description: "Add your reply email address to track responses in user journeys",
       icon: Settings,
@@ -357,7 +383,7 @@ const Home = () => {
             Set up your reply email address so Pascal can track customer responses and stitch them into the user journey timeline.
           </p>
           <Button 
-            onClick={() => handleNavigateToPage(6, '/settings')} 
+            onClick={() => handleNavigateToPage(7, '/settings')} 
             className="w-full"
           >
             Go to Settings
@@ -367,7 +393,7 @@ const Home = () => {
       )
     },
     {
-      id: 7,
+      id: 8,
       title: "You're all set!",
       description: "Pascal is ready to help you build the most engaged user base",
       icon: Check,
