@@ -67,14 +67,25 @@ export const EditEmailModal = ({
           {/* Body */}
           <div>
             <Label htmlFor="body">Email Body</Label>
-            <Textarea
-              id="body"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Email content..."
-              rows={12}
-              className="font-mono text-sm"
-            />
+            <div className="bg-background border border-border rounded-lg overflow-hidden">
+              <div className="px-3 py-3 bg-white">
+                <Textarea
+                  id="body"
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  placeholder="Hi there,
+
+Your email content here...
+
+Best regards,
+Sarah Thompson
+Customer Success Team
+support@company.com"
+                  rows={12}
+                  className="text-sm border-0 p-0 focus-visible:ring-0 resize-none"
+                />
+              </div>
+            </div>
           </div>
 
         </div>

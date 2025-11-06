@@ -358,8 +358,12 @@ export const JourneyTimeline = ({
                           </div>
                           <div>
                             <label className="text-xs font-medium text-muted-foreground block mb-2">Full Message</label>
-                            <div className="text-sm leading-relaxed whitespace-pre-wrap">
-                              {event.content}
+                            <div className="bg-background border border-border rounded-lg overflow-hidden">
+                              <div className="px-3 py-3 bg-white">
+                                <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                                  {event.content}
+                                </div>
+                              </div>
                             </div>
                           </div>
                           {event.direction === "reply" && (

@@ -147,9 +147,13 @@ export const ConversationThreadModal = ({
                           Subject: {message.subject}
                         </p>
                       )}
-                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                        {message.content}
-                      </p>
+                      <div className="bg-background border border-border rounded-lg overflow-hidden">
+                        <div className="px-3 py-3 bg-white">
+                          <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                            {message.content}
+                          </div>
+                        </div>
+                      </div>
                       {message.type === "sent" && (
                         <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                           {message.opened && <span>✓ Opened</span>}

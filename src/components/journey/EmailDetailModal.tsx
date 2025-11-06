@@ -94,10 +94,14 @@ export const EmailDetailModal = ({
         </div>
 
         {/* Email Content */}
-        <div className="bg-muted/50 rounded-lg p-4 border border-border">
+        <div>
           <label className="text-sm font-medium text-muted-foreground mb-2 block">Message</label>
-          <div className="text-sm leading-relaxed whitespace-pre-wrap">
-            {email.content}
+          <div className="bg-background border border-border rounded-lg overflow-hidden">
+            <div className="px-4 py-4 bg-white">
+              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                {email.content}
+              </div>
+            </div>
           </div>
         </div>
 

@@ -163,11 +163,15 @@ The Pascal Team`;
 
             <div>
               <label className="text-sm font-medium mb-2 block">Email Body</label>
-              <Textarea
-                value={emailBody}
-                onChange={(e) => setEmailBody(e.target.value)}
-                className="min-h-[350px] font-mono text-sm"
-              />
+              <div className="bg-background border border-border rounded-lg overflow-hidden">
+                <div className="px-4 py-4 bg-white">
+                  <Textarea
+                    value={emailBody}
+                    onChange={(e) => setEmailBody(e.target.value)}
+                    className="min-h-[350px] text-sm border-0 p-0 focus-visible:ring-0 resize-none"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* AI Insights */}
