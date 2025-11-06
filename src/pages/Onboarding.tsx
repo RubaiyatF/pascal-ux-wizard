@@ -62,7 +62,7 @@ const Onboarding = () => {
       <div className="max-w-4xl mx-auto py-12">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white">
+          <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full overflow-hidden">
             <AnimatedLogo />
           </div>
           <h1 className="text-3xl font-bold mb-2">Welcome to Pascal</h1>
