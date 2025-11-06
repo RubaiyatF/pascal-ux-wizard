@@ -4,11 +4,11 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatedLogo } from "../AnimatedLogo";
 
-interface HomeEmptyStateProps {
+interface BenchmarksEmptyStateProps {
   onAddBenchmark: () => void;
 }
 
-export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
+export const BenchmarksEmptyState = ({ onAddBenchmark }: BenchmarksEmptyStateProps) => {
   const navigate = useNavigate();
 
   return (

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { UserDetailsModal } from "@/components/home/UserDetailsModal";
-import { HomeEmptyState } from "@/components/empty-states/HomeEmptyState";
+import { BenchmarksEmptyState } from "@/components/empty-states/BenchmarksEmptyState";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { useNavigate } from "react-router-dom";
@@ -140,7 +140,7 @@ const Benchmarks = () => {
   if (benchmarkUsers.length === 0) {
     return (
       <>
-        <HomeEmptyState onAddBenchmark={() => setAddBenchmarkOpen(true)} />
+        <BenchmarksEmptyState onAddBenchmark={() => setAddBenchmarkOpen(true)} />
         <AddBenchmarkModal
           open={addBenchmarkOpen}
           onOpenChange={setAddBenchmarkOpen}
