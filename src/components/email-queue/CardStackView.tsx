@@ -65,7 +65,7 @@ export const CardStackView = ({
       </div>
 
       {/* Action Buttons */}
-      <div className={`flex items-center justify-center gap-6 relative z-50 transition-all duration-300 ${isTopCardExpanded ? 'pt-16 mt-12' : 'pt-12 mt-10'}`}>
+      <div className={`flex items-center justify-center gap-6 relative z-50 transition-all duration-300 ${isTopCardExpanded ? 'mt-[280px]' : 'pt-12 mt-10'}`}>
         <Button
           size="lg"
           variant="outline"
