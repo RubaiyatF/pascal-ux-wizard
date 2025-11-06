@@ -238,15 +238,6 @@ const EmailQueue = () => {
           {/* View Mode Toggle */}
           <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
             <Button
-              variant={viewMode === "stack" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setViewMode("stack")}
-              className="h-8"
-            >
-              <Layers className="w-4 h-4 mr-2" />
-              Stack
-            </Button>
-            <Button
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
@@ -254,6 +245,15 @@ const EmailQueue = () => {
             >
               <LayoutGrid className="w-4 h-4 mr-2" />
               List
+            </Button>
+            <Button
+              variant={viewMode === "stack" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("stack")}
+              className="h-8"
+            >
+              <Layers className="w-4 h-4 mr-2" />
+              Stack
             </Button>
           </div>
 
