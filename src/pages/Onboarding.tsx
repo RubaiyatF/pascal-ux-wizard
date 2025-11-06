@@ -287,9 +287,9 @@ const Onboarding = () => {
                         <Button 
                           size="sm" 
                           className="bg-primary hover:bg-primary/90" 
-                          onClick={() => navigate("/home")}
+                          onClick={() => navigate("/email-queue")}
                         >
-                          Go to Dashboard
+                          Start using Pascal
                         </Button>
                       </div>
                     </div>
@@ -309,7 +309,7 @@ const Onboarding = () => {
               Back
             </Button>
             <Button
-              onClick={handleNext}
+              onClick={step === 3 && eventsDetected ? () => navigate("/email-queue") : handleNext}
               disabled={
                 (step === 1 && (!projectName || !website)) || 
                 (step === 3 && !eventsDetected)
