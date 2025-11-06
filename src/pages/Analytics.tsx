@@ -71,18 +71,18 @@ const Analytics = () => {
                 <span className={`text-sm font-medium ${
                   selectedMetrics.includes("activeUsers") 
                     ? "text-white" 
-                    : "text-success"
+                    : "text-black"
                 }`}>+12%</span>
               </div>
               <p className={`text-sm mb-1 ${
                 selectedMetrics.includes("activeUsers") 
                   ? "text-white/80" 
-                  : "text-muted-foreground"
+                  : "text-black"
               }`}>Active Users</p>
               <p className={`text-2xl font-bold ${
                 selectedMetrics.includes("activeUsers") 
                   ? "text-white" 
-                  : ""
+                  : "text-black"
               }`}>890</p>
             </Button>
 
@@ -110,18 +110,18 @@ const Analytics = () => {
                 <span className={`text-sm font-medium ${
                   selectedMetrics.includes("activation") 
                     ? "text-white" 
-                    : "text-success"
+                    : "text-black"
                 }`}>+5.2%</span>
               </div>
               <p className={`text-sm mb-1 ${
                 selectedMetrics.includes("activation") 
                   ? "text-white/80" 
-                  : "text-muted-foreground"
+                  : "text-black"
               }`}>Avg Activation</p>
               <p className={`text-2xl font-bold ${
                 selectedMetrics.includes("activation") 
                   ? "text-white" 
-                  : ""
+                  : "text-black"
               }`}>68%</p>
             </Button>
 
@@ -149,18 +149,18 @@ const Analytics = () => {
                 <span className={`text-sm font-medium ${
                   selectedMetrics.includes("retention") 
                     ? "text-white" 
-                    : "text-success"
+                    : "text-black"
                 }`}>+3.1%</span>
               </div>
               <p className={`text-sm mb-1 ${
                 selectedMetrics.includes("retention") 
                   ? "text-white/80" 
-                  : "text-muted-foreground"
+                  : "text-black"
               }`}>Retention</p>
               <p className={`text-2xl font-bold ${
                 selectedMetrics.includes("retention") 
                   ? "text-white" 
-                  : ""
+                  : "text-black"
               }`}>82%</p>
             </Button>
 
@@ -188,18 +188,18 @@ const Analytics = () => {
                 <span className={`text-sm font-medium ${
                   selectedMetrics.includes("featureAdoption") 
                     ? "text-white" 
-                    : "text-success"
+                    : "text-black"
                 }`}>+8%</span>
               </div>
               <p className={`text-sm mb-1 ${
                 selectedMetrics.includes("featureAdoption") 
                   ? "text-white/80" 
-                  : "text-muted-foreground"
+                  : "text-black"
               }`}>Feature Adoption</p>
               <p className={`text-2xl font-bold ${
                 selectedMetrics.includes("featureAdoption") 
                   ? "text-white" 
-                  : ""
+                  : "text-black"
               }`}>65%</p>
             </Button>
           </div>
