@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { ProjectProvider } from "./contexts/ProjectContext";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
+import Home from "./pages/Home";
 import EmailQueue from "./pages/EmailQueue";
 import Journey from "./pages/Journey";
 import Benchmarks from "./pages/Benchmarks";
@@ -26,9 +27,17 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Navigate to="/email-queue" replace />} />
+              <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/onboarding" element={<Onboarding />} />
+              <Route
+                path="/home"
+                element={
+                  <Layout>
+                    <Home />
+                  </Layout>
+                }
+              />
               <Route
                 path="/email-queue"
                 element={

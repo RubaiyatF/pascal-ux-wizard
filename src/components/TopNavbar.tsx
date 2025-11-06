@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,7 +19,10 @@ export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const { currentProject, setCurrentProject, projects, setProjects } = useProject();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  
+  const isHomeActive = location.pathname === '/home' || location.pathname === '/';
 
   const handleLogout = () => {
     toast({
@@ -34,26 +37,37 @@ export const TopNavbar = () => {
     setProjects([...projects, projectName]);
     // Set it as the current project
     setCurrentProject(projectName);
-    // Navigate to email-queue (main page showing empty states for new projects)
-    navigate("/email-queue");
+    // Navigate to home for onboarding
+    navigate("/home");
   };
 
   const handleProjectSwitch = (projectName: string) => {
     setCurrentProject(projectName);
-    // Navigate to the main page when switching projects
-    navigate("/email-queue");
+    // Navigate to home for new projects, email-queue for Pascal Demo
+    if (projectName === "Pascal Demo") {
+      navigate("/email-queue");
+    } else {
+      navigate("/home");
+    }
   };
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50 flex items-center px-4 gap-4">
-        {/* Logo */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Logo - Clickable */}
+        <button
+          onClick={() => navigate('/home')}
+          className={`flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-colors ${
+            isHomeActive 
+              ? 'bg-accent text-accent-foreground' 
+              : 'hover:bg-accent/50'
+          }`}
+        >
           <div className="w-8 h-8 rounded-full overflow-hidden">
             <AnimatedLogo />
           </div>
           <span className="font-bold text-lg">Pascal</span>
-        </div>
+        </button>
 
         {/* Spacer */}
         <div className="flex-1" />
