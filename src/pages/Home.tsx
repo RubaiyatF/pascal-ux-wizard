@@ -55,20 +55,27 @@ const Home = () => {
   };
 
   const markStepComplete = (step: number) => {
-    if (!completedSteps.includes(step)) {
-      const newCompletedSteps = [...completedSteps, step];
-      setCompletedSteps(newCompletedSteps);
+    setCompletedSteps(prev => {
+      if (prev.includes(step)) return prev;
       
-      // If this is the last step (step 6), show celebration modal
-      if (step === 6 && newCompletedSteps.length === 6) {
-        setIsCelebrationModalOpen(true);
+      const newCompleted = [...prev, step].sort((a, b) => a - b);
+      
+      // Auto-expand next step after a short delay
+      setTimeout(() => {
+        if (step < 7) {
+          setExpandedStep(step + 1);
+        }
+      }, 300);
+      
+      // Show celebration modal if this is the last required step (step 6)
+      if (step === 6 && newCompleted.length === 6) {
+        setTimeout(() => {
+          setIsCelebrationModalOpen(true);
+        }, 500);
       }
       
-      // Auto-expand next step
-      if (step < 7) {
-        setExpandedStep(step + 1);
-      }
-    }
+      return newCompleted;
+    });
   };
 
   const handleTrackerVerified = () => {
@@ -88,16 +95,26 @@ const Home = () => {
   useEffect(() => {
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
     if (saved) {
-      const parsed = JSON.parse(saved);
-      setCompletedSteps(parsed.completedSteps || []);
-      if (parsed.completedSteps?.length < 6) {
-        // Find first incomplete step
-        for (let i = 1; i <= 6; i++) {
-          if (!parsed.completedSteps.includes(i)) {
-            setExpandedStep(i);
-            break;
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.completedSteps && Array.isArray(parsed.completedSteps)) {
+          setCompletedSteps(parsed.completedSteps);
+          
+          // Find first incomplete step to expand
+          if (parsed.completedSteps.length < 6) {
+            for (let i = 1; i <= 6; i++) {
+              if (!parsed.completedSteps.includes(i)) {
+                setExpandedStep(i);
+                break;
+              }
+            }
+          } else {
+            // All steps complete, expand the final "You're all set" step
+            setExpandedStep(7);
           }
         }
+      } catch (e) {
+        console.error('Error loading onboarding progress:', e);
       }
     }
   }, [currentProject]);
@@ -152,7 +169,38 @@ const Home = () => {
     };
   }, [currentProject]);
 
-  // Save completed steps to localStorage whenever they change
+  // Show toast when steps are completed
+  useEffect(() => {
+    const prevCompleted = JSON.parse(
+      localStorage.getItem(`pascal-onboarding-prev-${currentProject}`) || '[]'
+    );
+    
+    // Find newly completed steps
+    const newlyCompleted = completedSteps.filter(
+      step => !prevCompleted.includes(step)
+    );
+    
+    // Show toast for each newly completed step
+    if (newlyCompleted.length > 0 && prevCompleted.length > 0) {
+      const stepNames = ['', 'Tracker', 'Benchmarks', 'Journey', 'Email Queue', 'Analytics', 'Settings'];
+      newlyCompleted.forEach(step => {
+        if (step >= 1 && step <= 6) {
+          toast({
+            title: "Step completed! ✓",
+            description: `${stepNames[step]} step is now complete`,
+          });
+        }
+      });
+    }
+    
+    // Save current state
+    localStorage.setItem(
+      `pascal-onboarding-prev-${currentProject}`,
+      JSON.stringify(completedSteps)
+    );
+  }, [completedSteps, currentProject, toast]);
+
+  // Save completed steps to localStorage
   useEffect(() => {
     if (completedSteps.length > 0) {
       localStorage.setItem(
@@ -379,26 +427,34 @@ const Home = () => {
             return (
               <Card 
                 key={step.id}
-                className={`border-border transition-all ${isCompleted ? 'bg-success/5 border-success/20' : 'bg-card'}`}
+                className={`border transition-all duration-300 ${
+                  isCompleted 
+                    ? 'bg-success/5 border-success/30' 
+                    : isExpanded 
+                      ? 'bg-card border-primary/50 shadow-lg' 
+                      : 'bg-card border-border'
+                }`}
               >
                 <button
                   onClick={() => toggleStep(step.id)}
                   className="w-full p-6 flex items-center gap-4 text-left hover:bg-accent/5 transition-colors"
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                     isCompleted 
-                      ? 'bg-success text-success-foreground' 
+                      ? 'bg-success text-success-foreground scale-110' 
                       : 'bg-muted text-muted-foreground'
                   }`}>
                     {isCompleted ? (
-                      <Check className="w-5 h-5" />
+                      <Check className="w-5 h-5 animate-scale-in" />
                     ) : (
                       <StepIcon className="w-5 h-5" />
                     )}
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-foreground mb-1">
+                    <h3 className={`font-semibold mb-1 transition-colors ${
+                      isCompleted ? 'text-success' : 'text-foreground'
+                    }`}>
                       {step.title}
                     </h3>
                     <p className="text-sm text-muted-foreground">
@@ -407,11 +463,17 @@ const Home = () => {
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <Badge variant="outline" className="text-xs">
-                      {step.estimatedTime}
-                    </Badge>
+                    {isCompleted ? (
+                      <Badge variant="outline" className="text-xs bg-success/10 border-success/30 text-success">
+                        Complete
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-xs">
+                        {step.estimatedTime}
+                      </Badge>
+                    )}
                     <ChevronRight 
-                      className={`w-5 h-5 text-muted-foreground transition-transform ${
+                      className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
                         isExpanded ? 'rotate-90' : ''
                       }`} 
                     />
