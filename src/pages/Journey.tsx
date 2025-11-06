@@ -38,6 +38,12 @@ const Journey = () => {
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Mark onboarding step 3 as complete when Journey is visited
+  useEffect(() => {
+    localStorage.setItem(`pascal-journey-visited-${currentProject}`, 'true');
+  }, [currentProject]);
+
   const users: User[] = currentProject === "Pascal Demo" ? [{
     name: "Sarah Johnson",
     email: "sarah@startup.io",

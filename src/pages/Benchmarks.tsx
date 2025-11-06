@@ -80,6 +80,9 @@ const Benchmarks = () => {
 
     setBenchmarkUsers([...benchmarkUsers, newUser]);
     
+    // Mark onboarding step 2 as complete
+    localStorage.setItem(`pascal-benchmark-added-${currentProject}`, 'true');
+    
     toast({
       title: "Benchmark user added",
       description: `${email} has been added as a benchmark user`,

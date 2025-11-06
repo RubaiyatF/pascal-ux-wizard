@@ -76,7 +76,7 @@ const Home = () => {
   };
 
   const handleNavigateToPage = (step: number, path: string) => {
-    markStepComplete(step);
+    // Don't mark complete here - let the actual page mark it when action is performed
     navigate(path);
   };
 
@@ -84,8 +84,39 @@ const Home = () => {
     setHelpModalType(type);
   };
 
-  // Load completed steps from localStorage on mount
+  // Check for step completions from other pages
   useEffect(() => {
+    const checkCompletions = () => {
+      const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
+      const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
+      const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
+      const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
+      const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
+
+      const newCompletedSteps = [...completedSteps];
+      
+      if (benchmarkAdded && !completedSteps.includes(2)) {
+        newCompletedSteps.push(2);
+      }
+      if (journeyVisited && !completedSteps.includes(3)) {
+        newCompletedSteps.push(3);
+      }
+      if (emailQueueVisited && !completedSteps.includes(4)) {
+        newCompletedSteps.push(4);
+      }
+      if (analyticsVisited && !completedSteps.includes(5)) {
+        newCompletedSteps.push(5);
+      }
+      if (settingsVisited && !completedSteps.includes(6)) {
+        newCompletedSteps.push(6);
+      }
+
+      if (newCompletedSteps.length > completedSteps.length) {
+        setCompletedSteps(newCompletedSteps);
+      }
+    };
+
+    // Check on mount and load from localStorage
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
     if (saved) {
       const parsed = JSON.parse(saved);
@@ -100,7 +131,20 @@ const Home = () => {
         }
       }
     }
-  }, [currentProject]);
+
+    checkCompletions();
+
+    // Poll for updates every 2 seconds
+    const interval = setInterval(checkCompletions, 2000);
+
+    // Also check when window gains focus (user returns from another page)
+    window.addEventListener('focus', checkCompletions);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', checkCompletions);
+    };
+  }, [currentProject, completedSteps]);
 
   // Save completed steps to localStorage whenever they change
   useEffect(() => {

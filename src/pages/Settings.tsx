@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,12 +11,20 @@ import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, 
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useProject } from "@/contexts/ProjectContext";
 
 const Settings = () => {
   const { toast } = useToast();
+  const { currentProject } = useProject();
   const [recordingEnabled, setRecordingEnabled] = useState(true);
   const [emailInsightsEnabled, setEmailInsightsEnabled] = useState(true);
   const [aiAnalysisEnabled, setAiAnalysisEnabled] = useState(true);
+
+  // Mark onboarding step 6 as complete when Settings is visited
+  useEffect(() => {
+    localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
+  }, [currentProject]);
+
   const [apiKeys, setApiKeys] = useState([
     { id: 1, name: "test 2", key: "pk_a903de21a...", fullKey: "pk_a903de21a123456789", status: "active", created: "11/4/2025" },
     { id: 2, name: "Default API Key", key: "pk_55629ba77...", fullKey: "pk_55629ba77987654321", status: "active", created: "11/4/2025" }
