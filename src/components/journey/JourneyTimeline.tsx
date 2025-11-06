@@ -202,13 +202,7 @@ export const JourneyTimeline = ({
                               </div>
                             </div>
                           )}
-                          <div className={`rounded-lg p-3 border ${
-                            event.score! >= 70 
-                              ? "bg-success/5 border-success/20" 
-                              : event.score! < 50 
-                              ? "bg-destructive/5 border-destructive/20" 
-                              : "bg-white border-border"
-                          }`}>
+                          <div className="bg-white rounded-lg p-3 border border-border">
                             <div className="flex items-start gap-2">
                               <div className="w-4 h-4 mt-0.5 shrink-0">
                                 <AnimatedLogo />

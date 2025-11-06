@@ -143,13 +143,7 @@ export const SessionRecordingModal = ({
           </Card>
 
           {/* AI Summary */}
-          <Card className={`p-4 border ${
-            sessionAnalysis.activationSignals && sessionAnalysis.activationSignals.length > 2
-              ? "bg-success/5 border-success/20"
-              : sessionAnalysis.concerns && sessionAnalysis.concerns.length > 1
-              ? "bg-destructive/5 border-destructive/20"
-              : "bg-white border-border"
-          }`}>
+          <Card className="p-4 bg-white border-border">
             <div className="flex items-start gap-3">
               <div className="w-5 h-5 mt-0.5 rounded-full overflow-hidden shrink-0">
                 <AnimatedLogo />
