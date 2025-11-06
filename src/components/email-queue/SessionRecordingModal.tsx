@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { X, Play, Pause, SkipForward, SkipBack, Download, Maximize, Sparkles, TrendingUp, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 interface SessionRecordingModalProps {
   isOpen: boolean;
@@ -142,12 +143,14 @@ export const SessionRecordingModal = ({
           </Card>
 
           {/* AI Summary */}
-          <Card className="p-4 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+          <Card className="p-4 bg-white border-border">
             <div className="flex items-start gap-3">
-              <TrendingUp className="w-5 h-5 text-primary mt-0.5" />
+              <div className="w-5 h-5 mt-0.5 rounded-full overflow-hidden shrink-0">
+                <AnimatedLogo />
+              </div>
               <div className="flex-1">
                 <h4 className="font-semibold mb-2">AI Analysis</h4>
-                <p className="text-sm whitespace-pre-line">
+                <p className="text-sm whitespace-pre-line text-muted-foreground">
                   {sessionAnalysis.aiSummary}
                 </p>
               </div>
