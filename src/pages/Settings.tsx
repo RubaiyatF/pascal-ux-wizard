@@ -11,65 +11,42 @@ import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, 
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 const Settings = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [recordingEnabled, setRecordingEnabled] = useState(true);
   const [emailInsightsEnabled, setEmailInsightsEnabled] = useState(true);
   const [aiAnalysisEnabled, setAiAnalysisEnabled] = useState(true);
-  const [apiKeys, setApiKeys] = useState([{
-    id: 1,
-    name: "test 2",
-    key: "pk_a903de21a...",
-    fullKey: "pk_a903de21a123456789",
-    status: "active",
-    created: "11/4/2025"
-  }, {
-    id: 2,
-    name: "Default API Key",
-    key: "pk_55629ba77...",
-    fullKey: "pk_55629ba77987654321",
-    status: "active",
-    created: "11/4/2025"
-  }]);
+  const [apiKeys, setApiKeys] = useState([
+    { id: 1, name: "test 2", key: "pk_a903de21a...", fullKey: "pk_a903de21a123456789", status: "active", created: "11/4/2025" },
+    { id: 2, name: "Default API Key", key: "pk_55629ba77...", fullKey: "pk_55629ba77987654321", status: "active", created: "11/4/2025" }
+  ]);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [newGeneratedKey, setNewGeneratedKey] = useState("");
   const [projectId] = useState("proj_demo_abc123");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("editor");
-  const [teamMembers, setTeamMembers] = useState([{
-    id: 1,
-    email: "you@company.com",
-    role: "Owner",
-    status: "Active",
-    joined: "Jan 2024"
-  }, {
-    id: 2,
-    email: "alex@company.com",
-    role: "Editor",
-    status: "Active",
-    joined: "Feb 2024"
-  }, {
-    id: 3,
-    email: "sarah@company.com",
-    role: "Viewer",
-    status: "Pending",
-    joined: "Mar 2024"
-  }]);
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, email: "you@company.com", role: "Owner", status: "Active", joined: "Jan 2024" },
+    { id: 2, email: "alex@company.com", role: "Editor", status: "Active", joined: "Feb 2024" },
+    { id: 3, email: "sarah@company.com", role: "Viewer", status: "Pending", joined: "Mar 2024" },
+  ]);
+
   const handleSave = () => {
     toast({
       title: "Settings saved",
-      description: "Your changes have been saved successfully."
+      description: "Your changes have been saved successfully.",
     });
   };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({
       title: "Copied to clipboard",
-      description: "The code has been copied to your clipboard."
+      description: "The code has been copied to your clipboard.",
     });
   };
+
   const generateNewKey = () => {
     const fullKey = `pk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
     const newKey = {
@@ -84,6 +61,7 @@ const Settings = () => {
     setNewGeneratedKey(fullKey);
     setShowApiKeyModal(true);
   };
+
   const revokeKey = (keyId: number) => {
     setApiKeys(apiKeys.filter(k => k.id !== keyId));
     toast({
@@ -92,6 +70,7 @@ const Settings = () => {
       variant: "destructive"
     });
   };
+
   const handleInviteTeammate = () => {
     if (!inviteEmail) {
       toast({
@@ -111,32 +90,35 @@ const Settings = () => {
       });
       return;
     }
+
     const newMember = {
       id: teamMembers.length + 1,
       email: inviteEmail,
       role: inviteRole.charAt(0).toUpperCase() + inviteRole.slice(1),
       status: "Pending",
-      joined: new Date().toLocaleDateString('en-US', {
-        month: 'short',
-        year: 'numeric'
-      })
+      joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     };
+
     setTeamMembers([...teamMembers, newMember]);
     setInviteEmail("");
     setInviteRole("editor");
+
     toast({
       title: "Invitation sent",
-      description: `An invitation has been sent to ${inviteEmail}`
+      description: `An invitation has been sent to ${inviteEmail}`,
     });
   };
+
   const removeTeamMember = (memberId: number) => {
     setTeamMembers(teamMembers.filter(m => m.id !== memberId));
     toast({
       title: "Member removed",
-      description: "The team member has been removed."
+      description: "The team member has been removed.",
     });
   };
-  return <div className="space-y-6 animate-fade-in max-w-4xl">
+
+  return (
+    <div className="space-y-6 animate-fade-in max-w-4xl">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold mb-2">Settings</h1>
@@ -171,7 +153,12 @@ const Settings = () => {
               <div>
                 <Label htmlFor="brevo-key">API Key</Label>
                 <div className="flex gap-2">
-                  <Input id="brevo-key" type="password" placeholder="xkeysib-abc123..." defaultValue="xkeysib-abc123..." />
+                  <Input
+                    id="brevo-key"
+                    type="password"
+                    placeholder="xkeysib-abc123..."
+                    defaultValue="xkeysib-abc123..."
+                  />
                   <Button variant="outline">Verify</Button>
                 </div>
               </div>
@@ -183,17 +170,31 @@ const Settings = () => {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="from-email">From Email</Label>
-                <Input id="from-email" type="email" placeholder="noreply@example.com" defaultValue="noreply@example.com" />
+                <Input
+                  id="from-email"
+                  type="email"
+                  placeholder="noreply@example.com"
+                  defaultValue="noreply@example.com"
+                />
               </div>
 
               <div>
                 <Label htmlFor="from-name">From Name</Label>
-                <Input id="from-name" placeholder="Pascal Analytics" defaultValue="Pascal Analytics" />
+                <Input
+                  id="from-name"
+                  placeholder="Pascal Analytics"
+                  defaultValue="Pascal Analytics"
+                />
               </div>
 
               <div>
                 <Label htmlFor="app-url">App URL</Label>
-                <Input id="app-url" type="url" placeholder="https://example.com" defaultValue="https://example.com" />
+                <Input
+                  id="app-url"
+                  type="url"
+                  placeholder="https://example.com"
+                  defaultValue="https://example.com"
+                />
               </div>
             </div>
           </Card>
@@ -203,7 +204,12 @@ const Settings = () => {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="daily-limit">Daily Email Limit</Label>
-                <Input id="daily-limit" type="number" placeholder="100" defaultValue="100" />
+                <Input
+                  id="daily-limit"
+                  type="number"
+                  placeholder="100"
+                  defaultValue="100"
+                />
                 <p className="text-xs text-muted-foreground mt-1">
                   Maximum emails per day
                 </p>
@@ -237,16 +243,30 @@ const Settings = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="projectName">Project Name</Label>
-                <Input id="projectName" defaultValue="My SaaS Product" placeholder="Enter project name" />
+                <Input
+                  id="projectName"
+                  defaultValue="My SaaS Product"
+                  placeholder="Enter project name"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="website">Website URL</Label>
-                <Input id="website" type="url" defaultValue="https://myapp.com" placeholder="https://your-website.com" />
+                <Input
+                  id="website"
+                  type="url"
+                  defaultValue="https://myapp.com"
+                  placeholder="https://your-website.com"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="projectId">Project ID</Label>
                 <div className="flex gap-2">
-                  <Input id="projectId" defaultValue="proj_demo_abc123" disabled className="flex-1" />
+                  <Input
+                    id="projectId"
+                    defaultValue="proj_demo_abc123"
+                    disabled
+                    className="flex-1"
+                  />
                   <Button variant="outline" size="icon">
                     <Key className="w-4 h-4" />
                   </Button>
@@ -272,11 +292,15 @@ const Settings = () => {
             </div>
 
             <div className="space-y-4 mb-6">
-              {teamMembers.map(member => <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
+              {teamMembers.map((member) => (
+                <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-medium">{member.email}</p>
-                      <Badge variant="outline" className={member.status === "Active" ? "bg-success/10 text-success border-success/20" : "bg-warning/10 text-warning border-warning/20"}>
+                      <Badge 
+                        variant="outline" 
+                        className={member.status === "Active" ? "bg-success/10 text-success border-success/20" : "bg-warning/10 text-warning border-warning/20"}
+                      >
                         {member.status}
                       </Badge>
                     </div>
@@ -284,10 +308,18 @@ const Settings = () => {
                       {member.role} · Joined {member.joined}
                     </p>
                   </div>
-                  {member.role !== "Owner" && <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => removeTeamMember(member.id)}>
+                  {member.role !== "Owner" && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => removeTeamMember(member.id)}
+                    >
                       <X className="w-4 h-4" />
-                    </Button>}
-                </div>)}
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
           </Card>
 
@@ -300,7 +332,13 @@ const Settings = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="inviteEmail">Email Address</Label>
-                <Input id="inviteEmail" type="email" placeholder="teammate@company.com" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} />
+                <Input
+                  id="inviteEmail"
+                  type="email"
+                  placeholder="teammate@company.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                />
               </div>
 
               <div className="space-y-2">
@@ -320,7 +358,10 @@ const Settings = () => {
                 </p>
               </div>
 
-              <Button onClick={handleInviteTeammate} className="bg-gradient-hero hover:opacity-90">
+              <Button 
+                onClick={handleInviteTeammate} 
+                className="bg-gradient-hero hover:opacity-90"
+              >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Send Invitation
               </Button>
@@ -350,7 +391,11 @@ const Settings = () => {
                     Record user sessions with rrweb for replay
                   </p>
                 </div>
-                <Switch id="recording" checked={recordingEnabled} onCheckedChange={setRecordingEnabled} />
+                <Switch
+                  id="recording"
+                  checked={recordingEnabled}
+                  onCheckedChange={setRecordingEnabled}
+                />
               </div>
 
               <Separator />
@@ -402,7 +447,8 @@ const Settings = () => {
             </div>
             
             <div className="space-y-4">
-              {apiKeys.map(apiKey => <div key={apiKey.id} className="border border-border rounded-lg p-4">
+              {apiKeys.map((apiKey) => (
+                <div key={apiKey.id} className="border border-border rounded-lg p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -418,11 +464,17 @@ const Settings = () => {
                         Created {apiKey.created}
                       </p>
                     </div>
-                    <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20" onClick={() => revokeKey(apiKey.id)}>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                      onClick={() => revokeKey(apiKey.id)}
+                    >
                       Revoke
                     </Button>
                   </div>
-                </div>)}
+                </div>
+              ))}
             </div>
           </Card>
 
@@ -440,7 +492,7 @@ const Settings = () => {
                 </Label>
                 <div className="relative">
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                  {`<script
+{`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="${projectId}"
   data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
@@ -448,13 +500,18 @@ const Settings = () => {
   async
 ></script>`}
                   </pre>
-                  <Button size="sm" variant="outline" className="absolute top-2 right-2" onClick={() => copyToClipboard(`<script
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute top-2 right-2"
+                    onClick={() => copyToClipboard(`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="${projectId}"
   data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
   data-recording="true"
   async
-></script>`)}>
+></script>`)}
+                  >
                     <Copy className="w-4 h-4" />
                   </Button>
                 </div>
@@ -498,7 +555,12 @@ const Settings = () => {
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
                     <code>npm install @pascal/tracker</code>
                   </pre>
-                  <Button size="sm" variant="outline" className="absolute top-2 right-2" onClick={() => copyToClipboard('npm install @pascal/tracker')}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute top-2 right-2"
+                    onClick={() => copyToClipboard('npm install @pascal/tracker')}
+                  >
                     <Copy className="w-4 h-4" />
                   </Button>
                 </div>
@@ -510,7 +572,7 @@ const Settings = () => {
                 </Label>
                 <div className="relative">
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                  {`import { PascalTracker } from '@pascal/tracker';
+{`import { PascalTracker } from '@pascal/tracker';
 
 const tracker = new PascalTracker({
   projectId: '${projectId}',
@@ -518,13 +580,18 @@ const tracker = new PascalTracker({
   endpoint: 'https://pascal.cx/ingest'
 });`}
                   </pre>
-                  <Button size="sm" variant="outline" className="absolute top-2 right-2" onClick={() => copyToClipboard(`import { PascalTracker } from '@pascal/tracker';
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute top-2 right-2"
+                    onClick={() => copyToClipboard(`import { PascalTracker } from '@pascal/tracker';
 
 const tracker = new PascalTracker({
   projectId: '${projectId}',
   apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
-});`)}>
+});`)}
+                  >
                     <Copy className="w-4 h-4" />
                   </Button>
                 </div>
@@ -536,15 +603,20 @@ const tracker = new PascalTracker({
                 </Label>
                 <div className="relative">
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                  {`tracker.track('page_view', {
+{`tracker.track('page_view', {
   page: window.location.pathname,
   title: document.title
 });`}
                   </pre>
-                  <Button size="sm" variant="outline" className="absolute top-2 right-2" onClick={() => copyToClipboard(`tracker.track('page_view', {
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute top-2 right-2"
+                    onClick={() => copyToClipboard(`tracker.track('page_view', {
   page: window.location.pathname,
   title: document.title
-});`)}>
+});`)}
+                  >
                     <Copy className="w-4 h-4" />
                   </Button>
                 </div>
@@ -558,11 +630,23 @@ const tracker = new PascalTracker({
 
       {/* Save Button */}
       <div className="flex justify-end">
-        
+        <Button
+          onClick={handleSave}
+          className="bg-gradient-hero hover:opacity-90 transition-opacity"
+        >
+          <Save className="w-4 h-4 mr-2" />
+          Save Changes
+        </Button>
       </div>
 
       {/* API Key Modal */}
-      <ApiKeyModal isOpen={showApiKeyModal} apiKey={newGeneratedKey} onClose={() => setShowApiKeyModal(false)} />
-    </div>;
+      <ApiKeyModal
+        isOpen={showApiKeyModal}
+        apiKey={newGeneratedKey}
+        onClose={() => setShowApiKeyModal(false)}
+      />
+    </div>
+  );
 };
+
 export default Settings;
