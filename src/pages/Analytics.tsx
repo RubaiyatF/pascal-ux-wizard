@@ -21,10 +21,11 @@ const Analytics = () => {
     ]
   );
 
-  // Mark onboarding step 5 as complete when Analytics is visited
+  // Mark onboarding step 5 as complete when Analytics is visited (only on initial mount)
   useEffect(() => {
     localStorage.setItem(`pascal-analytics-visited-${currentProject}`, 'true');
-  }, [currentProject]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount, not when currentProject changes
 
   // Reset data state when project changes
   useEffect(() => {

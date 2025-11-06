@@ -33,10 +33,11 @@ const Settings = () => {
     }
   }, [searchParams]);
 
-  // Mark onboarding step 7 as complete when Settings is visited
+  // Mark onboarding step 7 as complete when Settings is visited (only on initial mount)
   useEffect(() => {
     localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
-  }, [currentProject]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount, not when currentProject changes
 
   const handleConfigureEmail = () => {
     setEmailConfigured(true);
