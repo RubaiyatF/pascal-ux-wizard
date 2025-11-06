@@ -1,14 +1,19 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Mail, Book, MessageCircle, Video } from "lucide-react";
+import { DocumentationModal } from "./DocumentationModal";
 
 interface HelpModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  type: 'support' | 'docs';
+  type: 'support' | 'docs' | 'documentation';
 }
 
 export const HelpModal = ({ open, onOpenChange, type }: HelpModalProps) => {
+  // If type is documentation, render the DocumentationModal instead
+  if (type === 'documentation') {
+    return <DocumentationModal open={open} onOpenChange={onOpenChange} />;
+  }
   const supportContent = (
     <>
       <DialogHeader>

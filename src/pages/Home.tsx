@@ -29,7 +29,7 @@ const Home = () => {
   const [expandedStep, setExpandedStep] = useState<number | null>(1);
   const [isTrackerModalOpen, setIsTrackerModalOpen] = useState(false);
   const [isCelebrationModalOpen, setIsCelebrationModalOpen] = useState(false);
-  const [helpModalType, setHelpModalType] = useState<'support' | 'docs' | null>(null);
+  const [helpModalType, setHelpModalType] = useState<'support' | 'docs' | 'documentation' | null>(null);
 
   const trackerSnippet = `<script>
   (function() {
@@ -87,7 +87,7 @@ const Home = () => {
     navigate(path);
   };
 
-  const openHelpModal = (type: 'support' | 'docs') => {
+  const openHelpModal = (type: 'support' | 'docs' | 'documentation') => {
     setHelpModalType(type);
   };
 
@@ -546,7 +546,7 @@ const Home = () => {
         {/* Quick Actions */}
         <Card className="p-6 bg-gradient-subtle border-border">
           <h3 className="font-semibold text-foreground mb-4">Need help?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <Button 
               variant="outline" 
               className="justify-start"
@@ -561,7 +561,15 @@ const Home = () => {
               onClick={() => openHelpModal('docs')}
             >
               <Activity className="w-4 h-4 mr-2" />
-              View Documentation
+              Quick Guides
+            </Button>
+            <Button 
+              variant="outline" 
+              className="justify-start"
+              onClick={() => openHelpModal('documentation')}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Pascal 101
             </Button>
           </div>
         </Card>
