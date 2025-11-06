@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
+import { EmailConfigEmptyState } from "@/components/empty-states/EmailConfigEmptyState";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProject } from "@/contexts/ProjectContext";
 
@@ -22,6 +23,7 @@ const Settings = () => {
   const [recordingEnabled, setRecordingEnabled] = useState(true);
   const [emailInsightsEnabled, setEmailInsightsEnabled] = useState(true);
   const [aiAnalysisEnabled, setAiAnalysisEnabled] = useState(true);
+  const [emailConfigured, setEmailConfigured] = useState(false);
 
   // Set active tab from URL parameter on mount
   useEffect(() => {
@@ -35,6 +37,10 @@ const Settings = () => {
   useEffect(() => {
     localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
   }, [currentProject]);
+
+  const handleConfigureEmail = () => {
+    setEmailConfigured(true);
+  };
 
   const [apiKeys, setApiKeys] = useState([
     { id: 1, name: "test 2", key: "pk_a903de21a...", fullKey: "pk_a903de21a123456789", status: "active", created: "11/4/2025" },
@@ -156,96 +162,101 @@ const Settings = () => {
 
         {/* Email Setup */}
         <TabsContent value="email" className="space-y-6">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 bg-white border border-success/20 rounded-lg">
-                <CheckCircle2 className="w-5 h-5 text-success" />
-                <div>
-                  <p className="font-medium">✅ Connected</p>
-                  <p className="text-sm text-muted-foreground">
-                    Account: premium
-                  </p>
+          {!emailConfigured ? (
+            <EmailConfigEmptyState onConfigure={handleConfigureEmail} />
+          ) : (
+            <>
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 bg-white border border-success/20 rounded-lg">
+                    <CheckCircle2 className="w-5 h-5 text-success" />
+                    <div>
+                      <p className="font-medium">✅ Connected</p>
+                      <p className="text-sm text-muted-foreground">
+                        Account: premium
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="brevo-key">API Key</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="brevo-key"
+                        type="password"
+                        placeholder="xkeysib-abc123..."
+                        defaultValue="xkeysib-abc123..."
+                      />
+                      <Button variant="outline">Verify</Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Card>
 
-              <div>
-                <Label htmlFor="brevo-key">API Key</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="brevo-key"
-                    type="password"
-                    placeholder="xkeysib-abc123..."
-                    defaultValue="xkeysib-abc123..."
-                  />
-                  <Button variant="outline">Verify</Button>
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-6">Sender Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="from-email">From Email</Label>
+                    <Input
+                      id="from-email"
+                      type="email"
+                      placeholder="noreply@example.com"
+                      defaultValue="noreply@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="from-name">From Name</Label>
+                    <Input
+                      id="from-name"
+                      placeholder="Pascal Analytics"
+                      defaultValue="Pascal Analytics"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="app-url">App URL</Label>
+                    <Input
+                      id="app-url"
+                      type="url"
+                      placeholder="https://example.com"
+                      defaultValue="https://example.com"
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          </Card>
+              </Card>
 
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-6">Sender Settings</h3>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="from-email">From Email</Label>
-                <Input
-                  id="from-email"
-                  type="email"
-                  placeholder="noreply@example.com"
-                  defaultValue="noreply@example.com"
-                />
-              </div>
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-6">Limits</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="daily-limit">Daily Email Limit</Label>
+                    <Input
+                      id="daily-limit"
+                      type="number"
+                      placeholder="100"
+                      defaultValue="100"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Maximum emails per day
+                    </p>
+                  </div>
 
-              <div>
-                <Label htmlFor="from-name">From Name</Label>
-                <Input
-                  id="from-name"
-                  placeholder="Pascal Analytics"
-                  defaultValue="Pascal Analytics"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="app-url">App URL</Label>
-                <Input
-                  id="app-url"
-                  type="url"
-                  placeholder="https://example.com"
-                  defaultValue="https://example.com"
-                />
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-6">Limits</h3>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="daily-limit">Daily Email Limit</Label>
-                <Input
-                  id="daily-limit"
-                  type="number"
-                  placeholder="100"
-                  defaultValue="100"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Maximum emails per day
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Session Insights</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Enable AI-powered session insights
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Session Insights</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Enable AI-powered session insights
+                      </p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
                 </div>
-                <Switch defaultChecked />
-              </div>
-            </div>
-          </Card>
-
+              </Card>
+            </>
+          )}
         </TabsContent>
 
         {/* General Settings */}
