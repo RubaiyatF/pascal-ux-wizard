@@ -84,39 +84,8 @@ const Home = () => {
     setHelpModalType(type);
   };
 
-  // Check for step completions from other pages
+  // Load initial completed steps from localStorage
   useEffect(() => {
-    const checkCompletions = () => {
-      const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
-      const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
-      const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
-      const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
-      const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
-
-      const newCompletedSteps = [...completedSteps];
-      
-      if (benchmarkAdded && !completedSteps.includes(2)) {
-        newCompletedSteps.push(2);
-      }
-      if (journeyVisited && !completedSteps.includes(3)) {
-        newCompletedSteps.push(3);
-      }
-      if (emailQueueVisited && !completedSteps.includes(4)) {
-        newCompletedSteps.push(4);
-      }
-      if (analyticsVisited && !completedSteps.includes(5)) {
-        newCompletedSteps.push(5);
-      }
-      if (settingsVisited && !completedSteps.includes(6)) {
-        newCompletedSteps.push(6);
-      }
-
-      if (newCompletedSteps.length > completedSteps.length) {
-        setCompletedSteps(newCompletedSteps);
-      }
-    };
-
-    // Check on mount and load from localStorage
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
     if (saved) {
       const parsed = JSON.parse(saved);
@@ -131,8 +100,45 @@ const Home = () => {
         }
       }
     }
+  }, [currentProject]);
 
-    checkCompletions();
+  // Check for step completions from other pages
+  useEffect(() => {
+    const checkCompletions = () => {
+      const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
+      const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
+      const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
+      const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
+      const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
+
+      setCompletedSteps(prev => {
+        const newSteps = [...prev];
+        let hasChanges = false;
+        
+        if (benchmarkAdded && !prev.includes(2)) {
+          newSteps.push(2);
+          hasChanges = true;
+        }
+        if (journeyVisited && !prev.includes(3)) {
+          newSteps.push(3);
+          hasChanges = true;
+        }
+        if (emailQueueVisited && !prev.includes(4)) {
+          newSteps.push(4);
+          hasChanges = true;
+        }
+        if (analyticsVisited && !prev.includes(5)) {
+          newSteps.push(5);
+          hasChanges = true;
+        }
+        if (settingsVisited && !prev.includes(6)) {
+          newSteps.push(6);
+          hasChanges = true;
+        }
+
+        return hasChanges ? newSteps : prev;
+      });
+    };
 
     // Poll for updates every 2 seconds
     const interval = setInterval(checkCompletions, 2000);
@@ -144,7 +150,7 @@ const Home = () => {
       clearInterval(interval);
       window.removeEventListener('focus', checkCompletions);
     };
-  }, [currentProject, completedSteps]);
+  }, [currentProject]);
 
   // Save completed steps to localStorage whenever they change
   useEffect(() => {
