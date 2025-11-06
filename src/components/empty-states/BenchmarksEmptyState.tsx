@@ -87,20 +87,37 @@ export const BenchmarksEmptyState = ({ onAddBenchmark }: BenchmarksEmptyStatePro
         </Card>
 
         {/* Next Steps Card */}
-        <Card className="p-6 border-border">
-          <h3 className="font-semibold text-lg mb-4">Next Steps</h3>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-              <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</div>
-              <span className="text-sm">Browse recorded sessions</span>
+        <Card className="p-8 border-border bg-gradient-subtle">
+          <div className="flex items-start gap-6 mb-6">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <ArrowRight className="w-8 h-8 text-primary" />
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-              <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</div>
-              <span className="text-sm">Record ideal user journey</span>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Next Steps</h3>
+              <p className="text-muted-foreground text-base">
+                While Pascal processes your data, set up your success benchmark
+              </p>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-              <div className="w-6 h-6 rounded-full bg-muted-foreground/20 text-muted-foreground flex items-center justify-center text-xs font-bold">3</div>
-              <span className="text-sm text-muted-foreground">AI starts activating users</span>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 p-4 rounded-lg bg-background border border-border hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-gradient-hero text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">1</div>
+              <div className="flex-1 pt-2">
+                <span className="text-base font-medium">Browse recorded sessions</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-4 rounded-lg bg-background border border-border hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-gradient-hero text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">2</div>
+              <div className="flex-1 pt-2">
+                <span className="text-base font-medium">Record ideal user journey</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-4 rounded-lg bg-background border border-border opacity-60">
+              <div className="w-10 h-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-bold shrink-0">3</div>
+              <div className="flex-1 pt-2">
+                <span className="text-base font-medium text-muted-foreground">AI starts activating users</span>
+              </div>
             </div>
           </div>
         </Card>
