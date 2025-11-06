@@ -15,31 +15,23 @@ export const BenchmarksEmptyState = ({ onAddBenchmark }: BenchmarksEmptyStatePro
     <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in px-4">
       <div className="max-w-4xl w-full">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-32 h-32 mb-8">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full overflow-hidden mb-6 bg-gradient-to-br from-primary/20 to-primary/5 p-4">
             <AnimatedLogo />
           </div>
           
-          <div className="space-y-4 mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              Welcome to Pascal
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Your AI-powered activation agent is processing events from your app
-            </p>
-          </div>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            Welcome to Pascal
+          </h1>
+          
+          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Your AI-powered activation agent is processing events from your app
+          </p>
 
-          <Card className="inline-flex items-center gap-3 px-6 py-3 bg-primary/5 border-primary/20 shadow-sm">
-            <div className="relative flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-              <div className="absolute w-3 h-3 rounded-full bg-primary/30 animate-ping" />
-            </div>
-            <div className="flex flex-col items-start gap-0.5">
-              <span className="text-sm font-semibold text-primary">Processing Data</span>
-              <span className="text-xs text-muted-foreground">Estimated time: 5-15 minutes</span>
-            </div>
-          </Card>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-sm font-medium text-primary">Processing data • 5-15 minutes</span>
+          </div>
         </div>
 
         {/* Info Cards */}
