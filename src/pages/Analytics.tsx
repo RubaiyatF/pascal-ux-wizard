@@ -61,7 +61,7 @@ const Analytics = () => {
               variant={selectedMetrics.includes("activeUsers") ? "default" : "outline"}
               className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("activeUsers") 
-                  ? "bg-[oklch(var(--chart-1))]/50 hover:bg-[oklch(var(--chart-1))]/60" 
+                  ? "bg-[oklch(var(--chart-1))] hover:bg-[oklch(var(--chart-1))]/90" 
                   : ""
               }`}
               onClick={() => toggleMetric("activeUsers")}
@@ -88,7 +88,7 @@ const Analytics = () => {
               variant={selectedMetrics.includes("activation") ? "default" : "outline"}
               className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("activation") 
-                  ? "bg-[oklch(var(--chart-2))]/50 hover:bg-[oklch(var(--chart-2))]/60" 
+                  ? "bg-[oklch(var(--chart-2))] hover:bg-[oklch(var(--chart-2))]/90" 
                   : ""
               }`}
               onClick={() => toggleMetric("activation")}
@@ -115,7 +115,7 @@ const Analytics = () => {
               variant={selectedMetrics.includes("retention") ? "default" : "outline"}
               className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("retention") 
-                  ? "bg-[oklch(var(--chart-3))]/50 hover:bg-[oklch(var(--chart-3))]/60" 
+                  ? "bg-[oklch(var(--chart-3))] hover:bg-[oklch(var(--chart-3))]/90" 
                   : ""
               }`}
               onClick={() => toggleMetric("retention")}
@@ -142,7 +142,7 @@ const Analytics = () => {
               variant={selectedMetrics.includes("featureAdoption") ? "default" : "outline"}
               className={`h-auto p-6 flex-col items-start justify-start text-left transition-transform hover:scale-105 ${
                 selectedMetrics.includes("featureAdoption") 
-                  ? "bg-[oklch(var(--chart-4))]/50 hover:bg-[oklch(var(--chart-4))]/60" 
+                  ? "bg-[oklch(var(--chart-4))] hover:bg-[oklch(var(--chart-4))]/90" 
                   : ""
               }`}
               onClick={() => toggleMetric("featureAdoption")}
