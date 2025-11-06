@@ -85,7 +85,11 @@ export const TopNavbar = () => {
 
       <CreateProjectModal 
         open={isCreateProjectOpen} 
-        onOpenChange={setIsCreateProjectOpen} 
+        onOpenChange={setIsCreateProjectOpen}
+        onSuccess={() => {
+          // Navigate to email-queue (main page showing empty states for new projects)
+          navigate("/email-queue");
+        }}
       />
     </>
   );

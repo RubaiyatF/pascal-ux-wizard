@@ -9,6 +9,7 @@ import { z } from "zod";
 interface CreateProjectModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSuccess?: (projectName: string) => void;
 }
 
 const projectSchema = z.object({
@@ -19,7 +20,7 @@ const projectSchema = z.object({
     .max(50, { message: "Project name must be less than 50 characters" }),
 });
 
-export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalProps) => {
+export const CreateProjectModal = ({ open, onOpenChange, onSuccess }: CreateProjectModalProps) => {
   const [projectName, setProjectName] = useState("");
   const [error, setError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
@@ -46,8 +47,14 @@ export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalPro
       });
       
       setIsCreating(false);
+      const createdProjectName = projectName;
       setProjectName("");
       onOpenChange(false);
+      
+      // Navigate to new project
+      if (onSuccess) {
+        onSuccess(createdProjectName);
+      }
     }, 1000);
   };
 
