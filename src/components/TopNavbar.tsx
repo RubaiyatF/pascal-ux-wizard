@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import pascalLogo from "@/assets/pascal-logo.png";
 import { CreateProjectModal } from "./CreateProjectModal";
+import { AnimatedLogo } from "./AnimatedLogo";
 
 export const TopNavbar = () => {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
@@ -20,8 +20,8 @@ export const TopNavbar = () => {
       <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50 flex items-center px-4 gap-4">
         {/* Logo */}
         <div className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <img src={pascalLogo} alt="Pascal" className="w-6 h-6" />
+          <div className="w-8 h-8 rounded-full overflow-hidden">
+            <AnimatedLogo />
           </div>
           <span className="font-bold text-lg">Pascal</span>
         </div>

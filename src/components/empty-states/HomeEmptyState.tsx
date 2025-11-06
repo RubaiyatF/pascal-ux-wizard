@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AnimatedLogo } from "../AnimatedLogo";
 
 interface HomeEmptyStateProps {
   onAddBenchmark: () => void;
@@ -13,8 +14,8 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-200px)] animate-fade-in">
       <Card className="max-w-2xl p-12 text-center border-2 border-dashed border-border">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-6">
-          <Star className="w-10 h-10 text-primary" />
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden mb-6">
+          <AnimatedLogo />
         </div>
         
         <h2 className="text-3xl font-bold mb-4">
@@ -75,7 +76,6 @@ export const HomeEmptyState = ({ onAddBenchmark }: HomeEmptyStateProps) => {
             onClick={onAddBenchmark}
             className="gap-2 bg-primary hover:bg-primary/90"
           >
-            <Star className="w-4 h-4" />
             Record Benchmark Session
             <ArrowRight className="w-4 h-4" />
           </Button>
