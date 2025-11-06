@@ -146,7 +146,7 @@ export const SwipeableEmailCard = ({
       )}
 
       {/* Card Content */}
-      <div className="bg-card border-2 border-border rounded-2xl shadow-2xl p-6 backdrop-blur-sm bg-opacity-100 flex flex-col">
+      <div className="bg-card border-2 border-border rounded-2xl shadow-lg p-6 backdrop-blur-sm bg-opacity-100 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 flex-wrap">
