@@ -26,7 +26,7 @@ const Auth = () => {
       <div className="w-full max-w-md animate-fade-in">
         {/* Logo Section */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full overflow-hidden">
+          <div className="w-[83px] h-[83px] mx-auto mb-4 bg-white rounded-full overflow-hidden">
             <AnimatedLogo />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
