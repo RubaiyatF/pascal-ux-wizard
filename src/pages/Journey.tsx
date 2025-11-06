@@ -46,7 +46,8 @@ const Journey = () => {
     }, 2000); // 2 second delay ensures user is actually viewing the page
     
     return () => clearTimeout(timer);
-  }, [currentProject]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount - page visit, not on project changes
 
   const users: User[] = currentProject === "Pascal Demo" ? [{
     name: "Sarah Johnson",

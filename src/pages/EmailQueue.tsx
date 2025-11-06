@@ -41,7 +41,8 @@ const EmailQueue = () => {
     }, 2000); // 2 second delay ensures user is actually viewing the page
     
     return () => clearTimeout(timer);
-  }, [currentProject]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount - page visit, not on project changes
 
   // Demo data for Pascal Demo project
   const demoEmails: QueuedEmail[] = currentProject === "Pascal Demo" ? [

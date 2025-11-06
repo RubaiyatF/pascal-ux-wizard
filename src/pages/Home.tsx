@@ -134,6 +134,15 @@ const Home = () => {
   // Check for step completions from other pages
   useEffect(() => {
     const checkCompletions = () => {
+      // Check if onboarding has legitimately started for this project
+      const hasOnboardingStarted = localStorage.getItem(`pascal-onboarding-${currentProject}`) !== null;
+      
+      // If onboarding hasn't started, ignore all individual completion flags
+      // This prevents false completions from stale data or premature flag setting
+      if (!hasOnboardingStarted) {
+        return;
+      }
+      
       const benchmarkAdded = localStorage.getItem(`pascal-benchmark-added-${currentProject}`);
       const journeyVisited = localStorage.getItem(`pascal-journey-visited-${currentProject}`);
       const emailProviderConfigured = localStorage.getItem(`pascal-email-provider-${currentProject}`);

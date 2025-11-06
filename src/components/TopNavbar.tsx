@@ -33,6 +33,16 @@ export const TopNavbar = () => {
   };
 
   const handleProjectCreated = (projectName: string) => {
+    // Clean up any stale localStorage flags for this project before starting
+    localStorage.removeItem(`pascal-onboarding-${projectName}`);
+    localStorage.removeItem(`pascal-onboarding-prev-${projectName}`);
+    localStorage.removeItem(`pascal-benchmark-added-${projectName}`);
+    localStorage.removeItem(`pascal-journey-visited-${projectName}`);
+    localStorage.removeItem(`pascal-email-provider-${projectName}`);
+    localStorage.removeItem(`pascal-email-queue-visited-${projectName}`);
+    localStorage.removeItem(`pascal-analytics-visited-${projectName}`);
+    localStorage.removeItem(`pascal-settings-visited-${projectName}`);
+    
     // Add the new project to the list
     setProjects([...projects, projectName]);
     // Set it as the current project
