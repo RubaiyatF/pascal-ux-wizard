@@ -93,6 +93,10 @@ const Home = () => {
 
   // Load initial completed steps from localStorage
   useEffect(() => {
+    // Always reset state first when project changes to prevent state leakage
+    setCompletedSteps([]);
+    setExpandedStep(1);
+    
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
     if (saved) {
       try {
@@ -116,10 +120,6 @@ const Home = () => {
       } catch (e) {
         console.error('Error loading onboarding progress:', e);
       }
-    } else {
-      // No saved data for this project - reset to initial state
-      setCompletedSteps([]);
-      setExpandedStep(1);
     }
   }, [currentProject]);
 
