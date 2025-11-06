@@ -24,6 +24,8 @@ All colors MUST be HSL.
     --accent-foreground: 0.2178 0 0;
     --destructive: 0.6280 0.2577 29.2339;
     --destructive-foreground: 1.0000 0 0;
+    --success: 0.6500 0.1500 145.0000;
+    --success-foreground: 1.0000 0 0;
     --border: 0 0 0;
     --input: 0.9219 0 0;
     --ring: 0.3092 0 0;
@@ -85,6 +87,8 @@ All colors MUST be HSL.
     --accent-foreground: 1.0000 0 0;
     --destructive: 0.7190 0.1751 22.5025;
     --destructive-foreground: 1.0000 0 0;
+    --success: 0.7000 0.1800 145.0000;
+    --success-foreground: 0.2178 0 0;
     --border: 1.0000 0 0;
     --input: 0.3407 0 0;
     --ring: 0.5999 0 0;
@@ -145,6 +149,8 @@ All colors MUST be HSL.
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
