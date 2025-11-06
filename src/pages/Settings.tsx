@@ -7,9 +7,10 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus } from "lucide-react";
+import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Settings = () => {
   const { toast } = useToast();
@@ -23,6 +24,13 @@ const Settings = () => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [newGeneratedKey, setNewGeneratedKey] = useState("");
   const [projectId] = useState("proj_demo_abc123");
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("editor");
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, email: "you@company.com", role: "Owner", status: "Active", joined: "Jan 2024" },
+    { id: 2, email: "alex@company.com", role: "Editor", status: "Active", joined: "Feb 2024" },
+    { id: 3, email: "sarah@company.com", role: "Viewer", status: "Pending", joined: "Mar 2024" },
+  ]);
 
   const handleSave = () => {
     toast({
@@ -63,6 +71,52 @@ const Settings = () => {
     });
   };
 
+  const handleInviteTeammate = () => {
+    if (!inviteEmail) {
+      toast({
+        title: "Email required",
+        description: "Please enter an email address to send the invitation.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Check if already invited
+    if (teamMembers.some(member => member.email === inviteEmail)) {
+      toast({
+        title: "Already invited",
+        description: "This user has already been invited to the team.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const newMember = {
+      id: teamMembers.length + 1,
+      email: inviteEmail,
+      role: inviteRole.charAt(0).toUpperCase() + inviteRole.slice(1),
+      status: "Pending",
+      joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    };
+
+    setTeamMembers([...teamMembers, newMember]);
+    setInviteEmail("");
+    setInviteRole("editor");
+
+    toast({
+      title: "Invitation sent",
+      description: `An invitation has been sent to ${inviteEmail}`,
+    });
+  };
+
+  const removeTeamMember = (memberId: number) => {
+    setTeamMembers(teamMembers.filter(m => m.id !== memberId));
+    toast({
+      title: "Member removed",
+      description: "The team member has been removed.",
+    });
+  };
+
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl">
       {/* Header */}
@@ -76,6 +130,7 @@ const Settings = () => {
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
           <TabsTrigger value="tracking">Tracking</TabsTrigger>
           <TabsTrigger value="email">Email Config</TabsTrigger>
         </TabsList>
@@ -183,7 +238,7 @@ const Settings = () => {
 
         {/* General Settings */}
         <TabsContent value="general" className="space-y-6">
-          <Card className="p-6">
+          <Card className="p-6 bg-white">
             <h2 className="text-xl font-semibold mb-4">Project Details</h2>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -222,6 +277,106 @@ const Settings = () => {
               </div>
             </div>
           </Card>
+        </TabsContent>
+
+        {/* Team Management */}
+        <TabsContent value="team" className="space-y-6">
+          <Card className="p-6 bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold">Team Members</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Manage who has access to this project
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              {teamMembers.map((member) => (
+                <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-medium">{member.email}</p>
+                      <Badge 
+                        variant="outline" 
+                        className={member.status === "Active" ? "bg-success/10 text-success border-success/20" : "bg-warning/10 text-warning border-warning/20"}
+                      >
+                        {member.status}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {member.role} · Joined {member.joined}
+                    </p>
+                  </div>
+                  {member.role !== "Owner" && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => removeTeamMember(member.id)}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-white">
+            <h2 className="text-xl font-semibold mb-4">Invite Teammate</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Send an invitation to add a new member to your team
+            </p>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="inviteEmail">Email Address</Label>
+                <Input
+                  id="inviteEmail"
+                  type="email"
+                  placeholder="teammate@company.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="inviteRole">Role</Label>
+                <Select value={inviteRole} onValueChange={setInviteRole}>
+                  <SelectTrigger id="inviteRole">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="viewer">Viewer - View only access</SelectItem>
+                    <SelectItem value="editor">Editor - Can edit and view</SelectItem>
+                    <SelectItem value="admin">Admin - Full access except deletion</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Choose the level of access for this team member
+                </p>
+              </div>
+
+              <Button 
+                onClick={handleInviteTeammate} 
+                className="bg-gradient-hero hover:opacity-90"
+              >
+                <UserPlus className="w-4 h-4 mr-2" />
+                Send Invitation
+              </Button>
+            </div>
+          </Card>
+
+          <div className="bg-muted/50 p-4 rounded-lg border border-border">
+            <p className="text-sm font-medium mb-2">About Team Roles:</p>
+            <div className="space-y-1 text-sm text-muted-foreground">
+              <p><span className="font-medium text-foreground">Viewer:</span> Can view all project data but cannot make changes</p>
+              <p><span className="font-medium text-foreground">Editor:</span> Can view and edit project settings and configurations</p>
+              <p><span className="font-medium text-foreground">Admin:</span> Can manage team members and all project settings</p>
+              <p><span className="font-medium text-foreground">Owner:</span> Full control including project deletion</p>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Tracking Settings */}
