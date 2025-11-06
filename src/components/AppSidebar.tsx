@@ -54,7 +54,10 @@ export const AppSidebar = () => {
                       <NavLink to={item.url} className="flex items-center gap-3">
                         <item.icon className="w-5 h-5 shrink-0" />
                         {!isCollapsed && (
-                          <span className="text-sm font-medium">{item.title}</span>
+                          <span className={cn(
+                            "text-sm",
+                            isActive ? "font-bold" : "font-medium"
+                          )}>{item.title}</span>
                         )}
                       </NavLink>
                     </SidebarMenuButton>
