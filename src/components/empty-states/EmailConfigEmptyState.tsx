@@ -1,14 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, CheckCircle, Settings, ArrowRight } from "lucide-react";
-
 interface EmailConfigEmptyStateProps {
   onConfigure: () => void;
 }
-
-export const EmailConfigEmptyState = ({ onConfigure }: EmailConfigEmptyStateProps) => {
-  return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-300px)] animate-fade-in px-4">
+export const EmailConfigEmptyState = ({
+  onConfigure
+}: EmailConfigEmptyStateProps) => {
+  return <div className="flex items-center justify-center min-h-[calc(100vh-300px)] animate-fade-in px-4">
       <div className="max-w-2xl w-full">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -24,10 +23,7 @@ export const EmailConfigEmptyState = ({ onConfigure }: EmailConfigEmptyStateProp
             Connect your email service to enable Pascal to send personalized activation emails
           </p>
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-warning/10 border border-warning/20">
-            <Settings className="w-4 h-4 text-warning" />
-            <span className="text-sm font-medium text-warning">Configuration required</span>
-          </div>
+          
         </div>
 
         {/* Main Info Card */}
@@ -60,11 +56,7 @@ export const EmailConfigEmptyState = ({ onConfigure }: EmailConfigEmptyStateProp
                 </li>
               </ul>
 
-              <Button
-                size="lg"
-                onClick={onConfigure}
-                className="gap-2 bg-gradient-hero hover:opacity-90"
-              >
+              <Button size="lg" onClick={onConfigure} className="gap-2 bg-gradient-hero hover:opacity-90">
                 Configure Email Provider
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -105,6 +97,5 @@ export const EmailConfigEmptyState = ({ onConfigure }: EmailConfigEmptyStateProp
           </div>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
