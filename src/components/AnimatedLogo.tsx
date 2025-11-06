@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import pascalLogo from "@/assets/pascal-logo.png";
 
 declare global {
   interface Window {
@@ -11,6 +12,7 @@ declare global {
 export const AnimatedLogo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<any>(null);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -20,10 +22,24 @@ export const AnimatedLogo = () => {
     script.async = true;
 
     script.onload = () => {
-      if (!containerRef.current || !window.UnicornStudio) return;
+      console.log("Unicorn Studio library loaded");
+      
+      if (!containerRef.current) {
+        console.error("Container ref is null");
+        setHasError(true);
+        return;
+      }
+      
+      if (!window.UnicornStudio) {
+        console.error("UnicornStudio not found on window");
+        setHasError(true);
+        return;
+      }
 
       const uniqueId = `unicorn-${Math.random().toString(36).substr(2, 9)}`;
       containerRef.current.id = uniqueId;
+      
+      console.log("Initializing scene with ID:", uniqueId);
 
       window.UnicornStudio.addScene({
         elementId: uniqueId,
@@ -34,14 +50,17 @@ export const AnimatedLogo = () => {
         altText: "Pascal AI Logo",
         ariaLabel: "Animated Pascal AI logo with aurora effect",
       }).then((scene) => {
+        console.log("Scene initialized successfully", scene);
         sceneRef.current = scene;
       }).catch((error) => {
         console.error("Failed to initialize Unicorn Studio scene:", error);
+        setHasError(true);
       });
     };
 
     script.onerror = () => {
       console.error("Failed to load Unicorn Studio library");
+      setHasError(true);
     };
 
     document.head.appendChild(script);
@@ -56,5 +75,13 @@ export const AnimatedLogo = () => {
     };
   }, []);
 
-  return <div ref={containerRef} className="w-full h-full" />;
+  if (hasError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-primary/10 rounded-full">
+        <img src={pascalLogo} alt="Pascal Logo" className="w-3/4 h-3/4 object-contain" />
+      </div>
+    );
+  }
+
+  return <div ref={containerRef} className="w-full h-full bg-transparent" />;
 };
