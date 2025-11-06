@@ -128,13 +128,6 @@ const Home = () => {
       const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
       const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
 
-      console.log('Checking completions for project:', currentProject);
-      console.log('Benchmark added:', benchmarkAdded);
-      console.log('Journey visited:', journeyVisited);
-      console.log('Email queue visited:', emailQueueVisited);
-      console.log('Analytics visited:', analyticsVisited);
-      console.log('Settings visited:', settingsVisited);
-
       setCompletedSteps(prev => {
         const newSteps = [...prev];
         let hasChanges = false;
@@ -142,7 +135,6 @@ const Home = () => {
         if (benchmarkAdded && !prev.includes(2)) {
           newSteps.push(2);
           hasChanges = true;
-          console.log('Marking step 2 (benchmark) as complete');
         }
         if (journeyVisited && !prev.includes(3)) {
           newSteps.push(3);
@@ -161,10 +153,6 @@ const Home = () => {
           hasChanges = true;
         }
 
-        if (hasChanges) {
-          console.log('New completed steps:', newSteps);
-        }
-
         return hasChanges ? newSteps : prev;
       });
     };
@@ -172,7 +160,7 @@ const Home = () => {
     // Check immediately on mount
     checkCompletions();
 
-    // Poll for updates every 1 second (faster polling)
+    // Poll for updates every 1 second
     const interval = setInterval(checkCompletions, 1000);
 
     // Also check when window gains focus (user returns from another page)

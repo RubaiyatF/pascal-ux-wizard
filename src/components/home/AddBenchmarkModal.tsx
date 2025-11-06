@@ -8,10 +8,11 @@ import { useToast } from "@/hooks/use-toast";
 interface AddBenchmarkModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSuccess?: (email: string) => void;
   initialEmail?: string;
 }
 
-export const AddBenchmarkModal = ({ open, onOpenChange, initialEmail = "" }: AddBenchmarkModalProps) => {
+export const AddBenchmarkModal = ({ open, onOpenChange, onSuccess, initialEmail = "" }: AddBenchmarkModalProps) => {
   const [email, setEmail] = useState(initialEmail);
   const { toast } = useToast();
 
@@ -25,10 +26,16 @@ export const AddBenchmarkModal = ({ open, onOpenChange, initialEmail = "" }: Add
       return;
     }
 
-    toast({
-      title: "Benchmark user added",
-      description: `${email} has been added as a benchmark user`,
-    });
+    // Call the onSuccess callback with the email
+    if (onSuccess) {
+      onSuccess(email);
+    } else {
+      // Fallback toast if no callback provided
+      toast({
+        title: "Benchmark user added",
+        description: `${email} has been added as a benchmark user`,
+      });
+    }
     
     setEmail("");
     onOpenChange(false);

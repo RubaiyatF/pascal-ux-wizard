@@ -81,9 +81,7 @@ const Benchmarks = () => {
     setBenchmarkUsers([...benchmarkUsers, newUser]);
     
     // Mark onboarding step 2 as complete
-    const storageKey = `pascal-benchmark-added-${currentProject}`;
-    localStorage.setItem(storageKey, 'true');
-    console.log('Benchmark added, localStorage key set:', storageKey);
+    localStorage.setItem(`pascal-benchmark-added-${currentProject}`, 'true');
     
     toast({
       title: "Benchmark user added",
@@ -397,6 +395,7 @@ const Benchmarks = () => {
       <AddBenchmarkModal
         open={addBenchmarkOpen}
         onOpenChange={setAddBenchmarkOpen}
+        onSuccess={handleAddBenchmark}
         initialEmail={benchmarkEmail}
       />
       
