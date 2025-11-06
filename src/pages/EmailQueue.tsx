@@ -292,7 +292,7 @@ const EmailQueue = () => {
 
       {/* Instructions - Only show in stack view */}
       {viewMode === "stack" && (
-        <div className="relative py-4 px-4">
+        <div className="relative px-4">
           <div className="max-w-2xl mx-auto">
             <div className="relative bg-gradient-to-r from-transparent via-primary/5 to-transparent py-3 animate-[slideLeftRight_3s_ease-in-out_infinite]">
               <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
