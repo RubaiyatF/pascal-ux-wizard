@@ -116,35 +116,37 @@ export const EmailCard = ({
             
             {/* Email Body */}
             <div className="px-3 py-3 bg-white">
-              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-normal">
+              <div className="text-sm leading-relaxed text-foreground font-normal">
                 {isExpanded ? (
-                  // Full email content
-                  <>
-                    Hi there,
-
-                    {email.preview}
-
-                    I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!
-
-                    Best regards,
-                    Sarah Thompson
-                    Customer Success Team
-                    support@company.com
-                  </>
+                  // Full email content with proper spacing
+                  <div className="space-y-4">
+                    <p>Hi there,</p>
+                    
+                    <p>{email.preview}</p>
+                    
+                    <p>I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!</p>
+                    
+                    <div className="space-y-1">
+                      <p>Best regards,</p>
+                      <p>Sarah Thompson</p>
+                      <p className="text-muted-foreground">Customer Success Team</p>
+                      <p className="text-muted-foreground">support@company.com</p>
+                    </div>
+                  </div>
                 ) : (
                   // Preview only
-                  <>
-                    Hi there,
-
-                    {email.preview}
+                  <div className="space-y-2">
+                    <p>Hi there,</p>
+                    
+                    <p>{email.preview}</p>
 
                     <div 
-                      className="mt-2 text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
+                      className="text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
                       onClick={() => setIsExpanded(true)}
                     >
                       click to see the full email...
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

@@ -207,21 +207,37 @@ export const SwipeableEmailCard = ({
           
           {/* Email Body */}
           <div className="px-4 py-4 bg-white">
-            <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-normal">
+            <div className="text-sm leading-relaxed text-foreground font-normal">
               {isExpanded ? (
-                // Full email content
-                `${email.preview}\n\nBest regards,\nYour AI Assistant\n\nP.S. This is an auto-generated email based on user behavior and engagement patterns. We've analyzed their session activity and determined this is an optimal touchpoint for meaningful engagement.\n\nKey insights:\n- User engagement level: ${email.heartScore}%\n- Behavior patterns indicate high interest\n- Optimal timing for conversion dialogue\n\nFeel free to customize this message before sending.`
+                // Full email content with proper spacing
+                <div className="space-y-4">
+                  <p>Hi there,</p>
+                  
+                  <p>{email.preview}</p>
+                  
+                  <p>I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!</p>
+                  
+                  <div className="space-y-1">
+                    <p>Best regards,</p>
+                    <p>Sarah Thompson</p>
+                    <p className="text-muted-foreground">Customer Success Team</p>
+                    <p className="text-muted-foreground">support@company.com</p>
+                  </div>
+                </div>
               ) : (
                 // Preview only
-                <>
-                  {email.preview}
+                <div className="space-y-2">
+                  <p>Hi there,</p>
+                  
+                  <p>{email.preview}</p>
+
                   <div 
-                    className="mt-3 text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
+                    className="text-muted-foreground italic cursor-pointer hover:text-primary transition-colors"
                     onClick={handleExpandToggle}
                   >
                     click to see the full email...
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
