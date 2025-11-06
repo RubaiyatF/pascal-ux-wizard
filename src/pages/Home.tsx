@@ -425,20 +425,20 @@ const Home = () => {
   const progressPercentage = (completedCount / totalSteps) * 100;
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-12">
-      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+    <div className="min-h-screen bg-background p-6 md:p-12">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Welcome Section */}
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-6">
           <div className="space-y-2">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground">
               Your quick start guide
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">
               Get set up and start engaging with your customers in minutes
             </p>
           </div>
-          <Card className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 sm:p-6 bg-gradient-subtle border-border shadow-card">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-hero flex items-center justify-center shrink-0">
+          <Card className="flex flex-col sm:flex-row items-start gap-4 p-4 md:p-6 bg-gradient-subtle border-border shadow-card">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-hero flex items-center justify-center shrink-0">
               <AnimatedLogo />
             </div>
             <div className="space-y-1 flex-1 min-w-0">
@@ -486,32 +486,32 @@ const Home = () => {
               >
                 <button
                   onClick={() => toggleStep(step.id)}
-                  className="w-full p-4 sm:p-6 flex items-center gap-3 sm:gap-4 text-left hover:bg-accent/5 transition-colors"
+                  className="w-full p-6 flex items-center gap-4 text-left hover:bg-accent/5 transition-colors"
                 >
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                     isCompleted 
                       ? 'bg-success text-success-foreground scale-110' 
                       : 'bg-muted text-muted-foreground'
                   }`}>
                     {isCompleted ? (
-                      <Check className="w-4 h-4 sm:w-5 sm:h-5 animate-scale-in" />
+                      <Check className="w-5 h-5 animate-scale-in" />
                     ) : (
-                      <StepIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <StepIcon className="w-5 h-5" />
                     )}
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <h3 className={`text-sm sm:text-base font-semibold mb-1 transition-colors ${
+                    <h3 className={`font-semibold mb-1 transition-colors ${
                       isCompleted ? 'text-success' : 'text-foreground'
                     }`}>
                       {step.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       {step.description}
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3 shrink-0">
+                  <div className="flex items-center gap-3 shrink-0">
                     {isCompleted ? (
                       <Badge variant="outline" className="text-xs bg-success/10 border-success/30 text-success">
                         Complete
@@ -522,7 +522,7 @@ const Home = () => {
                       </Badge>
                     )}
                     <ChevronRight 
-                      className={`w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground transition-transform duration-300 ease-in-out ${
+                      className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ease-in-out ${
                         isExpanded ? 'rotate-90' : ''
                       }`} 
                     />
@@ -534,7 +534,7 @@ const Home = () => {
                     isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                  <div className="px-6 pb-6">
                     {step.content}
                   </div>
                 </div>
@@ -544,9 +544,9 @@ const Home = () => {
         </div>
 
         {/* Quick Actions */}
-        <Card className="p-4 sm:p-6 bg-gradient-subtle border-border">
-          <h3 className="font-semibold text-foreground mb-4 text-sm sm:text-base">Need help?</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <Card className="p-6 bg-gradient-subtle border-border">
+          <h3 className="font-semibold text-foreground mb-4">Need help?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <Button 
               variant="outline" 
               className="justify-start"

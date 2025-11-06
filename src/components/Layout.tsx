@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="flex flex-1 pt-16">
           <AppSidebar />
           
-          <main className="flex-1 p-4 sm:p-6 md:p-8 transition-all">
+          <main className="flex-1 p-8 transition-all">
             {children}
           </main>
         </div>

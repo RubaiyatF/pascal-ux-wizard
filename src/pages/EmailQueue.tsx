@@ -236,48 +236,48 @@ const EmailQueue = () => {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 flex items-center gap-2">
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
             Mission Control
-            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden">
+            <div className="w-8 h-8 rounded-full overflow-hidden">
               <AnimatedLogo />
             </div>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
+          <p className="text-muted-foreground">
             Email Queue Dashboard · Human-in-the-Loop Command Center
           </p>
         </div>
-        <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+        <div className="flex items-center gap-4">
           {/* View Mode Toggle */}
           <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
             <Button
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
-              className="h-8 text-xs sm:text-sm"
+              className="h-8"
             >
-              <LayoutGrid className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">List</span>
+              <LayoutGrid className="w-4 h-4 mr-2" />
+              List
             </Button>
             <Button
               variant={viewMode === "stack" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("stack")}
-              className="h-8 text-xs sm:text-sm"
+              className="h-8"
             >
-              <Layers className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Stack</span>
+              <Layers className="w-4 h-4 mr-2" />
+              Stack
             </Button>
           </div>
 
           <Select value={typeFilter} onValueChange={(value) => setTypeFilter(value as "all" | "high" | "replies" | "first")}>
-            <SelectTrigger className="w-32 sm:w-48 text-xs sm:text-sm h-8 sm:h-10">
+            <SelectTrigger className="w-48">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="z-[60]">
+            <SelectContent>
               <SelectItem value="all">All Emails</SelectItem>
               <SelectItem value="high">High Confidence</SelectItem>
               <SelectItem value="replies">Replies Only</SelectItem>
@@ -312,21 +312,15 @@ const EmailQueue = () => {
       {/* Status Filter Tabs (List View Only) */}
       {viewMode === "list" && (
         <Tabs value={statusFilter} onValueChange={(value) => setStatusFilter(value as "queued" | "approved" | "rejected")} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-3 h-auto">
-            <TabsTrigger value="queued" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground text-xs sm:text-sm py-2">
-              <span className="hidden sm:inline">Queued</span>
-              <span className="sm:hidden">Q</span>
-              {" "}({queuedEmailsList.filter(e => e.status === "queued").length})
+          <TabsList className="grid w-full max-w-md grid-cols-3">
+            <TabsTrigger value="queued" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+              Queued ({queuedEmailsList.filter(e => e.status === "queued").length})
             </TabsTrigger>
-            <TabsTrigger value="approved" className="data-[state=active]:bg-success data-[state=active]:text-success-foreground text-xs sm:text-sm py-2">
-              <span className="hidden sm:inline">Approved</span>
-              <span className="sm:hidden">A</span>
-              {" "}({queuedEmailsList.filter(e => e.status === "approved").length})
+            <TabsTrigger value="approved" className="data-[state=active]:bg-success data-[state=active]:text-success-foreground">
+              Approved ({queuedEmailsList.filter(e => e.status === "approved").length})
             </TabsTrigger>
-            <TabsTrigger value="rejected" className="data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground text-xs sm:text-sm py-2">
-              <span className="hidden sm:inline">Rejected</span>
-              <span className="sm:hidden">R</span>
-              {" "}({queuedEmailsList.filter(e => e.status === "rejected").length})
+            <TabsTrigger value="rejected" className="data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
+              Rejected ({queuedEmailsList.filter(e => e.status === "rejected").length})
             </TabsTrigger>
           </TabsList>
         </Tabs>
