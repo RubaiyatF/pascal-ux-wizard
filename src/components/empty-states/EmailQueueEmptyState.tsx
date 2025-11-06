@@ -123,7 +123,7 @@ export const EmailQueueEmptyState = () => {
       <div className="max-w-2xl w-full">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-32 h-32 mb-6">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full overflow-hidden mb-6 bg-gradient-hero p-4">
             <AnimatedLogo />
           </div>
           
