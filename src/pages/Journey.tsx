@@ -338,7 +338,7 @@ const Journey = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-6 relative">
+      <div className="grid grid-cols-12 gap-6 relative items-start">
         {/* Left Column - Users List */}
         <div className="col-span-12 lg:col-span-4 space-y-4 relative">
           <Card className="p-6">
