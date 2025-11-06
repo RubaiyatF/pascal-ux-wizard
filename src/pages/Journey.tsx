@@ -636,7 +636,7 @@ const Journey = () => {
           </div>
 
           {/* HEART Analysis */}
-          <Card className="p-6">
+          <Card className="p-6 mt-6">
             <h3 className="font-semibold mb-4">HEART Analysis</h3>
             <div className="space-y-3">
               {Object.entries(conversation.heartAnalysis).filter(([key]) => key !== "overall").map(([key, value]) => <div key={key}>
