@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Play, Mail, Reply, Clock, MousePointer, Eye, Sparkles, Search, Calendar } from "lucide-react";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { SessionRecordingModal } from "@/components/email-queue/SessionRecordingModal";
 import { EmailDetailModal } from "@/components/journey/EmailDetailModal";
 import { DraftAIResponseModal } from "@/components/journey/DraftAIResponseModal";
@@ -719,6 +720,22 @@ const Journey = () => {
               <p className="text-xs text-muted-foreground">
                 Stage: {conversation.stage}
               </p>
+            </div>
+
+            {/* Generate with Pascal Button */}
+            <div className="mt-4 flex justify-end">
+              <Button 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
+                onClick={() => {
+                  // TODO: Implement Pascal AI generation
+                  console.log("Generate with Pascal clicked");
+                }}
+              >
+                <div className="w-4 h-4 mr-2 rounded-full overflow-hidden">
+                  <AnimatedLogo />
+                </div>
+                Generate with Pascal
+              </Button>
             </div>
           </Card>
 
