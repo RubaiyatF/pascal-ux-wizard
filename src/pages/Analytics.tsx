@@ -172,7 +172,7 @@ const Analytics = () => {
         {/* Interventions Tab */}
         <TabsContent value="interventions" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <p className="text-sm text-muted-foreground mb-1">
                 Activation Rate
               </p>
@@ -180,7 +180,7 @@ const Analytics = () => {
               <p className="text-xs text-success mt-1">+3.5% vs last month</p>
             </Card>
 
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <p className="text-sm text-muted-foreground mb-1">
                 Time to Activate
               </p>
@@ -188,7 +188,7 @@ const Analytics = () => {
               <p className="text-xs text-success mt-1">-1.3 days improvement</p>
             </Card>
 
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <p className="text-sm text-muted-foreground mb-1">
                 Emails Sent
               </p>
@@ -201,7 +201,7 @@ const Analytics = () => {
         {/* Email Stats Tab */}
         <TabsContent value="email" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
                 <Mail className="w-5 h-5 text-primary" />
               </div>
@@ -209,7 +209,7 @@ const Analytics = () => {
               <p className="text-2xl font-bold">450</p>
             </Card>
 
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
                 <Mail className="w-5 h-5 text-primary" />
               </div>
@@ -218,7 +218,7 @@ const Analytics = () => {
               <p className="text-xs text-muted-foreground">98.9%</p>
             </Card>
 
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
                 <CheckCircle2 className="w-5 h-5 text-primary" />
               </div>
@@ -227,7 +227,7 @@ const Analytics = () => {
               <p className="text-xs text-muted-foreground">70.8%</p>
             </Card>
 
-            <Card className="p-6 shadow-lg">
+            <Card className="p-6">
               <div className="p-2 rounded-lg bg-primary/10 w-fit mb-3">
                 <TrendingUp className="w-5 h-5 text-primary" />
               </div>
