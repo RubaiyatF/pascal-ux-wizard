@@ -187,24 +187,6 @@ export const SwipeableEmailCard = ({
 
         {/* Email Preview/Full Content */}
         <div className="bg-background border border-border rounded-lg overflow-hidden mb-4">
-          {/* Email Header - Inbox Style */}
-          <div className="bg-muted/30 px-4 py-2 border-b border-border">
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">
-                  {email.email.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <div className="font-medium text-foreground">{email.email}</div>
-                  <div className="text-muted-foreground">to: customer@example.com</div>
-                </div>
-              </div>
-              <div className="text-muted-foreground">
-                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </div>
-            </div>
-          </div>
-          
           {/* Email Body */}
           <div className="px-4 py-4 bg-white">
             <div className="text-sm leading-relaxed text-foreground font-normal">

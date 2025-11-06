@@ -96,24 +96,6 @@ export const EmailCard = ({
 
           {/* Email Preview/Full Content - Inbox Style */}
           <div className="bg-background border border-border rounded-lg overflow-hidden mb-2">
-            {/* Email Header - Inbox Style */}
-            <div className="bg-muted/30 px-3 py-1.5 border-b border-border">
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">
-                    {email.email.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="font-medium text-foreground">{email.email}</div>
-                    <div className="text-muted-foreground">to: customer@example.com</div>
-                  </div>
-                </div>
-                <div className="text-muted-foreground">
-                  {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </div>
-              </div>
-            </div>
-            
             {/* Email Body */}
             <div className="px-3 py-3 bg-white">
               <div className="text-sm leading-relaxed text-foreground font-normal">
