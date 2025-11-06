@@ -59,7 +59,7 @@ export const TopNavbar = () => {
           onClick={() => navigate('/home')}
           className={`flex items-center gap-2 shrink-0 px-3 py-2 rounded-lg transition-colors ${
             isHomeActive 
-              ? 'bg-accent text-accent-foreground' 
+              ? 'bg-[hsl(67,100%,88%)] text-foreground' 
               : 'hover:bg-accent/50'
           }`}
         >
