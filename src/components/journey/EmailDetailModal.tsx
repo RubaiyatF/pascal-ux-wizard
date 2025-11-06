@@ -98,8 +98,19 @@ export const EmailDetailModal = ({
           <label className="text-sm font-medium text-muted-foreground mb-2 block">Message</label>
           <div className="bg-background border border-border rounded-lg overflow-hidden">
             <div className="px-4 py-4 bg-white">
-              <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
-                {email.content}
+              <div className="text-sm leading-relaxed text-foreground space-y-4">
+                <p>Hi there,</p>
+                
+                <p>{email.content}</p>
+                
+                <p>I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!</p>
+                
+                <div className="space-y-1">
+                  <p>Best regards,</p>
+                  <p>Sarah Thompson</p>
+                  <p className="text-muted-foreground">Customer Success Team</p>
+                  <p className="text-muted-foreground">support@company.com</p>
+                </div>
               </div>
             </div>
           </div>
