@@ -12,6 +12,15 @@ interface Message {
   content: string;
 }
 
+const FAQ_QUESTIONS = [
+  "What is Pascal and how does it work?",
+  "How do I navigate the Email Queue?",
+  "What are benchmark users and why do I need them?",
+  "How do I track user journeys?",
+  "What are the 5 user archetypes?",
+  "How can I view session recordings?",
+];
+
 export const SupportChat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -31,10 +40,11 @@ export const SupportChat = () => {
     }
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (messageText?: string) => {
+    const text = messageText || input.trim();
+    if (!text || isLoading) return;
 
-    const userMessage: Message = { role: "user", content: input.trim() };
+    const userMessage: Message = { role: "user", content: text };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -146,6 +156,10 @@ export const SupportChat = () => {
     }
   };
 
+  const handleFAQClick = (question: string) => {
+    sendMessage(question);
+  };
+
   return (
     <>
       {/* Chat Widget Button */}
@@ -186,6 +200,28 @@ export const SupportChat = () => {
           {/* Messages */}
           <ScrollArea className="flex-1 p-4" ref={scrollRef}>
             <div className="space-y-4">
+              {/* FAQ Section - Show only at start */}
+              {messages.length === 1 && (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground font-medium">Quick Questions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {FAQ_QUESTIONS.map((question, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleFAQClick(question)}
+                        className="text-xs h-auto py-2 px-3 whitespace-normal text-left"
+                        disabled={isLoading}
+                      >
+                        {question}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="border-t border-border my-4" />
+                </div>
+              )}
+
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -252,7 +288,7 @@ export const SupportChat = () => {
                 rows={1}
               />
               <Button
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
                 disabled={!input.trim() || isLoading}
                 size="icon"
                 className="shrink-0 h-[44px] w-[44px]"
