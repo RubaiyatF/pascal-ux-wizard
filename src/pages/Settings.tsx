@@ -339,7 +339,7 @@ const Settings = () => {
 {`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="f98d132b-22b9-4d99-a075-e06c780eafc3"
-  data-api-key="pk_a903de21a..."
+  data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
   data-recording="true"
   async
 ></script>`}
@@ -351,7 +351,7 @@ const Settings = () => {
                     onClick={() => copyToClipboard(`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="f98d132b-22b9-4d99-a075-e06c780eafc3"
-  data-api-key="pk_a903de21a..."
+  data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
   data-recording="true"
   async
 ></script>`)}
@@ -420,7 +420,7 @@ const Settings = () => {
 
 const tracker = new PascalTracker({
   projectId: 'f98d132b-22b9-4d99-a075-e06c780eafc3',
-  apiKey: 'YOUR_API_KEY',
+  apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`}
                   </pre>
@@ -432,7 +432,7 @@ const tracker = new PascalTracker({
 
 const tracker = new PascalTracker({
   projectId: 'f98d132b-22b9-4d99-a075-e06c780eafc3',
-  apiKey: 'YOUR_API_KEY',
+  apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`)}
                   >
