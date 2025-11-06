@@ -64,39 +64,42 @@ export const CardStackView = ({
         })}
       </div>
 
-      {/* Action Buttons */}
-      <div className={`flex items-center justify-center gap-6 relative z-50 transition-all duration-300 ${isTopCardExpanded ? 'mt-[280px]' : 'pt-12 mt-10'}`}>
-        <Button
-          size="lg"
-          variant="outline"
-          className="rounded-full w-16 h-16 p-0 border-2 border-destructive text-destructive hover:bg-destructive hover:text-white"
-          onClick={() => onReject(emails[0].id)}
-        >
-          <X className="w-8 h-8" />
-        </Button>
+      {/* Action Controls Group */}
+      <div className="space-y-4 pt-12 mt-10">
+        {/* Action Buttons */}
+        <div className="flex items-center justify-center gap-6 relative z-50">
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-full w-16 h-16 p-0 border-2 border-destructive text-destructive hover:bg-destructive hover:text-white"
+            onClick={() => onReject(emails[0].id)}
+          >
+            <X className="w-8 h-8" />
+          </Button>
 
-        <Button
-          size="lg"
-          variant="outline"
-          className="rounded-full w-16 h-16 p-0"
-          onClick={() => onEdit(emails[0].id)}
-        >
-          <RotateCcw className="w-6 h-6" />
-        </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-full w-16 h-16 p-0"
+            onClick={() => onEdit(emails[0].id)}
+          >
+            <RotateCcw className="w-6 h-6" />
+          </Button>
 
-        <Button
-          size="lg"
-          variant="outline"
-          className="rounded-full w-16 h-16 p-0 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-          onClick={() => onApprove(emails[0].id)}
-        >
-          <Check className="w-8 h-8" />
-        </Button>
-      </div>
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-full w-16 h-16 p-0 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            onClick={() => onApprove(emails[0].id)}
+          >
+            <Check className="w-8 h-8" />
+          </Button>
+        </div>
 
-      {/* Counter */}
-      <div className="text-center text-sm text-muted-foreground">
-        {emails.length} email{emails.length !== 1 ? "s" : ""} remaining
+        {/* Counter */}
+        <div className="text-center text-sm text-muted-foreground">
+          {emails.length} email{emails.length !== 1 ? "s" : ""} remaining
+        </div>
       </div>
     </div>
   );
