@@ -206,7 +206,7 @@ export const SwipeableEmailCard = ({
           </div>
           
           {/* Email Body */}
-          <div className="px-4 py-4 bg-card">
+          <div className="px-4 py-4 bg-white">
             <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-normal">
               {isExpanded ? (
                 // Full email content formatted like a real email
@@ -227,7 +227,12 @@ export const SwipeableEmailCard = ({
                 <>
                   <p className="mb-2">Hi there,</p>
                   <p>{email.preview}</p>
-                  <p className="mt-2 text-muted-foreground italic text-xs">Click expand to see full email...</p>
+                  <p 
+                    className="mt-2 text-muted-foreground italic text-xs cursor-pointer hover:text-primary transition-colors"
+                    onClick={handleExpandToggle}
+                  >
+                    click to expand to see the full email//
+                  </p>
                 </>
               )}
             </div>
