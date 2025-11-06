@@ -22,7 +22,7 @@ const Auth = () => {
       <div className="w-full max-w-md animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card mb-4 shadow-lg overflow-hidden">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
             <AnimatedLogo />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">Pascal</h1>
