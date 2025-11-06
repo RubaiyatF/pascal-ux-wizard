@@ -275,16 +275,15 @@ const EmailQueue = () => {
       <EmailQueueStats />
 
       {/* Instructions */}
-      <div className="relative py-6 px-4">
+      <div className="relative py-4 px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl p-6 border border-primary/20 shadow-lg animate-fade-in">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-pulse rounded-xl"></div>
-            <div className="relative flex items-center justify-center gap-3 text-sm font-medium">
-              <span className="text-destructive animate-pulse">←</span>
-              <span className="text-muted-foreground">Swipe left or right to approve/reject</span>
-              <span className="text-primary animate-pulse">→</span>
+          <div className="relative bg-gradient-to-r from-transparent via-primary/5 to-transparent py-3">
+            <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
+              <span className="text-destructive/70 animate-pulse">←</span>
+              <span>Swipe left or right to approve/reject</span>
+              <span className="text-primary/70 animate-pulse">→</span>
             </div>
-            <div className="relative text-center text-xs text-muted-foreground mt-2">
+            <div className="relative text-center text-xs text-muted-foreground/60 mt-1">
               or use the buttons below for quick actions
             </div>
           </div>
