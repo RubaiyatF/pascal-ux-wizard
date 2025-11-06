@@ -46,25 +46,25 @@ export const EmailCard = ({
 
   return (
     <div className="border-b border-border hover:bg-accent/5 transition-colors">
-      <div className="flex flex-col sm:flex-row items-start gap-3 p-3 sm:p-4">
+      <div className="flex items-start gap-3 p-3">
         {/* Checkbox */}
         <Checkbox
           checked={isSelected}
           onCheckedChange={() => onToggleSelect(email.id)}
-          className="mt-1 hidden sm:flex"
+          className="mt-1"
         />
 
         {/* Main Content */}
-        <div className="flex-1 min-w-0 w-full">
+        <div className="flex-1 min-w-0">
           {/* Header Row - Compact */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 flex-wrap min-w-0">
-              <span className="font-semibold text-xs sm:text-sm truncate">{email.email}</span>
-              <Badge variant="outline" className="bg-success/10 text-success border-success/20 text-xs px-1.5 py-0 shrink-0">
-                {email.confidence}%
+              <span className="font-semibold text-sm">{email.email}</span>
+              <Badge variant="outline" className="bg-success/10 text-success border-success/20 text-xs px-1.5 py-0">
+                Confidence Score: {email.confidence}%
               </Badge>
               {email.type === "reply" && (
-                <Badge variant="outline" className="bg-info/10 text-info border-info/20 text-xs px-1.5 py-0 shrink-0">
+                <Badge variant="outline" className="bg-info/10 text-info border-info/20 text-xs px-1.5 py-0">
                   Reply
                 </Badge>
               )}
@@ -73,13 +73,13 @@ export const EmailCard = ({
           </div>
 
           {/* Subject Line */}
-          <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span className="text-xs sm:text-sm font-medium line-clamp-2">"{email.subject}"</span>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span className="text-sm font-medium">"{email.subject}"</span>
             <Button
               size="sm"
               variant="ghost"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="h-7 text-xs px-2 shrink-0 self-start sm:self-auto"
+              className="h-7 text-xs px-2 shrink-0"
             >
               {isExpanded ? (
                 <>
@@ -176,31 +176,29 @@ export const EmailCard = ({
           )}
 
           {/* Actions Row */}
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex items-center gap-1.5">
             {email.status === "queued" && (
               <>
                 <Button
                   size="sm"
-                  className="bg-gradient-hero hover:opacity-90 h-7 text-xs px-2 sm:px-3"
+                  className="bg-gradient-hero hover:opacity-90 h-7 text-xs px-3"
                   onClick={() => onApprove(email.id)}
                 >
-                  <span className="hidden xs:inline">Approve</span>
-                  <span className="xs:hidden">✓</span>
+                  Approve
                 </Button>
-                <Button size="sm" variant="outline" className="h-7 text-xs px-2 sm:px-3" onClick={() => onEdit(email.id)}>
+                <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onEdit(email.id)}>
                   Edit
                 </Button>
-                <Button size="sm" variant="outline" className="h-7 text-xs px-2 sm:px-3" onClick={() => onReject(email.id)}>
-                  <span className="hidden xs:inline">Reject</span>
-                  <span className="xs:hidden">✗</span>
+                <Button size="sm" variant="outline" className="h-7 text-xs px-3" onClick={() => onReject(email.id)}>
+                  Reject
                 </Button>
               </>
             )}
             {email.status === "approved" && (
-              <Badge className="bg-success text-success-foreground h-7 text-xs">Approved</Badge>
+              <Badge className="bg-success text-success-foreground h-7">Approved</Badge>
             )}
             {email.status === "rejected" && (
-              <Badge className="bg-destructive text-destructive-foreground h-7 text-xs">Rejected</Badge>
+              <Badge className="bg-destructive text-destructive-foreground h-7">Rejected</Badge>
             )}
             <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onViewRecording(email.id)}>
               <Eye className="w-3 h-3" />
