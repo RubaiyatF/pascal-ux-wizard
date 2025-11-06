@@ -156,6 +156,7 @@ const Benchmarks = () => {
         <AddBenchmarkModal
           open={addBenchmarkOpen}
           onOpenChange={setAddBenchmarkOpen}
+          onSuccess={handleAddBenchmark}
           initialEmail={benchmarkEmail}
         />
       </>
