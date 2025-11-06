@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { useProject } from "@/contexts/ProjectContext";
+import { TrackerVerificationModal } from "@/components/home/TrackerVerificationModal";
+import { CompletionCelebrationModal } from "@/components/home/CompletionCelebrationModal";
+import { HelpModal } from "@/components/home/HelpModal";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,6 +27,9 @@ const Home = () => {
   const { currentProject } = useProject();
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [expandedStep, setExpandedStep] = useState<number | null>(1);
+  const [isTrackerModalOpen, setIsTrackerModalOpen] = useState(false);
+  const [isCelebrationModalOpen, setIsCelebrationModalOpen] = useState(false);
+  const [helpModalType, setHelpModalType] = useState<'support' | 'docs' | null>(null);
 
   const trackerSnippet = `<script>
   (function() {
@@ -50,9 +56,61 @@ const Home = () => {
 
   const markStepComplete = (step: number) => {
     if (!completedSteps.includes(step)) {
-      setCompletedSteps([...completedSteps, step]);
+      const newCompletedSteps = [...completedSteps, step];
+      setCompletedSteps(newCompletedSteps);
+      
+      // If this is the last step (step 6), show celebration modal
+      if (step === 6 && newCompletedSteps.length === 6) {
+        setIsCelebrationModalOpen(true);
+      }
+      
+      // Auto-expand next step
+      if (step < 7) {
+        setExpandedStep(step + 1);
+      }
     }
   };
+
+  const handleTrackerVerified = () => {
+    markStepComplete(1);
+  };
+
+  const handleNavigateToPage = (step: number, path: string) => {
+    markStepComplete(step);
+    navigate(path);
+  };
+
+  const openHelpModal = (type: 'support' | 'docs') => {
+    setHelpModalType(type);
+  };
+
+  // Load completed steps from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setCompletedSteps(parsed.completedSteps || []);
+      if (parsed.completedSteps?.length < 6) {
+        // Find first incomplete step
+        for (let i = 1; i <= 6; i++) {
+          if (!parsed.completedSteps.includes(i)) {
+            setExpandedStep(i);
+            break;
+          }
+        }
+      }
+    }
+  }, [currentProject]);
+
+  // Save completed steps to localStorage whenever they change
+  useEffect(() => {
+    if (completedSteps.length > 0) {
+      localStorage.setItem(
+        `pascal-onboarding-${currentProject}`,
+        JSON.stringify({ completedSteps })
+      );
+    }
+  }, [completedSteps, currentProject]);
 
   const steps = [
     {
@@ -80,8 +138,8 @@ const Home = () => {
               Copy
             </Button>
           </div>
-          <Button onClick={() => markStepComplete(1)} className="w-full">
-            I've added the snippet
+          <Button onClick={() => setIsTrackerModalOpen(true)} className="w-full">
+            Verify Connection
           </Button>
         </div>
       )
@@ -98,10 +156,7 @@ const Home = () => {
             Add emails of customers who successfully activated or your own email to record ideal activation journeys. Pascal will learn from these patterns.
           </p>
           <Button 
-            onClick={() => {
-              markStepComplete(2);
-              navigate('/benchmarks');
-            }} 
+            onClick={() => handleNavigateToPage(2, '/benchmarks')} 
             className="w-full"
           >
             Go to Benchmarks
@@ -122,10 +177,7 @@ const Home = () => {
             Monitor user journeys in real-time. You can manually trigger Pascal's AI to generate personalized emails for specific users.
           </p>
           <Button 
-            onClick={() => {
-              markStepComplete(3);
-              navigate('/journey');
-            }} 
+            onClick={() => handleNavigateToPage(3, '/journey')} 
             className="w-full"
           >
             Go to Journey
@@ -146,10 +198,7 @@ const Home = () => {
             Pascal generates personalized emails based on user behavior. Review, edit, and approve emails before they're sent to help users reach activation.
           </p>
           <Button 
-            onClick={() => {
-              markStepComplete(4);
-              navigate('/email-queue');
-            }} 
+            onClick={() => handleNavigateToPage(4, '/email-queue')} 
             className="w-full"
           >
             Go to Email Queue
@@ -170,10 +219,7 @@ const Home = () => {
             Track key metrics like active users, engagement rates, feature adoption, and email performance to measure your success.
           </p>
           <Button 
-            onClick={() => {
-              markStepComplete(5);
-              navigate('/analytics');
-            }} 
+            onClick={() => handleNavigateToPage(5, '/analytics')} 
             className="w-full"
           >
             Go to Analytics
@@ -194,10 +240,7 @@ const Home = () => {
             Set up your reply email address so Pascal can track customer responses and stitch them into the user journey timeline.
           </p>
           <Button 
-            onClick={() => {
-              markStepComplete(6);
-              navigate('/settings');
-            }} 
+            onClick={() => handleNavigateToPage(6, '/settings')} 
             className="w-full"
           >
             Go to Settings
@@ -339,17 +382,45 @@ const Home = () => {
         <Card className="p-6 bg-gradient-subtle border-border">
           <h3 className="font-semibold text-foreground mb-4">Need help?</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Button variant="outline" className="justify-start">
+            <Button 
+              variant="outline" 
+              className="justify-start"
+              onClick={() => openHelpModal('support')}
+            >
               <Mail className="w-4 h-4 mr-2" />
               Contact Support
             </Button>
-            <Button variant="outline" className="justify-start">
+            <Button 
+              variant="outline" 
+              className="justify-start"
+              onClick={() => openHelpModal('docs')}
+            >
               <Activity className="w-4 h-4 mr-2" />
               View Documentation
             </Button>
           </div>
         </Card>
       </div>
+
+      {/* Modals */}
+      <TrackerVerificationModal
+        open={isTrackerModalOpen}
+        onOpenChange={setIsTrackerModalOpen}
+        onVerified={handleTrackerVerified}
+      />
+      
+      <CompletionCelebrationModal
+        open={isCelebrationModalOpen}
+        onOpenChange={setIsCelebrationModalOpen}
+      />
+
+      {helpModalType && (
+        <HelpModal
+          open={!!helpModalType}
+          onOpenChange={() => setHelpModalType(null)}
+          type={helpModalType}
+        />
+      )}
     </div>
   );
 };
