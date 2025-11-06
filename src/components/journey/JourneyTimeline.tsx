@@ -336,9 +336,40 @@ export const JourneyTimeline = ({
                           minute: '2-digit'
                         })}
                       </p>
-                      <p className="font-medium text-sm mb-1">{event.subject}</p>
-                      <div className={`text-sm text-muted-foreground ${expandedEmail === event.id ? "" : "line-clamp-2"}`}>
-                        {event.content}
+                      <p className="font-medium text-sm mb-1">"{event.subject}"</p>
+                      
+                      {/* Email Content - Inbox Style */}
+                      <div 
+                        className={`bg-background border border-border rounded-lg overflow-hidden cursor-pointer hover:border-primary/50 transition-colors ${expandedEmail === event.id ? "mb-4" : ""}`}
+                        onClick={() => setExpandedEmail(expandedEmail === event.id ? null : event.id)}
+                      >
+                        <div className="px-3 py-3 bg-white">
+                          {expandedEmail === event.id ? (
+                            // Full email with formatting
+                            <div className="text-sm leading-relaxed text-foreground space-y-4">
+                              <p>Hi there,</p>
+                              
+                              <p>{event.content}</p>
+                              
+                              <p>I'd love to hear your thoughts on this. Feel free to reach out if you have any questions!</p>
+                              
+                              <div className="space-y-1">
+                                <p>Best regards,</p>
+                                <p>Sarah Thompson</p>
+                                <p className="text-muted-foreground">Customer Success Team</p>
+                                <p className="text-muted-foreground">support@company.com</p>
+                              </div>
+                            </div>
+                          ) : (
+                            // Collapsed preview
+                            <div className="text-sm leading-relaxed text-foreground line-clamp-2">
+                              Hi there, {event.content}
+                              <span className="ml-2 text-muted-foreground italic">
+                                click to see the full email...
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                       
                       {/* Expanded Email Details */}
@@ -355,16 +386,6 @@ export const JourneyTimeline = ({
                                 minute: '2-digit'
                               })}
                             </p>
-                          </div>
-                          <div>
-                            <label className="text-xs font-medium text-muted-foreground block mb-2">Full Message</label>
-                            <div className="bg-background border border-border rounded-lg overflow-hidden">
-                              <div className="px-3 py-3 bg-white">
-                                <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
-                                  {event.content}
-                                </div>
-                              </div>
-                            </div>
                           </div>
                           {event.direction === "reply" && (
                             <div className="flex gap-2 flex-wrap pt-2">
