@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Star, Plus, TrendingUp, ChevronDown, ChevronUp } from "lucide-react";
+import { Star, Plus, TrendingUp, ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 import { AddBenchmarkModal } from "@/components/home/AddBenchmarkModal";
 import { UserJourneyModal } from "@/components/home/UserJourneyModal";
@@ -24,6 +24,7 @@ const Home = () => {
   } | null>(null);
   const [showAllSimilarUsers, setShowAllSimilarUsers] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
   const [benchmarkUsers, setBenchmarkUsers] = useState<Array<{
     email: string;
@@ -100,16 +101,25 @@ const Home = () => {
     { email: "isabella@tool.com", similarity: 57, reason: "Comparable feature adoption" },
   ];
 
+  const sortedUsers = [...allSimilarUsers].sort((a, b) => 
+    sortOrder === 'desc' ? b.similarity - a.similarity : a.similarity - b.similarity
+  );
+
   const USERS_PER_PAGE = 10;
-  const totalPages = Math.ceil(allSimilarUsers.length / USERS_PER_PAGE);
+  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
   
   const similarUsers = showAllSimilarUsers 
-    ? allSimilarUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE)
-    : allSimilarUsers.slice(0, 3);
+    ? sortedUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE)
+    : sortedUsers.slice(0, 3);
   
   const handleToggleShowAll = () => {
     setShowAllSimilarUsers(!showAllSimilarUsers);
     setCurrentPage(1); // Reset to first page when toggling
+  };
+
+  const handleToggleSort = () => {
+    setSortOrder(current => current === 'desc' ? 'asc' : 'desc');
+    setCurrentPage(1); // Reset to first page when sorting
   };
 
   const metrics = [
@@ -260,6 +270,15 @@ const Home = () => {
               Users behaving like your benchmarks (opportunity list)
             </p>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleToggleSort}
+            className="gap-2"
+          >
+            <ArrowUpDown className="w-4 h-4" />
+            Sort by Similarity ({sortOrder === 'desc' ? 'High to Low' : 'Low to High'})
+          </Button>
         </div>
 
         <div className="space-y-3">
