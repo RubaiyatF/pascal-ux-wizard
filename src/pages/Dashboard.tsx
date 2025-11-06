@@ -66,7 +66,7 @@ const Dashboard = () => {
         {stats.map((stat) => (
           <Card
             key={stat.label}
-            className="p-6 hover:shadow-elevated transition-shadow"
+            className="p-6 shadow-lg hover:shadow-xl transition-shadow"
           >
             <div className="flex items-start justify-between mb-4">
               <div
