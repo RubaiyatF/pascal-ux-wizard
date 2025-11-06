@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Eye, EyeOff, Plus } from "lucide-react";
+import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
 
@@ -20,7 +20,6 @@ const Settings = () => {
     { id: 1, name: "test 2", key: "pk_a903de21a...", fullKey: "pk_a903de21a123456789", status: "active", created: "11/4/2025" },
     { id: 2, name: "Default API Key", key: "pk_55629ba77...", fullKey: "pk_55629ba77987654321", status: "active", created: "11/4/2025" }
   ]);
-  const [visibleKeys, setVisibleKeys] = useState<Set<number>>(new Set());
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [newGeneratedKey, setNewGeneratedKey] = useState("");
 
@@ -36,18 +35,6 @@ const Settings = () => {
     toast({
       title: "Copied to clipboard",
       description: "The code has been copied to your clipboard.",
-    });
-  };
-
-  const toggleKeyVisibility = (keyId: number) => {
-    setVisibleKeys(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(keyId)) {
-        newSet.delete(keyId);
-      } else {
-        newSet.add(keyId);
-      }
-      return newSet;
     });
   };
 
@@ -314,46 +301,21 @@ const Settings = () => {
                           {apiKey.status}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <code className="text-sm text-muted-foreground font-mono">
-                          {visibleKeys.has(apiKey.id) ? apiKey.fullKey : apiKey.key}
-                        </code>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => toggleKeyVisibility(apiKey.id)}
-                        >
-                          {visibleKeys.has(apiKey.id) ? (
-                            <EyeOff className="w-3 h-3" />
-                          ) : (
-                            <Eye className="w-3 h-3" />
-                          )}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => copyToClipboard(apiKey.fullKey)}
-                        >
-                          <Copy className="w-3 h-3" />
-                        </Button>
-                      </div>
+                      <code className="text-sm text-muted-foreground font-mono mb-1 block">
+                        {apiKey.key}
+                      </code>
                       <p className="text-xs text-muted-foreground">
                         Created {apiKey.created}
                       </p>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
-                        onClick={() => revokeKey(apiKey.id)}
-                      >
-                        Revoke
-                      </Button>
-                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                      onClick={() => revokeKey(apiKey.id)}
+                    >
+                      Revoke
+                    </Button>
                   </div>
                 </div>
               ))}
