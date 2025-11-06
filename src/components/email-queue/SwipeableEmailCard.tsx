@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Eye, Sparkles, X, Check, Edit, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, Eye, Edit, ChevronDown, ChevronUp, X, Check } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { QueuedEmail } from "./EmailCard";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 interface SwipeableEmailCardProps {
   email: QueuedEmail;
@@ -223,9 +224,11 @@ export const SwipeableEmailCard = ({
         </div>
 
         {/* AI Reasoning */}
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-4 mb-4 border border-primary/20">
+        <div className="bg-white rounded-lg p-4 mb-4 border border-border">
           <div className="flex items-start gap-2">
-            <Sparkles className="w-4 h-4 text-primary shrink-0 mt-1" />
+            <div className="w-4 h-4 shrink-0 mt-1 rounded-full overflow-hidden">
+              <AnimatedLogo />
+            </div>
             <div className="flex-1">
               <p className="text-sm font-medium mb-1">AI Reasoning</p>
               <p className="text-sm text-muted-foreground">{email.aiReasoning}</p>

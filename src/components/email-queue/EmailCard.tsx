@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Play, Eye, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, Eye, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 export interface QueuedEmail {
   id: string;
@@ -134,9 +135,11 @@ export const EmailCard = ({
           {/* AI Reasoning - Show in expanded view */}
           {isExpanded && (
             <>
-              <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded px-3 py-2 mb-2 border border-primary/20">
+              <div className="bg-white rounded px-3 py-2 mb-2 border border-border">
                 <div className="flex items-start gap-2">
-                  <Sparkles className="w-3 h-3 text-primary shrink-0 mt-0.5" />
+                  <div className="w-3 h-3 shrink-0 mt-0.5 rounded-full overflow-hidden">
+                    <AnimatedLogo />
+                  </div>
                   <div>
                     <p className="text-xs font-medium mb-0.5">AI Reasoning</p>
                     <p className="text-xs text-muted-foreground leading-relaxed">{email.aiReasoning}</p>
