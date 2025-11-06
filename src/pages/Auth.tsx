@@ -91,7 +91,7 @@ const Auth = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-hero hover:opacity-90 transition-opacity"
+              className="w-full bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity"
             >
               {isLogin ? "Sign In" : "Create Account"}
             </Button>

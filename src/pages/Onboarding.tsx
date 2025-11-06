@@ -314,7 +314,7 @@ const Onboarding = () => {
                 (step === 1 && (!projectName || !website)) || 
                 (step === 3 && !eventsDetected)
               }
-              className="bg-gradient-hero hover:opacity-90 transition-opacity"
+              className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity"
             >
               {step === 3 && !eventsDetected 
                 ? "Waiting..." 

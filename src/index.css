@@ -60,6 +60,12 @@ All colors MUST be HSL.
     --shadow-2xl: 3px 3px 0px 0px hsl(0 0% 0% / 250.00);
     --tracking-normal: 0em;
     --spacing: 0.25rem;
+    --gradient-hero: linear-gradient(135deg, oklch(var(--primary)), oklch(0.5050 0.1510 131.0630));
+    --gradient-card: linear-gradient(180deg, oklch(var(--card)), oklch(0.95 0.02 102));
+    --gradient-subtle: linear-gradient(180deg, oklch(var(--background)), oklch(var(--secondary) / 0.3));
+    --shadow-glow: 0 0 40px oklch(var(--primary) / 0.4);
+    --shadow-card: 0 4px 6px -1px oklch(0 0 0 / 0.1);
+    --shadow-elevated: 0 10px 30px -10px oklch(0 0 0 / 0.3);
   }
 
   .dark {
@@ -113,6 +119,12 @@ All colors MUST be HSL.
     --shadow-lg: 3px 3px 0px 0px hsl(0 0% 100% / 100.00), 3px 4px 6px -1px hsl(0 0% 100% / 100.00);
     --shadow-xl: 3px 3px 0px 0px hsl(0 0% 100% / 100.00), 3px 8px 10px -1px hsl(0 0% 100% / 100.00);
     --shadow-2xl: 3px 3px 0px 0px hsl(0 0% 100% / 250.00);
+    --gradient-hero: linear-gradient(135deg, oklch(var(--primary)), oklch(0.9211 0.3090 146.9886));
+    --gradient-card: linear-gradient(180deg, oklch(var(--card)), oklch(0.3 0 0));
+    --gradient-subtle: linear-gradient(180deg, oklch(var(--background)), oklch(var(--secondary) / 0.3));
+    --shadow-glow: 0 0 40px oklch(var(--primary) / 0.4);
+    --shadow-card: 0 4px 6px -1px oklch(0 0 0 / 0.1);
+    --shadow-elevated: 0 10px 30px -10px oklch(0 0 0 / 0.3);
   }
 }
 
