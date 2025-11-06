@@ -33,9 +33,12 @@ export const TopNavbar = () => {
   };
 
   const handleProjectCreated = (projectName: string) => {
+    console.log('[TopNavbar] Creating new project, cleaning up localStorage for:', projectName);
+    
     // Clean up any stale localStorage flags for this project before starting
     localStorage.removeItem(`pascal-onboarding-${projectName}`);
     localStorage.removeItem(`pascal-onboarding-prev-${projectName}`);
+    localStorage.removeItem(`pascal-onboarding-started-${projectName}`);
     localStorage.removeItem(`pascal-benchmark-added-${projectName}`);
     localStorage.removeItem(`pascal-journey-visited-${projectName}`);
     localStorage.removeItem(`pascal-email-provider-${projectName}`);

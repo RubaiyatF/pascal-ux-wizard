@@ -79,6 +79,9 @@ const Home = () => {
   };
 
   const handleTrackerVerified = () => {
+    // Mark onboarding as started when user verifies tracker
+    localStorage.setItem(`pascal-onboarding-started-${currentProject}`, 'true');
+    console.log('[Home] Onboarding started - tracker verified');
     markStepComplete(1);
   };
 
@@ -93,11 +96,15 @@ const Home = () => {
 
   // Load initial completed steps from localStorage
   useEffect(() => {
+    console.log('[Home] Loading onboarding for project:', currentProject);
+    
     // Always reset state first when project changes to prevent state leakage
     setCompletedSteps([]);
     setExpandedStep(1);
     
     const saved = localStorage.getItem(`pascal-onboarding-${currentProject}`);
+    console.log('[Home] Saved onboarding data:', saved);
+    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -121,7 +128,9 @@ const Home = () => {
         console.error('Error loading onboarding progress:', e);
       }
     } else {
+      console.log('[Home] No saved progress - clearing all flags');
       // No saved progress - clear any stale completion flags
+      localStorage.removeItem(`pascal-onboarding-started-${currentProject}`);
       localStorage.removeItem(`pascal-benchmark-added-${currentProject}`);
       localStorage.removeItem(`pascal-journey-visited-${currentProject}`);
       localStorage.removeItem(`pascal-email-provider-${currentProject}`);
@@ -134,12 +143,16 @@ const Home = () => {
   // Check for step completions from other pages
   useEffect(() => {
     const checkCompletions = () => {
-      // Check if onboarding has legitimately started for this project
-      const hasOnboardingStarted = localStorage.getItem(`pascal-onboarding-${currentProject}`) !== null;
+      // NEW APPROACH: Only check flags if onboarding has been explicitly started
+      // Onboarding is "started" when user verifies tracker or completes step 1
+      const hasOnboardingStarted = localStorage.getItem(`pascal-onboarding-started-${currentProject}`) === 'true';
       
-      // If onboarding hasn't started, ignore all individual completion flags
+      console.log('[Home] checkCompletions - hasOnboardingStarted:', hasOnboardingStarted);
+      
+      // If onboarding hasn't been explicitly started, ignore all individual completion flags
       // This prevents false completions from stale data or premature flag setting
       if (!hasOnboardingStarted) {
+        console.log('[Home] Onboarding not started - ignoring all flags');
         return;
       }
       
@@ -149,6 +162,15 @@ const Home = () => {
       const emailQueueVisited = localStorage.getItem(`pascal-email-queue-visited-${currentProject}`);
       const analyticsVisited = localStorage.getItem(`pascal-analytics-visited-${currentProject}`);
       const settingsVisited = localStorage.getItem(`pascal-settings-visited-${currentProject}`);
+
+      console.log('[Home] Checking flags:', {
+        benchmarkAdded: !!benchmarkAdded,
+        journeyVisited: !!journeyVisited,
+        emailProviderConfigured: !!emailProviderConfigured,
+        emailQueueVisited: !!emailQueueVisited,
+        analyticsVisited: !!analyticsVisited,
+        settingsVisited: !!settingsVisited
+      });
 
       setCompletedSteps(prev => {
         const newSteps = [...prev];
@@ -177,6 +199,10 @@ const Home = () => {
         if (settingsVisited && !prev.includes(7)) {
           newSteps.push(7);
           hasChanges = true;
+        }
+
+        if (hasChanges) {
+          console.log('[Home] Steps changed, new steps:', newSteps);
         }
 
         // If steps changed, update expanded step to next incomplete one
