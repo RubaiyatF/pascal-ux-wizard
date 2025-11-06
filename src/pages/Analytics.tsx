@@ -21,11 +21,14 @@ const Analytics = () => {
     ]
   );
 
-  // Mark onboarding step 6 as complete when Analytics is visited
+  // Mark onboarding step 6 as complete when Analytics is visited (with delay to prevent false triggers)
   useEffect(() => {
-    localStorage.setItem(`pascal-analytics-visited-${currentProject}`, 'true');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount, not when currentProject changes
+    const timer = setTimeout(() => {
+      localStorage.setItem(`pascal-analytics-visited-${currentProject}`, 'true');
+    }, 2000); // 2 second delay ensures user is actually viewing the page
+    
+    return () => clearTimeout(timer);
+  }, [currentProject]);
 
   // Reset data state when project changes
   useEffect(() => {

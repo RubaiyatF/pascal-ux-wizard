@@ -39,11 +39,14 @@ const Journey = () => {
   const [dateTo, setDateTo] = useState<Date | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Mark onboarding step 3 as complete when Journey is visited
+  // Mark onboarding step 3 as complete when Journey is visited (with delay to prevent false triggers)
   useEffect(() => {
-    localStorage.setItem(`pascal-journey-visited-${currentProject}`, 'true');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount, not when currentProject changes
+    const timer = setTimeout(() => {
+      localStorage.setItem(`pascal-journey-visited-${currentProject}`, 'true');
+    }, 2000); // 2 second delay ensures user is actually viewing the page
+    
+    return () => clearTimeout(timer);
+  }, [currentProject]);
 
   const users: User[] = currentProject === "Pascal Demo" ? [{
     name: "Sarah Johnson",
