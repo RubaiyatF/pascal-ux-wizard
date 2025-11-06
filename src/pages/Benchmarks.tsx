@@ -9,6 +9,7 @@ import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { UserDetailsModal } from "@/components/home/UserDetailsModal";
 import { HomeEmptyState } from "@/components/empty-states/HomeEmptyState";
 import { useToast } from "@/hooks/use-toast";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 
 const Benchmarks = () => {
   const { toast } = useToast();
@@ -171,12 +172,12 @@ const Benchmarks = () => {
       </div>
 
       {/* Trends */}
-      <Card className="p-6 bg-gradient-card border-primary/20">
+      <Card className="p-6 bg-white border-border">
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <TrendingUp className="w-5 h-5 text-primary" />
+          <div className="w-5 h-5 shrink-0">
+            <AnimatedLogo />
           </div>
-          <div>
+          <div className="flex-1">
             <h3 className="font-semibold mb-2">Success Trends - Last 30 Days</h3>
             <div className="grid grid-cols-3 gap-4">
               <div>
