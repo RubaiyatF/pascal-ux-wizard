@@ -153,6 +153,22 @@ const Home = () => {
           hasChanges = true;
         }
 
+        // If steps changed, update expanded step to next incomplete one
+        if (hasChanges) {
+          const sortedSteps = newSteps.sort((a, b) => a - b);
+          
+          // Find first incomplete step
+          let nextStep = 7; // Default to final step
+          for (let i = 1; i <= 6; i++) {
+            if (!sortedSteps.includes(i)) {
+              nextStep = i;
+              break;
+            }
+          }
+          
+          setExpandedStep(nextStep);
+        }
+
         return hasChanges ? newSteps : prev;
       });
     };
