@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,11 +15,39 @@ import { UserJourneyModal } from "@/components/home/UserJourneyModal";
 import { EmailQueueEmptyState } from "@/components/empty-states/EmailQueueEmptyState";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
-import { useProject } from "@/contexts/ProjectContext";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import { useApiClient } from "@/lib/api";
+import { useAuth } from "@clerk/clerk-react";
+
+interface EmailResponse {
+  queue_id?: string;
+  id?: string;
+  email_id?: string;
+  email?: string;
+  to_email?: string;
+  status?: string;
+  subject?: string;
+  body?: string;
+  ai_reasoning?: string;
+  reasoning?: string;
+  confidence_score?: number;
+  email_type?: string;
+  created_at?: string;
+  heart_score?: number;
+  session_id?: string;
+  conversation_stage?: string;
+  sentiment?: string;
+  intent?: string;
+  rejection_reason?: string;
+}
+
 const EmailQueue = () => {
-  const {
-    currentProject
-  } = useProject();
+  const { projectId } = useOnboarding();
+  const { userId } = useAuth();
+  const api = useApiClient();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -29,98 +58,129 @@ const EmailQueue = () => {
   const [statusFilter, setStatusFilter] = useState<"queued" | "approved" | "rejected">("queued");
   const [typeFilter, setTypeFilter] = useState<"all" | "high" | "replies" | "first">("all");
 
-  // Mark onboarding step 4 as complete when Email Queue is visited
+  // Mark onboarding step 5 as complete when Email Queue is visited
   useEffect(() => {
-    localStorage.setItem(`pascal-email-queue-visited-${currentProject}`, 'true');
-  }, [currentProject]);
+    if (projectId) {
+      localStorage.setItem(`pascal-email-queue-visited-${projectId}`, 'true');
+    }
+  }, [projectId]);
 
-  // Demo data for Pascal Demo project
-  const demoEmails: QueuedEmail[] = currentProject === "Pascal Demo" ? [{
-    id: "1",
-    email: "sarah@startup.io",
-    status: "queued",
-    subject: "Quick check-in on your API integration",
-    preview: "Hi Sarah, I noticed you explored our API documentation extensively yesterday. How's the integration going?",
-    aiReasoning: "User spent 12+ minutes on API docs and authentication pages, indicating active integration work. High engagement (85 HEART score) suggests they're invested but may need support.",
-    confidence: 92,
-    type: "reply",
-    sessionTime: "2 hours ago",
-    heartScore: 85,
-    sessionId: "sess_abc123",
-    conversationStage: "Technical Exploration",
-    sentiment: "engaged",
-    intent: "support_question"
-  }, {
-    id: "2",
-    email: "alex@corp.com",
-    status: "queued",
-    subject: "Welcome to Pascal Analytics!",
-    preview: "Hi Alex, Welcome aboard! I see you just signed up. I'd love to help you get started with your first integration.",
-    aiReasoning: "New user completed signup 5 hours ago. HEART score of 72 indicates good initial engagement. First touch email to establish contact.",
-    confidence: 88,
-    type: "first_touch",
-    sessionTime: "5 hours ago",
-    heartScore: 72,
-    sessionId: "sess_def456",
-    conversationStage: "Onboarding",
-    sentiment: "curious",
-    intent: "getting_started"
-  }, {
-    id: "3",
-    email: "emma@agency.co",
-    status: "queued",
-    subject: "Following up on pricing questions",
-    preview: "Hi Emma, I saw you spent some time on our pricing page. Happy to walk you through which plan would work best for your team.",
-    aiReasoning: "User viewed pricing page for extended period, comparing plans. HEART score of 78 shows interest but needs clarification.",
-    confidence: 85,
-    type: "first_touch",
-    sessionTime: "1 day ago",
-    heartScore: 78,
-    sessionId: "sess_ghi789",
-    conversationStage: "Evaluation",
-    sentiment: "considering",
-    intent: "pricing_question"
-  }, {
-    id: "4",
-    email: "michael@tech.com",
-    status: "approved",
-    subject: "Great to see you're back!",
-    preview: "Hi Michael, noticed you logged in again today. Let me know if there's anything I can help with!",
-    aiReasoning: "Return user after 2-week absence. High HEART score (88) suggests positive past experience. Good moment to re-engage.",
-    confidence: 90,
-    type: "first_touch",
-    sessionTime: "3 hours ago",
-    heartScore: 88,
-    sessionId: "sess_jkl012",
-    conversationStage: "Re-engagement",
-    sentiment: "positive",
-    intent: "re_engagement"
-  }, {
-    id: "5",
-    email: "lisa@company.io",
-    status: "rejected",
-    subject: "Checking in on your trial",
-    preview: "Hi Lisa, just wanted to check in on how your trial is going so far.",
-    aiReasoning: "Generic check-in message. Lower HEART score (65) suggests lower engagement. Email lacks specific behavioral context.",
-    confidence: 75,
-    type: "first_touch",
-    sessionTime: "2 days ago",
-    heartScore: 65,
-    sessionId: "sess_mno345",
-    conversationStage: "Trial",
-    sentiment: "neutral",
-    intent: "check_in",
-    rejectionReason: "Too generic, doesn't reference specific user behavior"
-  }] : [];
-  const [queuedEmailsList, setQueuedEmailsList] = useState<QueuedEmail[]>(demoEmails);
-  const {
-    toast
-  } = useToast();
-
-  // Reset email list when project changes
+  // Reset statusFilter to "queued" when switching to stack view
+  // Stack view is designed only for queued emails (swipe to approve/reject)
   useEffect(() => {
-    setQueuedEmailsList(demoEmails);
-  }, [currentProject]);
+    if (viewMode === "stack" && statusFilter !== "queued") {
+      setStatusFilter("queued");
+    }
+  }, [viewMode, statusFilter]);
+
+  // Fetch emails from the approval queue based on selected status
+  // Map frontend status to backend status: 'queued' -> 'pending'
+  const backendStatus = statusFilter === 'queued' ? 'pending' : statusFilter;
+
+  const { data: emailsResponse, isLoading } = useQuery({
+    queryKey: ["approval-queue", projectId, statusFilter],  // Include statusFilter in key
+    queryFn: () => api.get(`/api/projects/${projectId}/email-queue?status=${backendStatus}&limit=50`),
+    enabled: !!projectId,
+    refetchInterval: 10000, // Poll every 10 seconds for new emails
+  });
+
+  // Fetch stats for accurate tab counts
+  const { data: statsData } = useQuery({
+    queryKey: ["email-queue-stats", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}/email-queue/stats?days=30`),
+    enabled: !!projectId,
+    refetchInterval: 10000, // Poll every 10 seconds
+  });
+
+  // Approve email mutation
+  const approveMutation = useMutation({
+    mutationFn: (emailId: string) =>
+      api.post(`/api/email-queue/${emailId}/approve`, {
+        reviewedBy: userId
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["approval-queue", projectId] });
+      queryClient.invalidateQueries({ queryKey: ["email-queue-stats", projectId] });
+      toast({
+        title: "Email Approved",
+        description: "Email has been queued for sending.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error approving email",
+        description: error.message || "Please try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Edit and approve email mutation
+  const editMutation = useMutation({
+    mutationFn: ({ emailId, subject, body }: { emailId: string; subject: string; body: string }) =>
+      api.post(`/api/email-queue/${emailId}/approve`, {
+        reviewedBy: userId,
+        edits: { subject, body }
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["approval-queue", projectId] });
+      queryClient.invalidateQueries({ queryKey: ["email-queue-stats", projectId] });
+      toast({
+        title: "Email Updated & Approved",
+        description: "Your edited email has been queued for sending.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error updating email",
+        description: error.message || "Please try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Reject email mutation
+  const rejectMutation = useMutation({
+    mutationFn: ({ emailId, feedback }: { emailId: string; feedback: string }) =>
+      api.post(`/api/email-queue/${emailId}/reject`, {
+        reviewedBy: userId,
+        feedback
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["approval-queue", projectId] });
+      queryClient.invalidateQueries({ queryKey: ["email-queue-stats", projectId] });
+      toast({
+        title: "Email Rejected",
+        description: "Feedback submitted successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error rejecting email",
+        description: error.message || "Please try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Transform API response to match QueuedEmail interface
+  const queuedEmailsList: QueuedEmail[] = emailsResponse?.emails?.map((email: EmailResponse) => ({
+    id: email.queue_id || email.id || email.email_id,
+    email: email.email || email.to_email,
+    status: email.status === "pending" ? "queued" : (email.status || "queued"),
+    subject: email.subject,
+    preview: email.body?.substring(0, 150) || "",
+    aiReasoning: email.ai_reasoning || email.reasoning,
+    confidence: email.confidence_score || 0,
+    type: email.email_type || "first_touch",
+    sessionTime: email.created_at ? new Date(email.created_at).toLocaleString() : "",
+    heartScore: email.heart_score || 0,
+    sessionId: email.session_id,
+    conversationStage: email.conversation_stage || "Unknown",
+    sentiment: email.sentiment || "neutral",
+    intent: email.intent || "unknown",
+    rejectionReason: email.rejection_reason,
+  })) || [];
 
   // Filter emails based on status and type
   const filteredEmails = queuedEmailsList.filter(email => {
@@ -135,24 +195,24 @@ const EmailQueue = () => {
     return true;
   });
 
-  // Show empty state if no queued emails
-  if (queuedEmailsList.length === 0) {
+  // Show empty state only if NO emails exist across ALL statuses
+  // Check total count from stats instead of current filtered list
+  const totalEmailCount = (statsData?.stats?.pending_count || 0) +
+                          (statsData?.stats?.approved_count || 0) +
+                          (statsData?.stats?.rejected_count || 0);
+
+  if (!isLoading && totalEmailCount === 0) {
     return <EmailQueueEmptyState />;
   }
+
   const toggleEmailSelection = (id: string) => {
     setSelectedEmails(prev => prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]);
   };
+
   const handleApprove = (id: string) => {
-    toast({
-      title: "Email Approved",
-      description: "Email has been queued for sending."
-    });
-    // Update status to approved
-    setQueuedEmailsList(prev => prev.map(e => e.id === id ? {
-      ...e,
-      status: "approved" as const
-    } : e));
+    approveMutation.mutate(id);
   };
+
   const handleEdit = (id: string) => {
     const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
@@ -160,10 +220,12 @@ const EmailQueue = () => {
       setShowEditModal(true);
     }
   };
+
   const handleReject = (id: string) => {
     setSelectedEmails([id]);
     setShowFeedbackModal(true);
   };
+
   const handleViewRecording = (id: string) => {
     const email = queuedEmailsList.find(e => e.id === id);
     if (email) {
@@ -171,21 +233,19 @@ const EmailQueue = () => {
       setShowJourneyModal(true);
     }
   };
+
   const handleBulkApprove = () => {
-    toast({
-      title: "Bulk Approval",
-      description: `${selectedEmails.length} emails approved.`
+    // Approve all selected emails sequentially
+    selectedEmails.forEach(emailId => {
+      approveMutation.mutate(emailId);
     });
-    // Update status to approved for selected emails
-    setQueuedEmailsList(prev => prev.map(e => selectedEmails.includes(e.id) ? {
-      ...e,
-      status: "approved" as const
-    } : e));
     setSelectedEmails([]);
   };
+
   const handleBulkReject = () => {
     setShowFeedbackModal(true);
   };
+
   const handleSelectAll = () => {
     if (selectedEmails.length === filteredEmails.length) {
       setSelectedEmails([]);
@@ -193,34 +253,24 @@ const EmailQueue = () => {
       setSelectedEmails(filteredEmails.map(e => e.id));
     }
   };
+
   const handleFeedbackSubmit = (feedback: string) => {
-    toast({
-      title: "Feedback Submitted",
-      description: `Rejected ${selectedEmails.length} emails with feedback.`
+    // Reject all selected emails with the same feedback
+    selectedEmails.forEach(emailId => {
+      rejectMutation.mutate({ emailId, feedback });
     });
-    // Update status to rejected for selected emails and store feedback
-    setQueuedEmailsList(prev => prev.map(e => selectedEmails.includes(e.id) ? {
-      ...e,
-      status: "rejected" as const,
-      rejectionReason: feedback
-    } : e));
     setShowFeedbackModal(false);
     setSelectedEmails([]);
   };
+
   const handleEditSave = (emailId: string, subject: string, body: string) => {
-    toast({
-      title: "Email Updated & Approved",
-      description: "Your edited email has been queued for sending."
-    });
-    // Update status to approved after editing
-    setQueuedEmailsList(prev => prev.map(e => e.id === emailId ? {
-      ...e,
-      status: "approved" as const
-    } : e));
+    editMutation.mutate({ emailId, subject, body });
     setShowEditModal(false);
     setCurrentEmail(null);
   };
-  return <div className="space-y-6 animate-fade-in">
+
+  return (
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
@@ -237,17 +287,30 @@ const EmailQueue = () => {
         <div className="flex items-center gap-4">
           {/* View Mode Toggle */}
           <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
-            <Button variant={viewMode === "list" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("list")} className="h-8">
+            <Button
+              variant={viewMode === "list" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className="h-8"
+            >
               <LayoutGrid className="w-4 h-4 mr-2" />
               List
             </Button>
-            <Button variant={viewMode === "stack" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("stack")} className="h-8">
+            <Button
+              variant={viewMode === "stack" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("stack")}
+              className="h-8"
+            >
               <Layers className="w-4 h-4 mr-2" />
               Stack
             </Button>
           </div>
 
-          <Select value={typeFilter} onValueChange={value => setTypeFilter(value as "all" | "high" | "replies" | "first")}>
+          <Select
+            value={typeFilter}
+            onValueChange={value => setTypeFilter(value as "all" | "high" | "replies" | "first")}
+          >
             <SelectTrigger className="w-48">
               <SelectValue />
             </SelectTrigger>
@@ -262,10 +325,11 @@ const EmailQueue = () => {
       </div>
 
       {/* Stats Cards */}
-      <EmailQueueStats />
+      <EmailQueueStats statsData={statsData} />
 
       {/* Instructions - Only show in stack view */}
-      {viewMode === "stack" && <div className="relative px-4">
+      {viewMode === "stack" && (
+        <div className="relative px-4">
           <div className="max-w-2xl mx-auto">
             <div className="relative bg-gradient-to-r from-transparent via-primary/5 to-transparent py-3 animate-[slideLeftRight_3s_ease-in-out_infinite]">
               <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
@@ -273,54 +337,133 @@ const EmailQueue = () => {
                 <span>Swipe left or right to approve/reject</span>
                 <span className="text-green-500 animate-pulse">→</span>
               </div>
-              <div className="relative text-center text-xs text-muted-foreground/60 mt-1">or scroll down to use the buttons for quick actions</div>
+              <div className="relative text-center text-xs text-muted-foreground/60 mt-1">
+                or scroll down to use the buttons for quick actions
+              </div>
             </div>
           </div>
-        </div>}
-
+        </div>
+      )}
 
       {/* Status Filter Tabs (List View Only) */}
-      {viewMode === "list" && <Tabs value={statusFilter} onValueChange={value => setStatusFilter(value as "queued" | "approved" | "rejected")} className="w-full">
+      {viewMode === "list" && (
+        <Tabs
+          value={statusFilter}
+          onValueChange={value => setStatusFilter(value as "queued" | "approved" | "rejected")}
+          className="w-full"
+        >
           <TabsList className="grid w-full max-w-md grid-cols-3">
-            <TabsTrigger value="queued" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              Queued ({queuedEmailsList.filter(e => e.status === "queued").length})
+            <TabsTrigger
+              value="queued"
+              className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+            >
+              Queued ({statsData?.stats?.pending_count || 0})
             </TabsTrigger>
-            <TabsTrigger value="approved" className="data-[state=active]:bg-success data-[state=active]:text-success-foreground">
-              Approved ({queuedEmailsList.filter(e => e.status === "approved").length})
+            <TabsTrigger
+              value="approved"
+              className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
+            >
+              Approved ({statsData?.stats?.approved_count || 0})
             </TabsTrigger>
-            <TabsTrigger value="rejected" className="data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
-              Rejected ({queuedEmailsList.filter(e => e.status === "rejected").length})
+            <TabsTrigger
+              value="rejected"
+              className="data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground"
+            >
+              Rejected ({statsData?.stats?.rejected_count || 0})
             </TabsTrigger>
           </TabsList>
-        </Tabs>}
+        </Tabs>
+      )}
 
       {/* Conditional Bulk Actions (List View Only) */}
-      {viewMode === "list" && statusFilter === "queued" && <BulkActions selectedCount={selectedEmails.length} totalCount={filteredEmails.length} allSelected={selectedEmails.length === filteredEmails.length && filteredEmails.length > 0} onApprove={handleBulkApprove} onReject={handleBulkReject} onSelectAll={handleSelectAll} />}
+      {viewMode === "list" && statusFilter === "queued" && (
+        <BulkActions
+          selectedCount={selectedEmails.length}
+          totalCount={filteredEmails.length}
+          allSelected={selectedEmails.length === filteredEmails.length && filteredEmails.length > 0}
+          onApprove={handleBulkApprove}
+          onReject={handleBulkReject}
+          onSelectAll={handleSelectAll}
+        />
+      )}
 
       {/* Email Queue Views */}
-      {viewMode === "stack" ? <CardStackView emails={queuedEmailsList.filter(e => e.status === "queued")} onApprove={handleApprove} onEdit={handleEdit} onReject={handleReject} onViewRecording={handleViewRecording} /> : <div className="border rounded-lg overflow-hidden bg-card">
-          {filteredEmails.length > 0 ? filteredEmails.map(email => <EmailCard key={email.id} email={email} isSelected={selectedEmails.includes(email.id)} onToggleSelect={toggleEmailSelection} onApprove={handleApprove} onEdit={handleEdit} onReject={handleReject} onViewRecording={handleViewRecording} />) : <div className="p-8 text-center text-muted-foreground">
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
+            <p className="mt-4 text-muted-foreground">Loading emails...</p>
+          </div>
+        </div>
+      ) : viewMode === "stack" ? (
+        <CardStackView
+          emails={queuedEmailsList.filter(e => e.status === "queued")}
+          onApprove={handleApprove}
+          onEdit={handleEdit}
+          onReject={handleReject}
+          onViewRecording={handleViewRecording}
+        />
+      ) : (
+        <div className="border rounded-lg overflow-hidden bg-card">
+          {filteredEmails.length > 0 ? (
+            filteredEmails.map(email => (
+              <EmailCard
+                key={email.id}
+                email={email}
+                isSelected={selectedEmails.includes(email.id)}
+                onToggleSelect={toggleEmailSelection}
+                onApprove={handleApprove}
+                onEdit={handleEdit}
+                onReject={handleReject}
+                onViewRecording={handleViewRecording}
+              />
+            ))
+          ) : (
+            <div className="p-8 text-center text-muted-foreground">
               No {statusFilter} emails found
-            </div>}
-        </div>}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Feedback Modal */}
-      <FeedbackModal isOpen={showFeedbackModal} selectedCount={selectedEmails.length} onClose={() => setShowFeedbackModal(false)} onSubmit={handleFeedbackSubmit} />
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        selectedCount={selectedEmails.length}
+        onClose={() => setShowFeedbackModal(false)}
+        onSubmit={handleFeedbackSubmit}
+      />
 
       {/* Edit Email Modal */}
-      <EditEmailModal isOpen={showEditModal} email={currentEmail} onClose={() => {
-      setShowEditModal(false);
-      setCurrentEmail(null);
-    }} onSave={handleEditSave} />
+      <EditEmailModal
+        isOpen={showEditModal}
+        email={currentEmail}
+        onClose={() => {
+          setShowEditModal(false);
+          setCurrentEmail(null);
+        }}
+        onSave={handleEditSave}
+      />
 
       {/* Session Recording Modal */}
-      <SessionRecordingModal isOpen={showRecordingModal} sessionId={currentEmail?.sessionId || null} email={currentEmail?.email || null} onClose={() => {
-      setShowRecordingModal(false);
-      setCurrentEmail(null);
-    }} />
+      <SessionRecordingModal
+        isOpen={showRecordingModal}
+        sessionId={currentEmail?.sessionId || null}
+        email={currentEmail?.email || null}
+        onClose={() => {
+          setShowRecordingModal(false);
+          setCurrentEmail(null);
+        }}
+      />
 
       {/* User Journey Modal */}
-      <UserJourneyModal open={showJourneyModal} onOpenChange={setShowJourneyModal} userEmail={currentEmail?.email || ""} />
-    </div>;
+      <UserJourneyModal
+        open={showJourneyModal}
+        onOpenChange={setShowJourneyModal}
+        userEmail={currentEmail?.email || ""}
+      />
+    </div>
+  );
 };
+
 export default EmailQueue;

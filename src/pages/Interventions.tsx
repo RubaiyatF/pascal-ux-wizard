@@ -9,78 +9,70 @@ import {
   AlertCircle,
   Plus,
   TrendingUp,
+  Loader2,
 } from "lucide-react";
+import { useProject } from "@/contexts/ProjectContext";
+import { useApiClient } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+
+interface Insight {
+  text: string;
+}
 
 const Interventions = () => {
-  // Mock data for email campaigns
-  const campaigns = [
-    {
-      id: 1,
-      name: "At Risk User Recovery",
-      type: "guidance",
-      archetype: "At Risk",
-      journeyStage: "Discovery",
-      status: "active",
-      sent: 156,
-      opened: 98,
-      clicked: 45,
-      actionRate: 62.8,
-      lastSent: "2 hours ago",
-    },
-    {
-      id: 2,
-      name: "Onboarding Feature Guide",
-      type: "education",
-      archetype: "On Track",
-      journeyStage: "Onboarding",
-      status: "active",
-      sent: 234,
-      opened: 187,
-      clicked: 103,
-      actionRate: 72.5,
-      lastSent: "5 hours ago",
-    },
-    {
-      id: 3,
-      name: "Fast Mover Celebration",
-      type: "celebration",
-      archetype: "Fast Mover",
-      journeyStage: "Adoption",
-      status: "scheduled",
-      sent: 0,
-      opened: 0,
-      clicked: 0,
-      actionRate: 0,
-      lastSent: "Scheduled for tomorrow",
-    },
-  ];
+  const { selectedProject } = useProject();
+  const api = useApiClient();
 
+  // Fetch intervention effectiveness data from API
+  const { data: interventionData, isLoading } = useQuery({
+    queryKey: ["intervention-effectiveness", selectedProject?.id],
+    queryFn: () =>
+      api.get(
+        `/api/projects/${selectedProject?.id}/intervention-effectiveness?days=30`
+      ),
+    enabled: !!selectedProject?.id,
+  });
+
+  // Transform API data to campaigns format
+  const campaigns = interventionData?.campaigns || [];
   const stats = [
     {
       label: "Total Sent",
-      value: "390",
-      change: "+12%",
+      value: interventionData?.total_sent?.toString() || "0",
+      change: interventionData?.sent_change || "0%",
       icon: Send,
     },
     {
       label: "Avg Open Rate",
-      value: "73.1%",
-      change: "+5.2%",
+      value: interventionData?.avg_open_rate
+        ? `${interventionData.avg_open_rate.toFixed(1)}%`
+        : "0%",
+      change: interventionData?.open_rate_change || "0%",
       icon: Mail,
     },
     {
       label: "Avg Action Rate",
-      value: "67.7%",
-      change: "+8.1%",
+      value: interventionData?.avg_action_rate
+        ? `${interventionData.avg_action_rate.toFixed(1)}%`
+        : "0%",
+      change: interventionData?.action_rate_change || "0%",
       icon: CheckCircle2,
     },
     {
       label: "Success Impact",
-      value: "+15.2%",
-      change: "+3.5%",
+      value: interventionData?.success_impact || "0%",
+      change: interventionData?.impact_change || "0%",
       icon: TrendingUp,
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -231,42 +223,28 @@ const Interventions = () => {
       </Card>
 
       {/* AI Insights */}
-      <Card className="p-6 bg-gradient-card border-primary/20">
-        <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <TrendingUp className="w-5 h-5 text-primary" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-semibold mb-2">Success Learning Insights</h3>
-            <div className="space-y-3">
-              <div className="bg-background/50 rounded-lg p-3 border border-border">
-                <p className="text-sm">
-                  <span className="font-medium">Onboarding emails</span> with
-                  step-by-step instructions have{" "}
-                  <span className="text-success font-medium">
-                    42% higher engagement
-                  </span>
-                </p>
-              </div>
-              <div className="bg-background/50 rounded-lg p-3 border border-border">
-                <p className="text-sm">
-                  <span className="font-medium">Best send time:</span> Tuesday
-                  mornings at 10:00 AM show{" "}
-                  <span className="text-success font-medium">
-                    25% better open rates
-                  </span>
-                </p>
-              </div>
-              <div className="bg-background/50 rounded-lg p-3 border border-border">
-                <p className="text-sm">
-                  <span className="font-medium">At Risk users</span> respond
-                  better to educational tone rather than promotional
-                </p>
+      {interventionData?.insights && interventionData.insights.length > 0 && (
+        <Card className="p-6 bg-gradient-card border-primary/20">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <TrendingUp className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold mb-2">Success Learning Insights</h3>
+              <div className="space-y-3">
+                {interventionData.insights.map((insight: Insight, index: number) => (
+                  <div
+                    key={index}
+                    className="bg-background/50 rounded-lg p-3 border border-border"
+                  >
+                    <p className="text-sm">{insight.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Eye, Edit, ChevronDown, ChevronUp, X, Check } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { QueuedEmail } from "./EmailCard";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 
@@ -55,21 +55,21 @@ export const SwipeableEmailCard = ({
     setStartPos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging) return;
     const deltaX = e.clientX - startPos.x;
     const deltaY = e.clientY - startPos.y;
     setDragOffset({ x: deltaX, y: deltaY });
-  };
+  }, [isDragging, startPos.x, startPos.y]);
 
-  const handleTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!isDragging) return;
     const deltaX = e.touches[0].clientX - startPos.x;
     const deltaY = e.touches[0].clientY - startPos.y;
     setDragOffset({ x: deltaX, y: deltaY });
-  };
+  }, [isDragging, startPos.x, startPos.y]);
 
-  const handleRelease = () => {
+  const handleRelease = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
 
@@ -88,7 +88,7 @@ export const SwipeableEmailCard = ({
 
     // Reset position
     setDragOffset({ x: 0, y: 0 });
-  };
+  }, [isDragging, dragOffset.x, onApprove, onReject, email.id]);
 
   useEffect(() => {
     if (isDragging) {
@@ -104,7 +104,7 @@ export const SwipeableEmailCard = ({
         window.removeEventListener("touchend", handleRelease);
       };
     }
-  }, [isDragging, dragOffset, startPos]);
+  }, [isDragging, handleMouseMove, handleRelease, handleTouchMove]);
 
   const rotation = dragOffset.x / 20;
   const opacity = Math.max(0, Math.min(1, Math.abs(dragOffset.x) / 150));

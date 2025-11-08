@@ -7,9 +7,25 @@ import { X, Send, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 
+interface TimelineEvent {
+  type: string;
+  journeyStage?: string;
+  aiSummary?: string;
+}
+
+interface ConversationData {
+  email: string;
+  summary: string;
+  stage: string;
+  heartAnalysis: {
+    overall: number;
+  };
+  timeline: TimelineEvent[];
+}
+
 interface GenerateEmailModalProps {
   isOpen: boolean;
-  conversation: any | null;
+  conversation: ConversationData | null;
   onClose: () => void;
 }
 
@@ -47,9 +63,9 @@ I've been following your journey with Pascal and wanted to reach out personally.
 
 Based on your recent activity (HEART Score: ${heartScore}/100), I noticed:
 ${conversation.timeline
-  .filter((e: any) => e.type === "session")
+  .filter((e: TimelineEvent) => e.type === "session")
   .slice(-2)
-  .map((e: any) => `• ${e.journeyStage}: ${e.aiSummary}`)
+  .map((e: TimelineEvent) => `• ${e.journeyStage}: ${e.aiSummary}`)
   .join("\n")}
 
 ${stage === "ongoing_dialogue" 

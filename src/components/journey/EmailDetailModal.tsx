@@ -3,9 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Mail, Reply, ExternalLink } from "lucide-react";
 
+interface EmailDetail {
+  direction: string;
+  subject: string;
+  timestamp: string;
+  opened?: boolean;
+  clicked?: boolean;
+  intent?: string;
+  sentiment?: string;
+  topics?: string[];
+  content: string;
+}
+
 interface EmailDetailModalProps {
   isOpen: boolean;
-  email: any | null;
+  email: EmailDetail | null;
   onClose: () => void;
 }
 

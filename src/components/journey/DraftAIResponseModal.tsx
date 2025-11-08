@@ -5,9 +5,24 @@ import { Badge } from "@/components/ui/badge";
 import { X, Sparkles, Send, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
+interface TimelineEvent {
+  type: string;
+  direction?: string;
+}
+
+interface Conversation {
+  email: string;
+  summary: string;
+  stage: string;
+  heartAnalysis: {
+    overall: number;
+  };
+  timeline: TimelineEvent[];
+}
+
 interface DraftAIResponseModalProps {
   isOpen: boolean;
-  conversation: any | null;
+  conversation: Conversation | null;
   onClose: () => void;
 }
 
@@ -26,7 +41,7 @@ export const DraftAIResponseModal = ({
     // Simulate AI generation
     setTimeout(() => {
       const lastReply = conversation.timeline
-        .filter((e: any) => e.type === "email" && e.direction === "reply")
+        .filter((e: TimelineEvent) => e.type === "email" && e.direction === "reply")
         .pop();
       
       const mockResponse = `Hi ${conversation.email.split("@")[0]},

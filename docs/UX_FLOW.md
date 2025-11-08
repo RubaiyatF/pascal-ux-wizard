@@ -268,7 +268,7 @@
 - Campaigns from email configuration
 - Email activity from `identity_email_activity`
 - Feedback data from `email_feedback`
-- Success learnings from `success_learnings`
+- Success learnings from `email_learning_insights`
 
 ---
 
@@ -389,7 +389,7 @@
 - `identity_users` → Users table
 - `session_video_analysis` → Session cards
 - `email_feedback` → Campaign metrics
-- `success_learnings` → AI insights
+- `email_learning_insights` → AI insights
 - `benchmark_patterns` → Benchmark comparisons
 
 ---

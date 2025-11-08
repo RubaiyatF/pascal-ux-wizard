@@ -3,9 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { X, Play, Pause, SkipForward, SkipBack, Download, Maximize, Sparkles, TrendingUp, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { X, Play, Pause, SkipForward, SkipBack, Download, Maximize, Sparkles, TrendingUp, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
+import { useQuery } from "@tanstack/react-query";
+import { useApiClient } from "@/lib/api";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import * as pako from "pako";
+import { Replayer } from "rrweb";
+
+interface RecordingChunk {
+  compressed_data: string;
+}
 
 interface SessionRecordingModalProps {
   isOpen: boolean;
@@ -23,33 +32,83 @@ export const SessionRecordingModal = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
-  const totalTime = 734; // 12:14 in seconds
+  const [totalTime, setTotalTime] = useState(0);
+  const [replayer, setReplayer] = useState<Replayer | null>(null);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // Mock AI analysis data
-  const sessionAnalysis = {
-    visualDescription: "User navigated 4-step onboarding (Welcome → Connect → Create → See Data). Explored dashboard. Connected Stripe. Viewed first transaction within 10 min. Smooth navigation.",
-    aiSummary: "STRONG ACTIVATION SESSION. User reached 'aha moment' quickly by seeing real transaction data. High task success rate with zero friction. Power user signals (API docs, integrations). RECOMMENDATION: Send conversion email within 24 hours highlighting value + offer trial extension.",
-    keyInsights: [
-      "User reached 'aha moment' in first 10 minutes (saw real Stripe data)",
-      "Strong interest in integrations and API (power user indicator)",
-      "Completed onboarding with zero friction or errors",
-      "Returned within 24 hours (retention signal)",
-      "Spent time examining data (value discovery)"
-    ],
-    activationSignals: [
-      "Completed first core action (created project)",
-      "Connected paid integration (Stripe)",
-      "Viewed real data (not demo/sample)",
-      "Returned for 2nd session within 24h",
-      "Explored advanced features (API docs)",
-      "Fast onboarding completion (6 minutes)"
-    ],
-    concerns: [
-      "Hesitated on pricing page for 3 minutes (price sensitivity?)",
-      "Did not invite team members (solo user?)",
-      "Only connected one integration (potential for more)"
-    ]
-  };
+  const { projectId } = useOnboarding();
+  const api = useApiClient();
+
+  // Fetch recording chunks
+  const { data: recordingData, isLoading: recordingLoading, error: recordingError } = useQuery({
+    queryKey: ["recording", sessionId, projectId],
+    queryFn: () => api.get(`/api/recordings/${sessionId}?project_id=${projectId}`),
+    enabled: !!sessionId && !!projectId && isOpen,
+  });
+
+  // Fetch AI analysis
+  const { data: analysisData, isLoading: analysisLoading } = useQuery({
+    queryKey: ["heart-analysis", sessionId, projectId],
+    queryFn: () => api.get(`/api/sessions/${sessionId}/heart-analysis?project_id=${projectId}`),
+    enabled: !!sessionId && !!projectId && isOpen,
+  });
+
+  // Decompress and initialize player
+  useEffect(() => {
+    if (!recordingData || !playerContainerRef.current || !isOpen) return;
+
+    try {
+      // Decompress chunks
+      const events = recordingData.chunks.map((chunk: RecordingChunk) => {
+        const compressed = Uint8Array.from(atob(chunk.compressed_data), c => c.charCodeAt(0));
+        const decompressed = pako.inflate(compressed, { to: 'string' });
+        return JSON.parse(decompressed);
+      }).flat();
+
+      // Clear previous player
+      if (playerContainerRef.current) {
+        playerContainerRef.current.innerHTML = '';
+      }
+
+      // Initialize rrweb player
+      const replayerInstance = new Replayer(events, {
+        root: playerContainerRef.current,
+        speed: playbackSpeed,
+      });
+
+      setReplayer(replayerInstance);
+
+      // Get total duration
+      const duration = replayerInstance.getMetaData().totalTime;
+      setTotalTime(Math.floor(duration / 1000)); // Convert to seconds
+
+      // Update current time periodically
+      const interval = setInterval(() => {
+        if (replayerInstance) {
+          const time = replayerInstance.getCurrentTime();
+          setCurrentTime(Math.floor(time / 1000));
+        }
+      }, 100);
+
+      return () => {
+        clearInterval(interval);
+        replayerInstance.destroy();
+      };
+    } catch (error) {
+      console.error("Error initializing player:", error);
+    }
+  }, [recordingData, isOpen, playbackSpeed]);
+
+  // Control playback
+  useEffect(() => {
+    if (!replayer) return;
+    if (isPlaying) {
+      replayer.play();
+    } else {
+      replayer.pause();
+    }
+  }, [isPlaying, replayer]);
 
   if (!isOpen || !sessionId) return null;
 
@@ -59,7 +118,72 @@ export const SessionRecordingModal = ({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const progress = (currentTime / totalTime) * 100;
+  const handleSkipForward = () => {
+    if (replayer) {
+      const newTime = Math.min(currentTime + 10, totalTime);
+      replayer.goto(newTime * 1000);
+    }
+  };
+
+  const handleSkipBackward = () => {
+    if (replayer) {
+      const newTime = Math.max(currentTime - 10, 0);
+      replayer.goto(newTime * 1000);
+    }
+  };
+
+  const handleSpeedChange = (speed: number) => {
+    setPlaybackSpeed(speed);
+    if (replayer) {
+      replayer.setConfig({ speed });
+    }
+  };
+
+  const progress = totalTime > 0 ? (currentTime / totalTime) * 100 : 0;
+
+  // Prepare analysis data
+  const visualDescription = analysisData?.visual_description || "Loading session analysis...";
+  const aiSummary = analysisData?.ai_summary || "AI analysis in progress...";
+
+  const keyInsights = analysisData?.key_insights || [];
+  const activationSignals = analysisData?.activation_signals || [];
+  const concerns = analysisData?.concerns || [];
+
+  // Loading state
+  if (recordingLoading || analysisLoading) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <Card className="p-6 max-w-md w-full">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
+            <p className="text-lg font-semibold mb-2">Loading session recording...</p>
+            <p className="text-sm text-muted-foreground">
+              {recordingLoading && "Fetching recording data..."}
+              {!recordingLoading && analysisLoading && "Loading AI analysis..."}
+            </p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Error state
+  if (recordingError) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <Card className="p-6 max-w-md w-full">
+          <div className="text-center">
+            <AlertTriangle className="w-8 h-8 text-destructive mx-auto mb-4" />
+            <p className="text-lg font-semibold mb-2">Recording not available</p>
+            <p className="text-sm text-muted-foreground mb-4">
+              This session recording could not be loaded.
+            </p>
+            <Button onClick={onClose}>Close</Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
@@ -77,12 +201,8 @@ export const SessionRecordingModal = ({
         </div>
 
         {/* Video Player Area */}
-        <div className="bg-muted rounded-lg aspect-video flex items-center justify-center mb-4 relative">
-          <div className="text-center text-muted-foreground">
-            <Play className="w-16 h-16 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Session Recording Player</p>
-            <p className="text-xs mt-1">Integration with rrweb player would go here</p>
-          </div>
+        <div className="bg-muted rounded-lg mb-4 relative overflow-hidden" style={{ minHeight: '400px' }}>
+          <div ref={playerContainerRef} className="w-full h-full" />
         </div>
 
         {/* Playback Controls */}
@@ -94,34 +214,50 @@ export const SessionRecordingModal = ({
           </div>
 
           <div className="flex items-center justify-center gap-2">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={handleSkipBackward} disabled={!replayer}>
               <SkipBack className="w-4 h-4" />
             </Button>
             <Button
               size="icon"
               className="bg-gradient-hero hover:opacity-90"
               onClick={() => setIsPlaying(!isPlaying)}
+              disabled={!replayer}
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </Button>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={handleSkipForward} disabled={!replayer}>
               <SkipForward className="w-4 h-4" />
             </Button>
             <div className="mx-4 border-l h-8" />
-            <Button variant="outline" size="sm">
+            <Button
+              variant={playbackSpeed === 1 ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleSpeedChange(1)}
+              disabled={!replayer}
+            >
               1x
             </Button>
-            <Button variant="outline" size="sm">
+            <Button
+              variant={playbackSpeed === 2 ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleSpeedChange(2)}
+              disabled={!replayer}
+            >
               2x
             </Button>
-            <Button variant="outline" size="sm">
+            <Button
+              variant={playbackSpeed === 4 ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleSpeedChange(4)}
+              disabled={!replayer}
+            >
               4x
             </Button>
             <div className="flex-1" />
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" disabled>
               <Download className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" disabled>
               <Maximize className="w-4 h-4" />
             </Button>
           </div>
@@ -136,7 +272,7 @@ export const SessionRecordingModal = ({
               <div className="flex-1">
                 <h4 className="font-semibold mb-2">Session Overview</h4>
                 <p className="text-sm text-muted-foreground">
-                  {sessionAnalysis.visualDescription}
+                  {visualDescription}
                 </p>
               </div>
             </div>
@@ -151,7 +287,7 @@ export const SessionRecordingModal = ({
               <div className="flex-1">
                 <h4 className="font-semibold mb-2">AI Analysis</h4>
                 <p className="text-sm whitespace-pre-line text-muted-foreground">
-                  {sessionAnalysis.aiSummary}
+                  {aiSummary}
                 </p>
               </div>
             </div>
@@ -175,58 +311,71 @@ export const SessionRecordingModal = ({
             {showFullAnalysis && (
               <div className="mt-4 space-y-4 animate-fade-in">
                 {/* Key Insights */}
-                <Card className="p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle2 className="w-5 h-5 text-success" />
-                    <h4 className="font-semibold">Key Insights</h4>
-                  </div>
-                  <ul className="space-y-2">
-                    {sessionAnalysis.keyInsights.map((insight, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <span className="text-success mt-0.5">•</span>
-                        <span>{insight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
+                {keyInsights.length > 0 && (
+                  <Card className="p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <CheckCircle2 className="w-5 h-5 text-success" />
+                      <h4 className="font-semibold">Key Insights</h4>
+                    </div>
+                    <ul className="space-y-2">
+                      {keyInsights.map((insight: string, index: number) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <span className="text-success mt-0.5">•</span>
+                          <span>{insight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                )}
 
                 {/* Activation Signals */}
-                <Card className="p-4 border-success/20 bg-success/5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <TrendingUp className="w-5 h-5 text-success" />
-                    <h4 className="font-semibold">Activation Signals</h4>
-                    <Badge variant="outline" className="ml-auto bg-success/10 text-success border-success/20">
-                      {sessionAnalysis.activationSignals.length} signals
-                    </Badge>
-                  </div>
-                  <ul className="space-y-2">
-                    {sessionAnalysis.activationSignals.map((signal, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 shrink-0" />
-                        <span>{signal}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
+                {activationSignals.length > 0 && (
+                  <Card className="p-4 border-success/20 bg-success/5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <TrendingUp className="w-5 h-5 text-success" />
+                      <h4 className="font-semibold">Activation Signals</h4>
+                      <Badge variant="outline" className="ml-auto bg-success/10 text-success border-success/20">
+                        {activationSignals.length} signals
+                      </Badge>
+                    </div>
+                    <ul className="space-y-2">
+                      {activationSignals.map((signal: string, index: number) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <CheckCircle2 className="w-4 h-4 text-success mt-0.5 shrink-0" />
+                          <span>{signal}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                )}
 
                 {/* Concerns */}
-                {sessionAnalysis.concerns.length > 0 && (
+                {concerns.length > 0 && (
                   <Card className="p-4 border-warning/20 bg-warning/5">
                     <div className="flex items-center gap-2 mb-3">
                       <AlertTriangle className="w-5 h-5 text-warning" />
                       <h4 className="font-semibold">Areas to Monitor</h4>
                       <Badge variant="outline" className="ml-auto bg-warning/10 text-warning border-warning/20">
-                        {sessionAnalysis.concerns.length} items
+                        {concerns.length} items
                       </Badge>
                     </div>
                     <ul className="space-y-2">
-                      {sessionAnalysis.concerns.map((concern, index) => (
+                      {concerns.map((concern: string, index: number) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <span className="text-warning mt-0.5">⚠</span>
                           <span>{concern}</span>
                         </li>
                       ))}
                     </ul>
+                  </Card>
+                )}
+
+                {/* No detailed analysis available */}
+                {keyInsights.length === 0 && activationSignals.length === 0 && concerns.length === 0 && (
+                  <Card className="p-4">
+                    <p className="text-sm text-muted-foreground text-center">
+                      No detailed analysis available for this session.
+                    </p>
                   </Card>
                 )}
               </div>

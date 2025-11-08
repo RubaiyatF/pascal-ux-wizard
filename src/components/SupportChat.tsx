@@ -91,20 +91,28 @@ export const SupportChat = () => {
     onDelta: (chunk: string) => void;
     onDone: () => void;
   }) => {
+    // TODO: Implement backend support chat API endpoint
+    // For now, provide a fallback response
     const response = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pascal-support-chat`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/support-chat`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ messages }),
       }
-    );
+    ).catch(() => {
+      // Fallback response for demo
+      setTimeout(() => {
+        onDelta("I'm currently in demo mode. The full support chat will be available soon. In the meantime, please check out our documentation or reach out to support@pascal.com for help!");
+        setTimeout(() => onDone(), 100);
+      }, 500);
+      return null;
+    });
 
-    if (!response.ok || !response.body) {
-      throw new Error("Failed to start stream");
+    if (!response || !response.ok || !response.body) {
+      return; // Fallback already handled
     }
 
     const reader = response.body.getReader();

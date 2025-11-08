@@ -5,8 +5,15 @@ import { Progress } from "@/components/ui/progress";
 import { Play, Pause, SkipForward, SkipBack, X, Maximize2 } from "lucide-react";
 import { useState } from "react";
 
+interface Session {
+  sessionId: string;
+  duration: string;
+  pages: number;
+  events: number;
+}
+
 interface InlineSessionPlayerProps {
-  session: any;
+  session: Session;
   onClose: () => void;
 }
 

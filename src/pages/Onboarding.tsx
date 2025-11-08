@@ -1,61 +1,173 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Check, Copy, Code, CheckCircle2 } from "lucide-react";
+import { Check, Copy, Code, CheckCircle2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import { useApiClient } from "@/lib/api";
+
+interface ProjectEvent {
+  event_type: string;
+  user_id?: string;
+  timestamp: string;
+}
 
 const Onboarding = () => {
-  const [step, setStep] = useState(1);
-  const [projectName, setProjectName] = useState("");
-  const [website, setWebsite] = useState("");
+  const { userId } = useAuth();
+  const {
+    currentStep,
+    projectId,
+    apiKey,
+    projectName: savedProjectName,
+    website: savedWebsite,
+    setStep,
+    setProjectData,
+    completeOnboarding,
+  } = useOnboarding();
+
+  const [projectName, setProjectName] = useState(savedProjectName || "");
+  const [website, setWebsite] = useState(savedWebsite || "");
   const [eventsDetected, setEventsDetected] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const api = useApiClient();
 
-  const projectId = "proj_demo_" + Math.random().toString(36).substr(2, 9);
-  const apiKey = "pk_" + Math.random().toString(36).substr(2, 24);
+  // Redirect if onboarding is already complete
+  useEffect(() => {
+    if (currentStep === "complete") {
+      navigate("/home");
+    }
+  }, [currentStep, navigate]);
 
-  const trackerCode = `<script>
-  !function(p,a,s,c,a,l){
-    p.PascalTracker=p.PascalTracker||function(){
-      (p.PascalTracker.q=p.PascalTracker.q||[]).push(arguments)
-    };
-    l=a.createElement(s);l.async=1;l.src='https://tracker.pascal.cx/simple-snippet.js';
-    a.head.appendChild(l);
-  }(window,document,'script');
-  
-  PascalTracker('init', {
-    projectId: '${projectId}',
-    apiKey: '${apiKey}',
-    recording: { enabled: true }
+  // Step 1: Create project mutation
+  const createProjectMutation = useMutation({
+    mutationFn: async () => {
+      return api.post("/api/projects", {
+        name: projectName,
+        website: website,
+        userId: userId,
+      });
+    },
+    onSuccess: (data) => {
+      setProjectData({
+        projectId: data.projectId,
+        apiKey: data.apiKey,
+        projectName: data.name,
+        website: data.website,
+      });
+      toast({
+        title: "Project created!",
+        description: "Your tracking code is ready",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error creating project",
+        description: error.message || "Please try again",
+        variant: "destructive",
+      });
+    },
   });
-</script>`;
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(trackerCode);
-    toast({
-      title: "Copied!",
-      description: "Tracker code copied to clipboard",
-    });
+  // Step 3: Poll for events
+  const { data: eventsData } = useQuery({
+    queryKey: ["project-events", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}/events`),
+    enabled: currentStep === 3 && !!projectId && !eventsDetected,
+    refetchInterval: eventsDetected ? false : 5000, // Poll every 5 seconds
+  });
+
+  // Check if events detected
+  useEffect(() => {
+    if (eventsData && eventsData.events && eventsData.events.length > 0) {
+      setEventsDetected(true);
+    }
+  }, [eventsData]);
+
+  const trackerCode = apiKey
+    ? `<script
+  src="https://tracker.pascal.cx/simple-snippet.js?v=2"
+  data-project-id="${projectId}"
+  data-api-key="${apiKey}"
+  data-recording="true"
+  async
+></script>`
+    : "";
+
+  const copyToClipboard = async () => {
+    try {
+      // Try modern clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(trackerCode);
+        toast({
+          title: "Copied!",
+          description: "Tracker code copied to clipboard",
+        });
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = trackerCode;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          document.execCommand("copy");
+          toast({
+            title: "Copied!",
+            description: "Tracker code copied to clipboard",
+          });
+        } catch (err) {
+          console.error("Fallback copy failed:", err);
+          toast({
+            title: "Copy failed",
+            description: "Please manually select and copy the code",
+            variant: "destructive",
+          });
+        } finally {
+          textArea.remove();
+        }
+      }
+    } catch (error) {
+      console.error("Copy to clipboard failed:", error);
+      toast({
+        title: "Copy failed",
+        description: "Please manually select and copy the code",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleNext = () => {
-    if (step < 3) setStep(step + 1);
-    // Simulate event detection after 3 seconds on step 3
-    if (step === 2) {
-      setTimeout(() => {
-        setEventsDetected(true);
-      }, 3000);
+    if (currentStep === 1) {
+      // Create project
+      createProjectMutation.mutate();
+    } else if (currentStep === 2) {
+      // Move to step 3
+      setStep(3);
     }
   };
 
   const handleBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (currentStep === 2) setStep(1);
+    else if (currentStep === 3) setStep(2);
   };
+
+  const handleComplete = () => {
+    completeOnboarding();
+    navigate("/home");
+  };
+
+  const step = typeof currentStep === "number" ? currentStep : 3;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background p-4">
@@ -116,6 +228,7 @@ const Onboarding = () => {
                     placeholder="My SaaS Product"
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
+                    disabled={createProjectMutation.isPending}
                   />
                 </div>
 
@@ -127,9 +240,16 @@ const Onboarding = () => {
                     placeholder="https://myapp.com"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
+                    disabled={createProjectMutation.isPending}
                   />
                 </div>
               </div>
+
+              {createProjectMutation.isError && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
+                  {createProjectMutation.error instanceof Error ? createProjectMutation.error.message : "Failed to create project"}
+                </div>
+              )}
             </div>
           )}
 
@@ -159,6 +279,20 @@ const Onboarding = () => {
                 </Button>
               </div>
 
+              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
+                <div className="flex gap-3">
+                  <Code className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                  <div className="text-sm">
+                    <p className="font-medium mb-1 text-blue-900 dark:text-blue-100">
+                      Your API key is shown in full here
+                    </p>
+                    <p className="text-blue-700 dark:text-blue-300">
+                      After you continue, it will be truncated for security in the Settings page. Make sure to copy it now if you need it.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="bg-secondary/50 border border-border rounded-lg p-4">
                 <div className="flex gap-3">
                   <Code className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -180,13 +314,16 @@ const Onboarding = () => {
                 <>
                   <div className="text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                      <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+                      <Loader2 className="w-8 h-8 text-primary animate-spin" />
                     </div>
                     <h2 className="text-2xl font-semibold mb-2">
                       Waiting for First Event
                     </h2>
                     <p className="text-muted-foreground">
                       We're listening for events from your website...
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Checking every 5 seconds
                     </p>
                   </div>
 
@@ -222,8 +359,8 @@ const Onboarding = () => {
               ) : (
                 <>
                   <div className="text-center animate-fade-in">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                      <CheckCircle2 className="w-8 h-8 text-primary" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 mb-4">
+                      <CheckCircle2 className="w-8 h-8 text-success" />
                     </div>
                     <h2 className="text-2xl font-semibold mb-2">
                       🎉 Events Detected!
@@ -235,62 +372,77 @@ const Onboarding = () => {
 
                   <div className="grid grid-cols-3 gap-4">
                     <Card className="p-4 text-center border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-                      <div className="text-3xl font-bold text-primary mb-1">3</div>
+                      <div className="text-3xl font-bold text-primary mb-1">
+                        {eventsData?.events?.filter((e: ProjectEvent) => e.event_type === "PAGE_VIEW").length || 0}
+                      </div>
                       <div className="text-xs text-muted-foreground">Page Views</div>
                     </Card>
                     <Card className="p-4 text-center border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-                      <div className="text-3xl font-bold text-primary mb-1">1</div>
-                      <div className="text-xs text-muted-foreground">Active User</div>
+                      <div className="text-3xl font-bold text-primary mb-1">
+                        {new Set(eventsData?.events?.map((e: ProjectEvent) => e.user_id) || []).size}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Users</div>
                     </Card>
                     <Card className="p-4 text-center border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-                      <div className="text-3xl font-bold text-primary mb-1">5</div>
+                      <div className="text-3xl font-bold text-primary mb-1">
+                        {eventsData?.events?.length || 0}
+                      </div>
                       <div className="text-xs text-muted-foreground">Events</div>
                     </Card>
                   </div>
 
-                  <div className="bg-muted/50 border border-border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="text-sm font-semibold">Recent Events</p>
-                      <span className="text-xs text-muted-foreground">Just now</span>
-                    </div>
-                    <div className="space-y-2">
-                      {[
-                        { event: "page_view", page: "/home", time: "2s ago" },
-                        { event: "click", page: "/pricing", time: "5s ago" },
-                        { event: "session_start", page: "/", time: "8s ago" },
-                      ].map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between p-2 rounded bg-background/50 border border-border/50"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                            <div>
-                              <p className="text-sm font-medium">{item.event}</p>
-                              <p className="text-xs text-muted-foreground">{item.page}</p>
+                  {eventsData?.events && eventsData.events.length > 0 && (
+                    <div className="bg-muted/50 border border-border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-sm font-semibold">Recent Events</p>
+                        <span className="text-xs text-muted-foreground">Just now</span>
+                      </div>
+                      <div className="space-y-2">
+                        {eventsData.events.slice(0, 3).map((event: ProjectEvent, idx: number) => (
+                          <div
+                            key={idx}
+                            className="flex items-center justify-between p-2 rounded bg-background/50 border border-border/50"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                              <div>
+                                <p className="text-sm font-medium">{event.event_type}</p>
+                                <p className="text-xs text-muted-foreground">User: {event.user_id?.substring(0, 8)}...</p>
+                              </div>
                             </div>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(event.timestamp).toLocaleTimeString()}
+                            </span>
                           </div>
-                          <span className="text-xs text-muted-foreground">{item.time}</span>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                  <div className="bg-gradient-to-r from-success/10 to-success/5 border border-success/20 rounded-lg p-4">
                     <div className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" />
                       <div className="flex-1">
                         <p className="font-semibold mb-1">Setup Complete!</p>
                         <p className="text-sm text-muted-foreground mb-3">
                           Pascal is now tracking user behavior and will start generating AI insights within minutes.
                         </p>
-                        <Button 
-                          size="sm" 
-                          className="bg-primary hover:bg-primary/90" 
-                          onClick={() => navigate("/email-queue")}
-                        >
-                          Start using Pascal
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            className="bg-success hover:bg-success/90"
+                            onClick={handleComplete}
+                          >
+                            Start using Pascal
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleComplete}
+                          >
+                            Complete
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -304,24 +456,29 @@ const Onboarding = () => {
             <Button
               variant="outline"
               onClick={handleBack}
-              disabled={step === 1}
+              disabled={step === 1 || createProjectMutation.isPending}
             >
               Back
             </Button>
-            <Button
-              onClick={step === 3 && eventsDetected ? () => navigate("/email-queue") : handleNext}
-              disabled={
-                (step === 1 && (!projectName || !website)) || 
-                (step === 3 && !eventsDetected)
-              }
-              className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity"
-            >
-              {step === 3 && !eventsDetected 
-                ? "Waiting..." 
-                : step === 3 
-                ? "Complete" 
-                : "Continue"}
-            </Button>
+            {step < 3 && (
+              <Button
+                onClick={handleNext}
+                disabled={
+                  (step === 1 && (!projectName || !website)) ||
+                  createProjectMutation.isPending
+                }
+                className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                {createProjectMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Continue"
+                )}
+              </Button>
+            )}
           </div>
         </Card>
       </div>

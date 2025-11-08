@@ -8,22 +8,52 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, X } from "lucide-react";
+import { Save, Key, Mail, Database, Shield, CheckCircle2, Copy, Plus, UserPlus, X, Loader2, Send, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeyModal } from "@/components/ApiKeyModal";
 import { EmailConfigEmptyState } from "@/components/empty-states/EmailConfigEmptyState";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProject } from "@/contexts/ProjectContext";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useApiClient } from "@/lib/api";
+
+interface TeamMember {
+  id: string;
+  email: string;
+  status: string;
+  role: string;
+  invitedAt: string;
+}
+
+interface ApiKey {
+  id: string;
+  name: string;
+  keyPrefix: string;
+  status: string;
+  createdAt: string;
+  lastUsedAt?: string;
+}
 
 const Settings = () => {
   const { toast } = useToast();
   const { currentProject } = useProject();
+  const { projectId } = useOnboarding();
+  const api = useApiClient();
+  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("general");
   const [recordingEnabled, setRecordingEnabled] = useState(true);
   const [emailInsightsEnabled, setEmailInsightsEnabled] = useState(true);
   const [aiAnalysisEnabled, setAiAnalysisEnabled] = useState(true);
-  const [emailConfigured, setEmailConfigured] = useState(false);
+
+  // Email config form state
+  const [brevoApiKey, setBrevoApiKey] = useState("");
+  const [fromEmail, setFromEmail] = useState("");
+  const [fromName, setFromName] = useState("");
+  const [appUrl, setAppUrl] = useState("");
+  const [dailyLimit, setDailyLimit] = useState("");
+  const [includeInsights, setIncludeInsights] = useState(true);
 
   // Set active tab from URL parameter on mount
   useEffect(() => {
@@ -35,34 +65,236 @@ const Settings = () => {
 
   // Mark onboarding step 7 as complete when Settings is visited
   useEffect(() => {
-    localStorage.setItem(`pascal-settings-visited-${currentProject}`, 'true');
-  }, [currentProject]);
+    if (projectId) {
+      localStorage.setItem(`pascal-settings-visited-${projectId}`, 'true');
+    }
+  }, [projectId]);
 
-  const handleConfigureEmail = () => {
-    setEmailConfigured(true);
-    // Mark step 4 as complete
-    localStorage.setItem(`pascal-email-provider-${currentProject}`, 'true');
+  // Fetch email configuration
+  const { data: emailConfig, isLoading: emailConfigLoading } = useQuery({
+    queryKey: ["email-config", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}/email-config`),
+    enabled: !!projectId,
+  });
+
+  // Populate form when config is loaded
+  useEffect(() => {
+    if (emailConfig) {
+      setBrevoApiKey(emailConfig.brevo_api_key || "");
+      setFromEmail(emailConfig.from_email || "");
+      setFromName(emailConfig.from_name || "");
+      setAppUrl(emailConfig.app_url || "");
+      setDailyLimit(emailConfig.daily_limit?.toString() || "");
+      setIncludeInsights(emailConfig.include_insights ?? true);
+    }
+  }, [emailConfig]);
+
+  // Verify Brevo API key
+  const verifyMutation = useMutation({
+    mutationFn: () => api.post(`/api/projects/${projectId}/email-config/verify`, { brevo_api_key: brevoApiKey }),
+    onSuccess: () => {
+      toast({
+        title: "API key verified",
+        description: "Your Brevo API key is valid.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Verification failed",
+        description: error.message || "Invalid API key. Please check and try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Save email configuration
+  const saveMutation = useMutation({
+    mutationFn: () =>
+      api.post(`/api/projects/${projectId}/email-config`, {
+        brevo_api_key: brevoApiKey,
+        from_email: fromEmail,
+        from_name: fromName,
+        app_url: appUrl,
+        daily_limit: parseInt(dailyLimit) || 100,
+        include_insights: includeInsights,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["email-config", projectId] });
+      // Mark onboarding step 4 complete
+      localStorage.setItem(`pascal-email-provider-${projectId}`, 'true');
+      toast({
+        title: "Configuration saved",
+        description: "Email configuration has been updated successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Save failed",
+        description: error.message || "Failed to save configuration.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Test email
+  const testEmailMutation = useMutation({
+    mutationFn: (testEmail: string) =>
+      api.post(`/api/projects/${projectId}/email-config/test`, { test_email: testEmail }),
+    onSuccess: () => {
+      toast({
+        title: "Test email sent",
+        description: "Check your inbox for the test email.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Test failed",
+        description: error.message || "Failed to send test email.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete configuration
+  const deleteMutation = useMutation({
+    mutationFn: () => api.delete(`/api/projects/${projectId}/email-config`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["email-config", projectId] });
+      setBrevoApiKey("");
+      setFromEmail("");
+      setFromName("");
+      setAppUrl("");
+      setDailyLimit("");
+      setIncludeInsights(true);
+      localStorage.removeItem(`pascal-email-provider-${projectId}`);
+      toast({
+        title: "Configuration deleted",
+        description: "Email configuration has been removed.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Delete failed",
+        description: error.message || "Failed to delete configuration.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleVerifyApiKey = () => {
+    if (!brevoApiKey) {
+      toast({
+        title: "API key required",
+        description: "Please enter your Brevo API key.",
+        variant: "destructive",
+      });
+      return;
+    }
+    verifyMutation.mutate();
   };
 
-  const [apiKeys, setApiKeys] = useState([
-    { id: 1, name: "test 2", key: "pk_a903de21a...", fullKey: "pk_a903de21a123456789", status: "active", created: "11/4/2025" },
-    { id: 2, name: "Default API Key", key: "pk_55629ba77...", fullKey: "pk_55629ba77987654321", status: "active", created: "11/4/2025" }
-  ]);
+  const handleSaveEmailConfig = () => {
+    if (!brevoApiKey || !fromEmail || !fromName || !appUrl) {
+      toast({
+        title: "Required fields missing",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    saveMutation.mutate();
+  };
+
+  const handleTestEmail = () => {
+    if (!emailConfig) {
+      toast({
+        title: "Configuration required",
+        description: "Please save your configuration first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const testEmail = prompt("Enter email address to send test to:");
+    if (testEmail) {
+      testEmailMutation.mutate(testEmail);
+    }
+  };
+
+  const handleDeleteConfig = () => {
+    if (confirm("Are you sure you want to delete your email configuration?")) {
+      deleteMutation.mutate();
+    }
+  };
+
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [newGeneratedKey, setNewGeneratedKey] = useState("");
-  const [projectId] = useState("proj_demo_abc123");
+  const [newGeneratedKeyName, setNewGeneratedKeyName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("editor");
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, email: "you@company.com", role: "Owner", status: "Active", joined: "Jan 2024" },
-    { id: 2, email: "alex@company.com", role: "Editor", status: "Active", joined: "Feb 2024" },
-    { id: 3, email: "sarah@company.com", role: "Viewer", status: "Pending", joined: "Mar 2024" },
-  ]);
+  const [projectName, setProjectName] = useState("");
+  const [projectWebsite, setProjectWebsite] = useState("");
+
+  // Fetch project details
+  const { data: projectDetails, isLoading: projectLoading } = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}`),
+    enabled: !!projectId,
+  });
+
+  // Populate project details when loaded
+  useEffect(() => {
+    if (projectDetails) {
+      setProjectName(projectDetails.name || "");
+      setProjectWebsite(projectDetails.website || "");
+    }
+  }, [projectDetails]);
+
+  // Fetch team members
+  const { data: teamMembers = [], isLoading: teamLoading } = useQuery({
+    queryKey: ["team-members", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}/team`),
+    enabled: !!projectId,
+  });
+
+  // Fetch API keys
+  const { data: apiKeys = [], isLoading: keysLoading } = useQuery({
+    queryKey: ["api-keys", projectId],
+    queryFn: () => api.get(`/api/projects/${projectId}/api-keys`),
+    enabled: !!projectId,
+  });
+
+  // Update project settings
+  const updateProjectMutation = useMutation({
+    mutationFn: (updates: { name?: string; website?: string }) =>
+      api.put(`/api/projects/${projectId}`, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
+      toast({
+        title: "Settings saved",
+        description: "Your project settings have been updated successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Save failed",
+        description: error.message || "Failed to save project settings.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSave = () => {
-    toast({
-      title: "Settings saved",
-      description: "Your changes have been saved successfully.",
+    if (!projectName || !projectWebsite) {
+      toast({
+        title: "Required fields missing",
+        description: "Please fill in both project name and website.",
+        variant: "destructive",
+      });
+      return;
+    }
+    updateProjectMutation.mutate({
+      name: projectName,
+      website: projectWebsite,
     });
   };
 
@@ -74,29 +306,81 @@ const Settings = () => {
     });
   };
 
+  // Generate new API key
+  const generateKeyMutation = useMutation({
+    mutationFn: (keyName: string) =>
+      api.post(`/api/projects/${projectId}/api-keys`, { name: keyName }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["api-keys", projectId] });
+      setNewGeneratedKey(data.fullKey);
+      setNewGeneratedKeyName(data.name);
+      setShowApiKeyModal(true);
+      // Mark onboarding step 2 complete
+      localStorage.setItem(`pascal-api-key-${projectId}`, 'true');
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Generation failed",
+        description: error.message || "Failed to generate API key.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const generateNewKey = () => {
-    const fullKey = `pk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
-    const newKey = {
-      id: apiKeys.length + 1,
-      name: `API Key ${apiKeys.length + 1}`,
-      key: `pk_${Math.random().toString(36).substring(2, 15)}...`,
-      fullKey: fullKey,
-      status: "active",
-      created: new Date().toLocaleDateString()
-    };
-    setApiKeys([...apiKeys, newKey]);
-    setNewGeneratedKey(fullKey);
-    setShowApiKeyModal(true);
+    const keyName = prompt("Enter a name for this API key:");
+    if (keyName) {
+      generateKeyMutation.mutate(keyName);
+    }
   };
 
-  const revokeKey = (keyId: number) => {
-    setApiKeys(apiKeys.filter(k => k.id !== keyId));
-    toast({
-      title: "API Key revoked",
-      description: "The API key has been revoked.",
-      variant: "destructive"
-    });
+  // Revoke API key
+  const revokeKeyMutation = useMutation({
+    mutationFn: (keyId: string) =>
+      api.delete(`/api/projects/${projectId}/api-keys/${keyId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["api-keys", projectId] });
+      toast({
+        title: "API Key revoked",
+        description: "The API key has been revoked.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Revocation failed",
+        description: error.message || "Failed to revoke API key.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const revokeKey = (keyId: string) => {
+    if (confirm("Are you sure you want to revoke this API key? This action cannot be undone.")) {
+      revokeKeyMutation.mutate(keyId);
+    }
   };
+
+  // Invite team member
+  const inviteMutation = useMutation({
+    mutationFn: ({ email, role }: { email: string; role: string }) =>
+      api.post(`/api/projects/${projectId}/team/invite`, { email, role }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["team-members", projectId] });
+      setInviteEmail("");
+      setInviteRole("editor");
+      toast({
+        title: "Invitation sent",
+        description: `An invitation has been sent to ${data.email}`,
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Invitation failed",
+        description: error.message || "Failed to send invitation.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleInviteTeammate = () => {
     if (!inviteEmail) {
@@ -108,40 +392,33 @@ const Settings = () => {
       return;
     }
 
-    // Check if already invited
-    if (teamMembers.some(member => member.email === inviteEmail)) {
-      toast({
-        title: "Already invited",
-        description: "This user has already been invited to the team.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const newMember = {
-      id: teamMembers.length + 1,
-      email: inviteEmail,
-      role: inviteRole.charAt(0).toUpperCase() + inviteRole.slice(1),
-      status: "Pending",
-      joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-    };
-
-    setTeamMembers([...teamMembers, newMember]);
-    setInviteEmail("");
-    setInviteRole("editor");
-
-    toast({
-      title: "Invitation sent",
-      description: `An invitation has been sent to ${inviteEmail}`,
-    });
+    inviteMutation.mutate({ email: inviteEmail, role: inviteRole });
   };
 
-  const removeTeamMember = (memberId: number) => {
-    setTeamMembers(teamMembers.filter(m => m.id !== memberId));
-    toast({
-      title: "Member removed",
-      description: "The team member has been removed.",
-    });
+  // Remove team member
+  const removeMemberMutation = useMutation({
+    mutationFn: (memberId: string) =>
+      api.delete(`/api/projects/${projectId}/team/${memberId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["team-members", projectId] });
+      toast({
+        title: "Member removed",
+        description: "The team member has been removed.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Removal failed",
+        description: error.message || "Failed to remove team member.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const removeTeamMember = (memberId: string) => {
+    if (confirm("Are you sure you want to remove this team member?")) {
+      removeMemberMutation.mutate(memberId);
+    }
   };
 
   return (
@@ -164,22 +441,58 @@ const Settings = () => {
 
         {/* Email Setup */}
         <TabsContent value="email" className="space-y-6">
-          {!emailConfigured ? (
-            <EmailConfigEmptyState onConfigure={handleConfigureEmail} />
+          {emailConfigLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                <p className="text-muted-foreground">Loading email configuration...</p>
+              </div>
+            </div>
+          ) : !emailConfig ? (
+            <EmailConfigEmptyState onConfigure={() => setActiveTab("email")} />
           ) : (
             <>
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-6">Brevo Integration</h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold">Brevo Integration</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-destructive hover:bg-destructive/10"
+                    onClick={handleDeleteConfig}
+                    disabled={deleteMutation.isPending}
+                  >
+                    {deleteMutation.isPending ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4 mr-2" />
+                    )}
+                    Delete Config
+                  </Button>
+                </div>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="brevo-key">API Key</Label>
+                    <Label htmlFor="brevo-key">API Key *</Label>
                     <div className="flex gap-2">
                       <Input
                         id="brevo-key"
                         type="password"
                         placeholder="Enter your Brevo API key..."
+                        value={brevoApiKey}
+                        onChange={(e) => setBrevoApiKey(e.target.value)}
+                        disabled={verifyMutation.isPending || saveMutation.isPending}
                       />
-                      <Button variant="outline">Verify</Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleVerifyApiKey}
+                        disabled={verifyMutation.isPending || !brevoApiKey}
+                      >
+                        {verifyMutation.isPending ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          "Verify"
+                        )}
+                      </Button>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">
                       Get your API key from{" "}
@@ -200,11 +513,14 @@ const Settings = () => {
                 <h3 className="text-lg font-semibold mb-6">Sender Settings</h3>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="from-email">From Email</Label>
+                    <Label htmlFor="from-email">From Email *</Label>
                     <Input
                       id="from-email"
                       type="email"
                       placeholder="noreply@example.com"
+                      value={fromEmail}
+                      onChange={(e) => setFromEmail(e.target.value)}
+                      disabled={saveMutation.isPending}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Email address that will appear as the sender
@@ -212,10 +528,13 @@ const Settings = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="from-name">From Name</Label>
+                    <Label htmlFor="from-name">From Name *</Label>
                     <Input
                       id="from-name"
                       placeholder="Your Company Name"
+                      value={fromName}
+                      onChange={(e) => setFromName(e.target.value)}
+                      disabled={saveMutation.isPending}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Name that will appear as the sender
@@ -223,11 +542,14 @@ const Settings = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="app-url">App URL</Label>
+                    <Label htmlFor="app-url">App URL *</Label>
                     <Input
                       id="app-url"
                       type="url"
                       placeholder="https://example.com"
+                      value={appUrl}
+                      onChange={(e) => setAppUrl(e.target.value)}
+                      disabled={saveMutation.isPending}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Your application's base URL for links in emails
@@ -245,6 +567,9 @@ const Settings = () => {
                       id="daily-limit"
                       type="number"
                       placeholder="100"
+                      value={dailyLimit}
+                      onChange={(e) => setDailyLimit(e.target.value)}
+                      disabled={saveMutation.isPending}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Maximum number of emails to send per day
@@ -258,166 +583,270 @@ const Settings = () => {
                         Include AI-powered session insights in emails
                       </p>
                     </div>
-                    <Switch />
+                    <Switch
+                      checked={includeInsights}
+                      onCheckedChange={setIncludeInsights}
+                      disabled={saveMutation.isPending}
+                    />
                   </div>
                 </div>
               </Card>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSaveEmailConfig}
+                  disabled={saveMutation.isPending}
+                  className="bg-gradient-hero hover:opacity-90"
+                >
+                  {saveMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Configuration
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleTestEmail}
+                  disabled={testEmailMutation.isPending || !emailConfig}
+                >
+                  {testEmailMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Test Email
+                    </>
+                  )}
+                </Button>
+              </div>
             </>
           )}
         </TabsContent>
 
         {/* General Settings */}
         <TabsContent value="general" className="space-y-6">
-          <Card className="p-6 bg-white">
-            <h2 className="text-xl font-semibold mb-4">Project Details</h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="projectName">Project Name</Label>
-                <Input
-                  id="projectName"
-                  defaultValue="My SaaS Product"
-                  placeholder="Enter project name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="website">Website URL</Label>
-                <Input
-                  id="website"
-                  type="url"
-                  defaultValue="https://myapp.com"
-                  placeholder="https://your-website.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="projectId">Project ID</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="projectId"
-                    defaultValue="proj_demo_abc123"
-                    disabled
-                    className="flex-1"
-                  />
-                  <Button variant="outline" size="icon">
-                    <Key className="w-4 h-4" />
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  This ID is used to identify your project in the tracking code
-                </p>
+          {projectLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                <p className="text-muted-foreground">Loading project details...</p>
               </div>
             </div>
-          </Card>
+          ) : (
+            <>
+              <Card className="p-6 bg-white">
+                <h2 className="text-xl font-semibold mb-4">Project Details</h2>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="projectName">Project Name</Label>
+                    <Input
+                      id="projectName"
+                      value={projectName}
+                      onChange={(e) => setProjectName(e.target.value)}
+                      placeholder="Enter project name"
+                      disabled={updateProjectMutation.isPending}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="website">Website URL</Label>
+                    <Input
+                      id="website"
+                      type="url"
+                      value={projectWebsite}
+                      onChange={(e) => setProjectWebsite(e.target.value)}
+                      placeholder="https://your-website.com"
+                      disabled={updateProjectMutation.isPending}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="projectId">Project ID</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="projectId"
+                        value={projectId || ""}
+                        disabled
+                        className="flex-1"
+                      />
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => copyToClipboard(projectId || "")}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      This ID is used to identify your project in the tracking code
+                    </p>
+                  </div>
+                </div>
+              </Card>
 
-          {/* Save Button */}
-          <div className="flex justify-end">
-            <Button
-              onClick={handleSave}
-              className="bg-gradient-hero hover:opacity-90 transition-opacity"
-            >
-              <Save className="w-4 h-4 mr-2" />
-              Save Changes
-            </Button>
-          </div>
+              {/* Save Button */}
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleSave}
+                  disabled={updateProjectMutation.isPending}
+                  className="bg-gradient-hero hover:opacity-90 transition-opacity"
+                >
+                  {updateProjectMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </>
+          )}
         </TabsContent>
 
         {/* Team Management */}
         <TabsContent value="team" className="space-y-6">
-          <Card className="p-6 bg-white">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Team Members</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Manage who has access to this project
-                </p>
+          {teamLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                <p className="text-muted-foreground">Loading team members...</p>
               </div>
             </div>
-
-            <div className="space-y-4 mb-6">
-              {teamMembers.map((member) => (
-                <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-medium">{member.email}</p>
-                      <Badge 
-                        variant="outline" 
-                        className={member.status === "Active" ? "bg-success/10 text-success border-success/20" : "bg-warning/10 text-warning border-warning/20"}
-                      >
-                        {member.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {member.role} · Joined {member.joined}
+          ) : (
+            <>
+              <Card className="p-6 bg-white">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-xl font-semibold">Team Members</h2>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Manage who has access to this project
                     </p>
                   </div>
-                  {member.role !== "Owner" && (
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                      onClick={() => removeTeamMember(member.id)}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  {teamMembers.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-8">
+                      No team members yet. Invite someone to get started!
+                    </p>
+                  ) : (
+                    teamMembers.map((member: TeamMember) => (
+                      <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-medium">{member.email}</p>
+                            <Badge
+                              variant="outline"
+                              className={member.status === "active" ? "bg-success/10 text-success border-success/20" : "bg-warning/10 text-warning border-warning/20"}
+                            >
+                              {member.status}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {member.role.charAt(0).toUpperCase() + member.role.slice(1)} · Invited {new Date(member.invitedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                          </p>
+                        </div>
+                        {member.role !== "owner" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                            onClick={() => removeTeamMember(member.id)}
+                            disabled={removeMemberMutation.isPending}
+                          >
+                            {removeMemberMutation.isPending ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <X className="w-4 h-4" />
+                            )}
+                          </Button>
+                        )}
+                      </div>
+                    ))
                   )}
                 </div>
-              ))}
-            </div>
-          </Card>
+              </Card>
 
-          <Card className="p-6 bg-white">
-            <h2 className="text-xl font-semibold mb-4">Invite Teammate</h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Send an invitation to add a new member to your team
-            </p>
-            
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="inviteEmail">Email Address</Label>
-                <Input
-                  id="inviteEmail"
-                  type="email"
-                  placeholder="teammate@company.com"
-                  value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="inviteRole">Role</Label>
-                <Select value={inviteRole} onValueChange={setInviteRole}>
-                  <SelectTrigger id="inviteRole">
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="viewer">Viewer - View only access</SelectItem>
-                    <SelectItem value="editor">Editor - Can edit and view</SelectItem>
-                    <SelectItem value="admin">Admin - Full access except deletion</SelectItem>
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  Choose the level of access for this team member
+              <Card className="p-6 bg-white">
+                <h2 className="text-xl font-semibold mb-4">Invite Teammate</h2>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Send an invitation to add a new member to your team
                 </p>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="inviteEmail">Email Address</Label>
+                    <Input
+                      id="inviteEmail"
+                      type="email"
+                      placeholder="teammate@company.com"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      disabled={inviteMutation.isPending}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="inviteRole">Role</Label>
+                    <Select value={inviteRole} onValueChange={setInviteRole} disabled={inviteMutation.isPending}>
+                      <SelectTrigger id="inviteRole">
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="viewer">Viewer - View only access</SelectItem>
+                        <SelectItem value="editor">Editor - Can edit and view</SelectItem>
+                        <SelectItem value="admin">Admin - Full access except deletion</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Choose the level of access for this team member
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={handleInviteTeammate}
+                    disabled={inviteMutation.isPending}
+                    className="bg-gradient-hero hover:opacity-90"
+                  >
+                    {inviteMutation.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="w-4 h-4 mr-2" />
+                        Send Invitation
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </Card>
+
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm font-medium mb-2">About Team Roles:</p>
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  <p><span className="font-medium text-foreground">Viewer:</span> Can view all project data but cannot make changes</p>
+                  <p><span className="font-medium text-foreground">Editor:</span> Can view and edit project settings and configurations</p>
+                  <p><span className="font-medium text-foreground">Admin:</span> Can manage team members and all project settings</p>
+                  <p><span className="font-medium text-foreground">Owner:</span> Full control including project deletion</p>
+                </div>
               </div>
-
-              <Button 
-                onClick={handleInviteTeammate} 
-                className="bg-gradient-hero hover:opacity-90"
-              >
-                <UserPlus className="w-4 h-4 mr-2" />
-                Send Invitation
-              </Button>
-            </div>
-          </Card>
-
-          <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm font-medium mb-2">About Team Roles:</p>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p><span className="font-medium text-foreground">Viewer:</span> Can view all project data but cannot make changes</p>
-              <p><span className="font-medium text-foreground">Editor:</span> Can view and edit project settings and configurations</p>
-              <p><span className="font-medium text-foreground">Admin:</span> Can manage team members and all project settings</p>
-              <p><span className="font-medium text-foreground">Owner:</span> Full control including project deletion</p>
-            </div>
-          </div>
+            </>
+          )}
         </TabsContent>
 
         {/* Tracking Settings */}
@@ -481,42 +910,71 @@ const Settings = () => {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">API Keys</h2>
-              <Button onClick={generateNewKey} className="bg-gradient-hero hover:opacity-90">
-                <Plus className="w-4 h-4 mr-2" />
-                Generate New Key
+              <Button
+                onClick={generateNewKey}
+                disabled={generateKeyMutation.isPending || keysLoading}
+                className="bg-gradient-hero hover:opacity-90"
+              >
+                {generateKeyMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Generate New Key
+                  </>
+                )}
               </Button>
             </div>
-            
-            <div className="space-y-4">
-              {apiKeys.map((apiKey) => (
-                <div key={apiKey.id} className="border border-border rounded-lg p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold">{apiKey.name}</h3>
-                        <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                          {apiKey.status}
-                        </Badge>
+
+            {keysLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin" />
+              </div>
+            ) : apiKeys.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                No API keys yet. Generate one to get started!
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {apiKeys.map((apiKey: ApiKey) => (
+                  <div key={apiKey.id} className="border border-border rounded-lg p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold">{apiKey.name}</h3>
+                          <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                            {apiKey.status}
+                          </Badge>
+                        </div>
+                        <code className="text-sm text-muted-foreground font-mono mb-1 block">
+                          {apiKey.keyPrefix}
+                        </code>
+                        <p className="text-xs text-muted-foreground">
+                          Created {new Date(apiKey.createdAt).toLocaleDateString()}
+                          {apiKey.lastUsedAt && ` · Last used ${new Date(apiKey.lastUsedAt).toLocaleDateString()}`}
+                        </p>
                       </div>
-                      <code className="text-sm text-muted-foreground font-mono mb-1 block">
-                        {apiKey.key}
-                      </code>
-                      <p className="text-xs text-muted-foreground">
-                        Created {apiKey.created}
-                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                        onClick={() => revokeKey(apiKey.id)}
+                        disabled={revokeKeyMutation.isPending}
+                      >
+                        {revokeKeyMutation.isPending ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          "Revoke"
+                        )}
+                      </Button>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
-                      onClick={() => revokeKey(apiKey.id)}
-                    >
-                      Revoke
-                    </Button>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </Card>
 
           {/* Quick Start - Simple Script Tag */}
@@ -536,7 +994,7 @@ const Settings = () => {
 {`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="${projectId}"
-  data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
+  data-api-key="${apiKeys.length > 0 ? apiKeys[0].keyPrefix : 'YOUR_API_KEY'}"
   data-recording="true"
   async
 ></script>`}
@@ -548,7 +1006,7 @@ const Settings = () => {
                     onClick={() => copyToClipboard(`<script
   src="https://tracker.pascal.cx/simple-snippet.js"
   data-project-id="${projectId}"
-  data-api-key="${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}"
+  data-api-key="${apiKeys.length > 0 ? apiKeys[0].keyPrefix : 'YOUR_API_KEY'}"
   data-recording="true"
   async
 ></script>`)}
@@ -617,7 +1075,7 @@ const Settings = () => {
 
 const tracker = new PascalTracker({
   projectId: '${projectId}',
-  apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
+  apiKey: '${apiKeys.length > 0 ? apiKeys[0].keyPrefix : 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`}
                   </pre>
@@ -629,7 +1087,7 @@ const tracker = new PascalTracker({
 
 const tracker = new PascalTracker({
   projectId: '${projectId}',
-  apiKey: '${apiKeys[apiKeys.length - 1]?.key || 'YOUR_API_KEY'}',
+  apiKey: '${apiKeys.length > 0 ? apiKeys[0].keyPrefix : 'YOUR_API_KEY'}',
   endpoint: 'https://pascal.cx/ingest'
 });`)}
                   >

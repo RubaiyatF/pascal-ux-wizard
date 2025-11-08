@@ -26,28 +26,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const chartData = [
-  { date: "2024-04-01", activeUsers: 780, activation: 62, retention: 78, featureAdoption: 58 },
-  { date: "2024-04-05", activeUsers: 795, activation: 61, retention: 77, featureAdoption: 59 },
-  { date: "2024-04-10", activeUsers: 788, activation: 63, retention: 79, featureAdoption: 57 },
-  { date: "2024-04-15", activeUsers: 810, activation: 64, retention: 78, featureAdoption: 60 },
-  { date: "2024-04-20", activeUsers: 805, activation: 62, retention: 80, featureAdoption: 61 },
-  { date: "2024-04-25", activeUsers: 825, activation: 65, retention: 81, featureAdoption: 59 },
-  { date: "2024-04-30", activeUsers: 815, activation: 63, retention: 79, featureAdoption: 62 },
-  { date: "2024-05-05", activeUsers: 840, activation: 66, retention: 82, featureAdoption: 61 },
-  { date: "2024-05-10", activeUsers: 835, activation: 64, retention: 80, featureAdoption: 63 },
-  { date: "2024-05-15", activeUsers: 855, activation: 67, retention: 83, featureAdoption: 62 },
-  { date: "2024-05-20", activeUsers: 845, activation: 65, retention: 81, featureAdoption: 64 },
-  { date: "2024-05-25", activeUsers: 870, activation: 68, retention: 84, featureAdoption: 63 },
-  { date: "2024-05-30", activeUsers: 860, activation: 66, retention: 82, featureAdoption: 65 },
-  { date: "2024-06-04", activeUsers: 880, activation: 69, retention: 85, featureAdoption: 64 },
-  { date: "2024-06-09", activeUsers: 875, activation: 67, retention: 83, featureAdoption: 66 },
-  { date: "2024-06-14", activeUsers: 895, activation: 70, retention: 86, featureAdoption: 65 },
-  { date: "2024-06-19", activeUsers: 885, activation: 68, retention: 84, featureAdoption: 67 },
-  { date: "2024-06-24", activeUsers: 900, activation: 71, retention: 85, featureAdoption: 66 },
-  { date: "2024-06-30", activeUsers: 890, activation: 68, retention: 82, featureAdoption: 65 },
-]
-
 const chartConfig = {
   activeUsers: {
     label: "Active Users",
@@ -67,16 +45,25 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-interface TrendsAreaChartProps {
-  selectedMetrics: string[];
+interface MetricsDataPoint {
+  date: string;
+  activeUsers?: number;
+  activation?: number;
+  retention?: number;
+  featureAdoption?: number;
 }
 
-export function TrendsAreaChart({ selectedMetrics }: TrendsAreaChartProps) {
+interface TrendsAreaChartProps {
+  selectedMetrics: string[];
+  metricsData?: MetricsDataPoint[];
+}
+
+export function TrendsAreaChart({ selectedMetrics, metricsData = [] }: TrendsAreaChartProps) {
   const [timeRange, setTimeRange] = React.useState("90d")
 
-  const filteredData = chartData.filter((item) => {
+  const filteredData = metricsData.filter((item) => {
     const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
+    const referenceDate = new Date() // Use current date
     let daysToSubtract = 90
     if (timeRange === "30d") {
       daysToSubtract = 30

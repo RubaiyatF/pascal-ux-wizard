@@ -1,17 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import pascalLogo from "@/assets/pascal-logo.png";
 
+interface UnicornStudioConfig {
+  elementId: string;
+  fps: number;
+  scale: number;
+  dpi: number;
+  filePath: string;
+  altText: string;
+  ariaLabel: string;
+}
+
+interface UnicornStudioScene {
+  destroy?: () => void;
+}
+
 declare global {
   interface Window {
     UnicornStudio: {
-      addScene: (config: any) => Promise<any>;
+      addScene: (config: UnicornStudioConfig) => Promise<UnicornStudioScene>;
     };
   }
 }
 
 export const AnimatedLogo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<any>(null);
+  const sceneRef = useRef<UnicornStudioScene | null>(null);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
