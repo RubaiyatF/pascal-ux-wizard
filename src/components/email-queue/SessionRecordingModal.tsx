@@ -59,12 +59,27 @@ export const SessionRecordingModal = ({
     if (!recordingData || !playerContainerRef.current || !isOpen) return;
 
     try {
+      console.log('[Recording Player] Initializing with', recordingData.chunks?.length, 'chunks');
+
       // Decompress chunks
-      const events = recordingData.chunks.map((chunk: RecordingChunk) => {
-        const compressed = Uint8Array.from(atob(chunk.compressed_data), c => c.charCodeAt(0));
-        const decompressed = pako.inflate(compressed, { to: 'string' });
-        return JSON.parse(decompressed);
+      const events = recordingData.chunks.map((chunk: RecordingChunk, idx: number) => {
+        try {
+          const compressed = Uint8Array.from(atob(chunk.compressed_data), c => c.charCodeAt(0));
+          const decompressed = pako.inflate(compressed, { to: 'string' });
+          const parsed = JSON.parse(decompressed);
+          return Array.isArray(parsed) ? parsed : [parsed];
+        } catch (err) {
+          console.error(`[Recording Player] Failed to decompress chunk ${idx}:`, err);
+          return [];
+        }
       }).flat();
+
+      console.log('[Recording Player] Decompressed', events.length, 'events');
+
+      if (events.length === 0) {
+        console.error('[Recording Player] No events after decompression');
+        return;
+      }
 
       // Clear previous player
       if (playerContainerRef.current) {
@@ -75,13 +90,19 @@ export const SessionRecordingModal = ({
       const replayerInstance = new Replayer(events, {
         root: playerContainerRef.current,
         speed: playbackSpeed,
+        skipInactive: false,
+        showWarning: true,
+        showDebug: true,
       });
 
+      console.log('[Recording Player] Replayer instance created');
       setReplayer(replayerInstance);
 
       // Get total duration
-      const duration = replayerInstance.getMetaData().totalTime;
+      const metadata = replayerInstance.getMetaData();
+      const duration = metadata.totalTime;
       setTotalTime(Math.floor(duration / 1000)); // Convert to seconds
+      console.log('[Recording Player] Total duration:', duration, 'ms');
 
       // Update current time periodically
       const interval = setInterval(() => {
@@ -93,10 +114,13 @@ export const SessionRecordingModal = ({
 
       return () => {
         clearInterval(interval);
-        replayerInstance.destroy();
+        if (replayerInstance) {
+          replayerInstance.destroy();
+        }
       };
     } catch (error) {
-      console.error("Error initializing player:", error);
+      console.error("[Recording Player] Error initializing player:", error);
+      console.error("[Recording Player] Error details:", error instanceof Error ? error.message : String(error));
     }
   }, [recordingData, isOpen, playbackSpeed]);
 
@@ -201,8 +225,8 @@ export const SessionRecordingModal = ({
         </div>
 
         {/* Video Player Area */}
-        <div className="bg-muted rounded-lg mb-4 relative overflow-hidden" style={{ minHeight: '400px' }}>
-          <div ref={playerContainerRef} className="w-full h-full" />
+        <div className="bg-muted rounded-lg mb-4 relative overflow-hidden" style={{ height: '600px', width: '100%' }}>
+          <div ref={playerContainerRef} style={{ width: '100%', height: '100%' }} />
         </div>
 
         {/* Playback Controls */}

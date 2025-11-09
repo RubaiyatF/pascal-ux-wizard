@@ -26,8 +26,16 @@ import { HelpModal } from "@/components/home/HelpModal";
 const Home = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { projectId, apiKey, projectName, website } = useOnboarding();
+  const { projectId, apiKey, projectName, website, currentStep } = useOnboarding();
   const api = useApiClient();
+
+  // Redirect to onboarding if user hasn't completed it
+  useEffect(() => {
+    if (!projectId && currentStep !== "complete") {
+      console.log('[Home] No project found, redirecting to onboarding');
+      navigate('/onboarding');
+    }
+  }, [projectId, currentStep, navigate]);
 
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [expandedStep, setExpandedStep] = useState<number | null>(1);

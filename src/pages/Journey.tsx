@@ -73,7 +73,15 @@ const Journey = () => {
     enabled: !!projectId,
   });
 
-  const users: User[] = useMemo(() => usersResponse?.users || [], [usersResponse?.users]);
+  // Filter out anonymous users client-side (safety check)
+  const users: User[] = useMemo(() => {
+    const allUsers = usersResponse?.users || [];
+    return allUsers.filter(u =>
+      u.email &&
+      u.email.length > 0 &&
+      !u.canonical_user_id.startsWith('anon_')
+    );
+  }, [usersResponse?.users]);
 
   // Set first user as selected on load
   useEffect(() => {
@@ -82,18 +90,18 @@ const Journey = () => {
     }
   }, [users, selectedUser]);
 
-  // Fetch selected user's sessions
+  // Fetch selected user's sessions (skip for anonymous users)
   const { data: sessionsResponse } = useQuery({
     queryKey: ["user-sessions", selectedUser, projectId],
     queryFn: () => api.get(`/api/users/${selectedUser}/sessions?project_id=${projectId}`),
-    enabled: !!selectedUser && !!projectId,
+    enabled: !!selectedUser && !!projectId && !selectedUser.startsWith('anon_'),
   });
 
-  // Fetch selected user's success journey
+  // Fetch selected user's success journey (skip for anonymous users)
   const { data: successJourney } = useQuery({
     queryKey: ["success-journey", selectedUser, projectId],
     queryFn: () => api.get(`/api/users/${selectedUser}/success-journey?project_id=${projectId}`),
-    enabled: !!selectedUser && !!projectId,
+    enabled: !!selectedUser && !!projectId && !selectedUser.startsWith('anon_'),
   });
 
   // Filter users based on search query and date range

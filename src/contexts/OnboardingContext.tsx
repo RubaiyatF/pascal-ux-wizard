@@ -26,11 +26,12 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(
 );
 
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth();
+  const { userId, isLoaded } = useAuth();
   const storageKey = `pascal-onboarding-${userId}`;
 
   const [state, setState] = useState<OnboardingState>(() => {
-    if (!userId) {
+    // Don't try to load from localStorage until Clerk is loaded
+    if (!isLoaded || !userId) {
       return {
         currentStep: 1,
         projectId: null,
@@ -51,12 +52,27 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
         };
   });
 
+  // Load from localStorage when Clerk finishes loading
+  useEffect(() => {
+    if (isLoaded && userId) {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const savedState = JSON.parse(saved);
+          setState(savedState);
+        } catch (e) {
+          console.error('[OnboardingContext] Error loading onboarding state:', e);
+        }
+      }
+    }
+  }, [isLoaded, userId, storageKey]);
+
   // Persist to localStorage on state change
   useEffect(() => {
-    if (userId) {
+    if (isLoaded && userId) {
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
-  }, [state, storageKey, userId]);
+  }, [state, storageKey, userId, isLoaded]);
 
   const setStep = (step: 1 | 2 | 3 | "complete") => {
     setState((prev) => ({ ...prev, currentStep: step }));
