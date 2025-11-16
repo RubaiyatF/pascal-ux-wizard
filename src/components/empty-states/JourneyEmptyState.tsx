@@ -118,44 +118,44 @@ export const JourneyEmptyState = () => {
               </Badge>
             </div>
 
-            <div className="space-y-4 pl-4 border-l-2 border-primary/20">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+            <div className="relative pl-6 space-y-6 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
+              <div className="flex items-start gap-4 relative">
+                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-success/10 flex items-center justify-center border-2 border-card">
                   <div className="w-2 h-2 rounded-full bg-success" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium">User signed up</p>
-                  <p className="text-xs text-muted-foreground">Session recording available</p>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-foreground">User signed up</p>
+                  <p className="text-xs text-muted-foreground mt-1">Session recording available</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+              <div className="flex items-start gap-4 relative">
+                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-card">
                   <Activity className="w-4 h-4 text-primary" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium">Completed onboarding flow</p>
-                  <p className="text-xs text-muted-foreground">5 minutes after signup</p>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-foreground">Completed onboarding flow</p>
+                  <p className="text-xs text-muted-foreground mt-1">5 minutes after signup</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+              <div className="flex items-start gap-4 relative">
+                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center border-2 border-card">
                   <Mail className="w-4 h-4 text-chart-1" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium">AI email sent</p>
-                  <p className="text-xs text-muted-foreground">Personalized activation tip • Opened</p>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-foreground">AI email sent</p>
+                  <p className="text-xs text-muted-foreground mt-1">Personalized activation tip • Opened</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+              <div className="flex items-start gap-4 relative">
+                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center border-2 border-card">
                   <div className="w-2 h-2 rounded-full bg-chart-2" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium">Exploring features</p>
-                  <p className="text-xs text-muted-foreground">Active session in progress</p>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-foreground">Exploring features</p>
+                  <p className="text-xs text-muted-foreground mt-1">Active session in progress</p>
                 </div>
               </div>
             </div>
