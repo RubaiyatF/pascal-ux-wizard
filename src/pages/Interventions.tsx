@@ -20,17 +20,17 @@ interface Insight {
 }
 
 const Interventions = () => {
-  const { selectedProject } = useProject();
+  const { currentProject } = useProject();
   const api = useApiClient();
 
   // Fetch intervention effectiveness data from API
   const { data: interventionData, isLoading } = useQuery({
-    queryKey: ["intervention-effectiveness", selectedProject?.id],
+    queryKey: ["intervention-effectiveness", currentProject],
     queryFn: () =>
       api.get(
-        `/api/projects/${selectedProject?.id}/intervention-effectiveness?days=30`
+        `/api/projects/${currentProject}/intervention-effectiveness?days=30`
       ),
-    enabled: !!selectedProject?.id,
+    enabled: !!currentProject,
   });
 
   // Transform API data to campaigns format

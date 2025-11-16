@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { useApiClient } from "@/lib/api";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface EmailResponse {
   queue_id?: string;

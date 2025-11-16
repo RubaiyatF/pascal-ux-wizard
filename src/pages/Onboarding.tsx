@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,8 +79,8 @@ const Onboarding = () => {
   const { data: eventsData } = useQuery({
     queryKey: ["project-events", projectId],
     queryFn: () => api.get(`/api/projects/${projectId}/events`),
-    enabled: currentStep === 3 && !!projectId && !eventsDetected,
-    refetchInterval: eventsDetected ? false : 5000, // Poll every 5 seconds
+    enabled: currentStep === "3" && !!projectId && !eventsDetected,
+    refetchInterval: eventsDetected ? false : 5000,
   });
 
   // Check if events detected
@@ -148,18 +148,18 @@ const Onboarding = () => {
   };
 
   const handleNext = () => {
-    if (currentStep === 1) {
+    if (currentStep === "1") {
       // Create project
       createProjectMutation.mutate();
-    } else if (currentStep === 2) {
+    } else if (currentStep === "2") {
       // Move to step 3
-      setStep(3);
+      setStep("3");
     }
   };
 
   const handleBack = () => {
-    if (currentStep === 2) setStep(1);
-    else if (currentStep === 3) setStep(2);
+    if (currentStep === "2") setStep("1");
+    else if (currentStep === "3") setStep("2");
   };
 
   const handleComplete = () => {
@@ -167,7 +167,13 @@ const Onboarding = () => {
     navigate("/home");
   };
 
-  const step = typeof currentStep === "number" ? currentStep : 3;
+  const step: number = typeof currentStep === "number" ? currentStep : (() => {
+    // Convert string steps to numbers for UI rendering
+    if (currentStep === "1") return 1;
+    if (currentStep === "2") return 2;
+    if (currentStep === "3") return 3;
+    return 3;
+  })();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background p-4">
