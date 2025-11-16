@@ -146,21 +146,21 @@ const Analytics = () => {
               <div className="flex items-start justify-between w-full mb-3">
                 <div className={`p-2 rounded-lg ${
                   selectedMetrics.includes("activeUsers")
-                    ? "bg-white/20"
+                    ? "bg-card/20"
                     : "bg-primary/10"
                 }`}>
                   <Users className={`w-5 h-5 ${
                     selectedMetrics.includes("activeUsers")
-                      ? "text-black"
+                      ? "text-foreground"
                       : "text-primary"
                   }`} />
                 </div>
-                <span className="text-sm font-medium text-black">
+                <span className="text-sm font-medium text-foreground">
                   {metrics.total_users ? `+${metrics.total_users}` : '+0'}
                 </span>
               </div>
-              <p className="text-sm mb-1 text-black">Active Users</p>
-              <p className="text-2xl font-bold text-black">{metrics.active_users || 0}</p>
+              <p className="text-sm mb-1 text-foreground">Active Users</p>
+              <p className="text-2xl font-bold text-foreground">{metrics.active_users || 0}</p>
             </Button>
 
             <Button
@@ -175,21 +175,21 @@ const Analytics = () => {
               <div className="flex items-start justify-between w-full mb-3">
                 <div className={`p-2 rounded-lg ${
                   selectedMetrics.includes("activation")
-                    ? "bg-white/20"
+                    ? "bg-card/20"
                     : "bg-primary/10"
                 }`}>
                   <TrendingUp className={`w-5 h-5 ${
                     selectedMetrics.includes("activation")
-                      ? "text-black"
+                      ? "text-foreground"
                       : "text-primary"
                   }`} />
                 </div>
-                <span className="text-sm font-medium text-black">
+                <span className="text-sm font-medium text-foreground">
                   {trends.activation_score_change || '+0%'}
                 </span>
               </div>
-              <p className="text-sm mb-1 text-black">Avg Activation</p>
-              <p className="text-2xl font-bold text-black">{metrics.avg_activation_score || 0}%</p>
+              <p className="text-sm mb-1 text-foreground">Avg Activation</p>
+              <p className="text-2xl font-bold text-foreground">{metrics.avg_activation_score || 0}%</p>
             </Button>
 
             <Button
@@ -204,21 +204,21 @@ const Analytics = () => {
               <div className="flex items-start justify-between w-full mb-3">
                 <div className={`p-2 rounded-lg ${
                   selectedMetrics.includes("retention")
-                    ? "bg-white/20"
+                    ? "bg-card/20"
                     : "bg-primary/10"
                 }`}>
                   <CheckCircle2 className={`w-5 h-5 ${
                     selectedMetrics.includes("retention")
-                      ? "text-black"
+                      ? "text-foreground"
                       : "text-primary"
                   }`} />
                 </div>
-                <span className="text-sm font-medium text-black">
+                <span className="text-sm font-medium text-foreground">
                   {trends.retention_change || '+0%'}
                 </span>
               </div>
-              <p className="text-sm mb-1 text-black">Retention</p>
-              <p className="text-2xl font-bold text-black">
+              <p className="text-sm mb-1 text-foreground">Retention</p>
+              <p className="text-2xl font-bold text-foreground">
                 {Math.round((metrics.retention_rate || 0) * 100)}%
               </p>
             </Button>
@@ -235,19 +235,19 @@ const Analytics = () => {
               <div className="flex items-start justify-between w-full mb-3">
                 <div className={`p-2 rounded-lg ${
                   selectedMetrics.includes("featureAdoption")
-                    ? "bg-white/20"
+                    ? "bg-card/20"
                     : "bg-primary/10"
                 }`}>
                   <TrendingUp className={`w-5 h-5 ${
                     selectedMetrics.includes("featureAdoption")
-                      ? "text-black"
+                      ? "text-foreground"
                       : "text-primary"
                   }`} />
                 </div>
-                <span className="text-sm font-medium text-black">+8%</span>
+                <span className="text-sm font-medium text-foreground">+8%</span>
               </div>
-              <p className="text-sm mb-1 text-black">Feature Adoption</p>
-              <p className="text-2xl font-bold text-black">
+              <p className="text-sm mb-1 text-foreground">Feature Adoption</p>
+              <p className="text-2xl font-bold text-foreground">
                 {Math.round((metrics.feature_adoption_rate || 0) * 100)}%
               </p>
             </Button>

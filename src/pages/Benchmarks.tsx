@@ -251,7 +251,7 @@ const Benchmarks = () => {
 
       {/* Trends */}
       {metricsData?.trends && (
-        <Card className="p-6 bg-white border-border">
+        <Card className="p-6 bg-card border-border">
           <div className="flex items-start gap-3">
             <div className="w-5 h-5 shrink-0">
               <AnimatedLogo />
@@ -316,7 +316,7 @@ const Benchmarks = () => {
             {benchmarkUsers.map((user: BenchmarkUser) => (
               <div
                 key={user.canonical_user_id}
-                className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors"
+                className="flex items-center justify-between p-4 border border-border rounded-lg bg-card hover:bg-muted/30 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <button
@@ -376,7 +376,7 @@ const Benchmarks = () => {
             {similarUsers.map((user: SimilarUser) => (
               <div
                 key={user.canonical_user_id}
-                className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors"
+                className="flex items-center justify-between p-4 border border-border rounded-lg bg-card hover:bg-muted/30 transition-colors"
               >
                 <div className="flex items-center gap-4">
                   <div>
