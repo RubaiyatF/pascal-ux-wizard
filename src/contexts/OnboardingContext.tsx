@@ -8,6 +8,7 @@ interface OnboardingContextType {
   projectName: string | null;
   website: string | null;
   setCurrentStep: (step: string) => void;
+  setStep: (step: string) => void; // Alias for compatibility
   completeOnboarding: () => void;
   setProjectData: (data: { projectId: string; apiKey: string; projectName: string; website: string }) => void;
   projectData: {
@@ -71,6 +72,7 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
         projectName,
         website,
         setCurrentStep,
+        setStep: setCurrentStep, // Alias for compatibility
         completeOnboarding,
         setProjectData,
         projectData,

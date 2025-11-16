@@ -181,9 +181,15 @@ export const JourneyTimeline = ({
                   </div>
 
                   {/* Inline Session Player */}
-                  {expandedSession === event.id && (
+                  {expandedSession === event.id && event.sessionId && (
                     <InlineSessionPlayer 
-                      session={event}
+                      session={{
+                        ...event,
+                        sessionId: event.sessionId,
+                        duration: event.duration || "0s",
+                        pages: event.pages || 0,
+                        events: event.events || 0
+                      }}
                       onClose={() => setExpandedSession(null)}
                     />
                   )}

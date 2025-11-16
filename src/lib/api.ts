@@ -16,74 +16,84 @@ export interface ApiError {
 }
 
 class MockApiClient {
-  async get<T>(endpoint: string): Promise<T> {
+  async get(endpoint: string): Promise<any> {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 300));
 
     // Return mock data based on endpoint
     if (endpoint.includes('/api/projects')) {
       if (endpoint.includes('/projects/')) {
-        return mockProjects[0] as T;
+        return mockProjects[0];
       }
-      return { projects: mockProjects } as T;
+      return { projects: mockProjects };
     }
     
     if (endpoint.includes('/api/events')) {
-      return { events: mockEvents } as T;
+      return { events: mockEvents };
     }
     
     if (endpoint.includes('/api/benchmarks')) {
-      return { benchmarkUsers: mockBenchmarks } as T;
+      return { benchmarkUsers: mockBenchmarks, users: mockUsers };
     }
     
     if (endpoint.includes('/api/users')) {
       if (endpoint.includes('/sessions')) {
-        return { sessions: mockSessions } as T;
+        return { sessions: mockSessions };
       }
-      return { users: mockUsers } as T;
+      return { users: mockUsers };
     }
     
     if (endpoint.includes('/api/emails')) {
-      return { emails: mockEmails, stats: { pending: 2, sent: 45, scheduled: 12 } } as T;
+      return { emails: mockEmails, stats: { pending: 2, sent: 45, scheduled: 12 } };
     }
     
     if (endpoint.includes('/api/analytics')) {
-      return mockAnalytics as T;
+      return mockAnalytics;
     }
     
     if (endpoint.includes('/api/campaigns')) {
-      return { campaigns: mockCampaigns } as T;
+      return { campaigns: mockCampaigns };
     }
 
     if (endpoint.includes('/api/settings/team')) {
-      return [] as T;
+      return [{ email: 'demo@example.com' }];
     }
 
     if (endpoint.includes('/api/settings/apikey')) {
-      return { fullKey: 'demo_key_123456789', name: 'Demo API Key' } as T;
+      return { fullKey: 'demo_key_123456789', name: 'Demo API Key' };
+    }
+
+    if (endpoint.includes('/api/settings')) {
+      return { brevo_api_key: null, from_email: null, from_name: null };
     }
     
-    return {} as T;
+    return {};
   }
 
-  async post<T>(endpoint: string, data?: unknown): Promise<T> {
+  async post(endpoint: string, data?: unknown): Promise<any> {
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true, data } as T;
+    
+    // Handle specific post endpoints
+    if (endpoint.includes('/api/projects')) {
+      return { projectId: mockProjects[0].id, apiKey: mockProjects[0].apiKey, name: mockProjects[0].name, website: mockProjects[0].website };
+    }
+    
+    return { success: true, data };
   }
 
-  async put<T>(endpoint: string, data?: unknown): Promise<T> {
+  async put(endpoint: string, data?: unknown): Promise<any> {
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true, data } as T;
+    return { success: true, data };
   }
 
-  async patch<T>(endpoint: string, data?: unknown): Promise<T> {
+  async patch(endpoint: string, data?: unknown): Promise<any> {
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true, data } as T;
+    return { success: true, data };
   }
 
-  async delete<T>(endpoint: string): Promise<T> {
+  async delete(endpoint: string): Promise<any> {
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true } as T;
+    return { success: true };
   }
 }
 

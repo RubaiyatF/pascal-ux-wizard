@@ -41,6 +41,7 @@ interface EmailEvent {
   timestamp: string;
   subject?: string;
   content?: string;
+  direction?: string; // Add for compatibility with EmailDetail
 }
 
 const Journey = () => {
@@ -523,7 +524,7 @@ const Journey = () => {
 
       <EmailDetailModal
         isOpen={emailModalOpen}
-        email={selectedEmail}
+        email={selectedEmail ? {...selectedEmail, direction: selectedEmail.direction || "outbound"} as any : null}
         onClose={() => {
           setEmailModalOpen(false);
           setSelectedEmail(null);

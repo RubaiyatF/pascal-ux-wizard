@@ -161,7 +161,7 @@ const Benchmarks = () => {
   };
 
   const handleRemoveBenchmark = (userId: string, email: string) => {
-    removeBenchmarkMutation.mutate({ userId, email });
+    removeBenchmarkMutation.mutate({ userId } as any);
   };
 
   // Build metrics from API data

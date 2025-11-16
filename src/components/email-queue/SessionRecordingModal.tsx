@@ -143,16 +143,16 @@ export const SessionRecordingModal = ({
   };
 
   const handleSkipForward = () => {
-    if (replayer) {
+    if (replayer && (replayer as any).goto) {
       const newTime = Math.min(currentTime + 10, totalTime);
-      replayer.goto(newTime * 1000);
+      (replayer as any).goto(newTime * 1000);
     }
   };
 
   const handleSkipBackward = () => {
-    if (replayer) {
+    if (replayer && (replayer as any).goto) {
       const newTime = Math.max(currentTime - 10, 0);
-      replayer.goto(newTime * 1000);
+      (replayer as any).goto(newTime * 1000);
     }
   };
 

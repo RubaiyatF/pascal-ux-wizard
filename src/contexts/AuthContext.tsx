@@ -8,6 +8,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  userId: string | null; // Add for compatibility
   isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
@@ -61,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        userId: user?.id || null,
         isAuthenticated: !!user,
         signIn,
         signUp,

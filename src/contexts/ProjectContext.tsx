@@ -5,6 +5,7 @@ interface ProjectContextType {
   setCurrentProject: (project: string) => void;
   projects: string[];
   setProjects: (projects: string[]) => void;
+  selectedProject?: string; // Add for compatibility
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -34,7 +35,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ProjectContext.Provider value={{ currentProject, setCurrentProject, projects, setProjects }}>
+    <ProjectContext.Provider value={{ currentProject, setCurrentProject, projects, setProjects, selectedProject: currentProject }}>
       {children}
     </ProjectContext.Provider>
   );
