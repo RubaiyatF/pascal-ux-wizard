@@ -176,7 +176,7 @@ export const SessionRecordingModal = ({
   // Loading state
   if (recordingLoading || analysisLoading) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
         <Card className="p-6 max-w-md w-full">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
@@ -194,7 +194,7 @@ export const SessionRecordingModal = ({
   // Error state
   if (recordingError) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
         <Card className="p-6 max-w-md w-full">
           <div className="text-center">
             <AlertTriangle className="w-8 h-8 text-destructive mx-auto mb-4" />
@@ -210,7 +210,7 @@ export const SessionRecordingModal = ({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <Card className="p-6 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -303,7 +303,7 @@ export const SessionRecordingModal = ({
           </Card>
 
           {/* AI Summary */}
-          <Card className="p-4 bg-white border-border">
+          <Card className="p-4 bg-card border-border">
             <div className="flex items-start gap-3">
               <div className="w-5 h-5 mt-0.5 rounded-full overflow-hidden shrink-0">
                 <AnimatedLogo />

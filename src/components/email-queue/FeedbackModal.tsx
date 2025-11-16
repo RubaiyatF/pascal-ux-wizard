@@ -26,7 +26,7 @@ export const FeedbackModal = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <Card className="p-6 max-w-lg w-full">
         <h3 className="text-lg font-semibold mb-4">
           Batch Feedback - Rejecting {selectedCount} email(s)

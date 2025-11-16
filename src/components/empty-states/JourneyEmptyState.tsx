@@ -55,8 +55,8 @@ export const JourneyEmptyState = () => {
           </Card>
 
           <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-500/10 mb-4">
-              <MessageSquare className="w-6 h-6 text-purple-500" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-chart-1/10 mb-4">
+              <MessageSquare className="w-6 h-6 text-chart-1" />
             </div>
             <h3 className="font-semibold text-lg mb-2">Email History</h3>
             <p className="text-sm text-muted-foreground mb-3">
@@ -140,8 +140,8 @@ export const JourneyEmptyState = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
-                  <Mail className="w-4 h-4 text-purple-500" />
+                <div className="w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <Mail className="w-4 h-4 text-chart-1" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">AI email sent</p>

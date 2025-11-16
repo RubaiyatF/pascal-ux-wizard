@@ -11,7 +11,7 @@ export const EmailConfigEmptyState = ({
       <div className="max-w-2xl w-full">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full overflow-hidden mb-6 bg-white p-4">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full overflow-hidden mb-6 bg-card p-4">
             <Mail className="w-12 h-12 text-primary" />
           </div>
           

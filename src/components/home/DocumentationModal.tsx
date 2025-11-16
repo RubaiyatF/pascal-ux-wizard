@@ -207,7 +207,7 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
                 <div className="space-y-3">
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-green-500">Fast Mover</Badge>
+                      <Badge className="bg-chart-1">Fast Mover</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Power users progressing rapidly through the product, exceeding typical adoption patterns.
@@ -216,7 +216,7 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
 
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-blue-500">On Track</Badge>
+                      <Badge className="bg-chart-2">On Track</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Users following successful patterns and making steady progress through onboarding.
@@ -225,7 +225,7 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
 
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-yellow-500">Slow Adopter</Badge>
+                      <Badge className="bg-chart-3">Slow Adopter</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Engaged users who need additional guidance and support to reach full adoption.
@@ -234,7 +234,7 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
 
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-red-500">At Risk</Badge>
+                      <Badge className="bg-destructive">At Risk</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Users deviating from successful patterns, showing signs of potential churn.
@@ -243,7 +243,7 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
 
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-purple-500">Different Path</Badge>
+                      <Badge className="bg-chart-4">Different Path</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Users with unique usage patterns that don't match typical successful journeys.
@@ -353,9 +353,9 @@ export const DocumentationModal = ({ open, onOpenChange }: DocumentationModalPro
                     </div>
                   </div>
 
-                  <div className="border rounded-lg p-6 bg-gradient-to-br from-green-500/5 to-green-500/10">
+                  <div className="border rounded-lg p-6 bg-gradient-to-br from-chart-1/5 to-chart-1/10">
                     <div className="text-center">
-                      <div className="text-4xl font-bold text-green-600 mb-2">30-40%</div>
+                      <div className="text-4xl font-bold text-chart-1 mb-2">30-40%</div>
                       <div className="font-semibold mb-1">Revenue Recovery Rate</div>
                       <p className="text-sm text-muted-foreground">
                         Recovers 30-40% of abandoned revenue vs industry standard of 10-15%

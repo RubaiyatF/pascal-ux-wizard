@@ -208,7 +208,7 @@ export const JourneyTimeline = ({
                               </div>
                             </div>
                           )}
-                          <div className="bg-white rounded-lg p-3 border border-border">
+                          <div className="bg-card rounded-lg p-3 border border-border">
                             <div className="flex items-start gap-2">
                               <div className="w-4 h-4 mt-0.5 shrink-0">
                                 <AnimatedLogo />
@@ -352,7 +352,7 @@ export const JourneyTimeline = ({
                         className={`bg-background border border-border rounded-lg overflow-hidden cursor-pointer hover:border-primary/50 transition-colors ${expandedEmail === event.id ? "mb-4" : ""}`}
                         onClick={() => setExpandedEmail(expandedEmail === event.id ? null : event.id)}
                       >
-                        <div className="px-3 py-3 bg-white">
+                        <div className="px-3 py-3 bg-card">
                           {expandedEmail === event.id ? (
                             // Full email with formatting
                             <div className="text-sm leading-relaxed text-foreground space-y-4">

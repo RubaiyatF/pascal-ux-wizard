@@ -29,7 +29,7 @@ export const EmailDetailModal = ({
   if (!isOpen || !email) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <Card className="p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export const EmailDetailModal = ({
         <div>
           <label className="text-sm font-medium text-muted-foreground mb-2 block">Message</label>
           <div className="bg-background border border-border rounded-lg overflow-hidden">
-            <div className="px-4 py-4 bg-white">
+            <div className="px-4 py-4 bg-card">
               <div className="text-sm leading-relaxed text-foreground space-y-4">
                 <p>Hi there,</p>
                 
