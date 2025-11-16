@@ -118,42 +118,46 @@ export const JourneyEmptyState = () => {
               </Badge>
             </div>
 
-            <div className="relative pl-6 space-y-6 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
+            <div className="relative pl-12 space-y-6">
+              {/* Vertical line */}
+              <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-border" />
+              
+              {/* Timeline items */}
               <div className="flex items-start gap-4 relative">
-                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-success/10 flex items-center justify-center border-2 border-card">
+                <div className="absolute left-0 w-8 h-8 rounded-full bg-success/10 flex items-center justify-center border-2 border-card z-10">
                   <div className="w-2 h-2 rounded-full bg-success" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pt-1">
                   <p className="text-sm font-semibold text-foreground">User signed up</p>
                   <p className="text-xs text-muted-foreground mt-1">Session recording available</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-card">
+                <div className="absolute left-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-card z-10">
                   <Activity className="w-4 h-4 text-primary" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pt-1">
                   <p className="text-sm font-semibold text-foreground">Completed onboarding flow</p>
                   <p className="text-xs text-muted-foreground mt-1">5 minutes after signup</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center border-2 border-card">
+                <div className="absolute left-0 w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center border-2 border-card z-10">
                   <Mail className="w-4 h-4 text-chart-1" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pt-1">
                   <p className="text-sm font-semibold text-foreground">AI email sent</p>
                   <p className="text-xs text-muted-foreground mt-1">Personalized activation tip • Opened</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="absolute -left-[25px] w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center border-2 border-card">
+                <div className="absolute left-0 w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center border-2 border-card z-10">
                   <div className="w-2 h-2 rounded-full bg-chart-2" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pt-1">
                   <p className="text-sm font-semibold text-foreground">Exploring features</p>
                   <p className="text-xs text-muted-foreground mt-1">Active session in progress</p>
                 </div>
