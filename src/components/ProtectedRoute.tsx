@@ -1,4 +1,4 @@
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { ReactNode } from "react";
 
@@ -14,10 +14,10 @@ interface ProtectedRouteProps {
  * After login, user will be redirected back to the original page they tried to access.
  */
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isAuthenticated } = useAuth();
   const location = useLocation();
 
-  // Wait for Clerk to load authentication state
+  // Wait for auth to load authentication state
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -27,7 +27,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   // If not signed in, redirect to auth page and save the intended destination
-  if (!isSignedIn) {
+  if (!isAuthenticated) {
     return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
   }
 
