@@ -118,46 +118,57 @@ export const JourneyEmptyState = () => {
               </Badge>
             </div>
 
-            <div className="relative pl-12 space-y-6">
-              {/* Vertical line */}
-              <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-border" />
-              
-              {/* Timeline items */}
-              <div className="flex items-start gap-4 relative">
-                <div className="absolute left-0 w-8 h-8 rounded-full bg-success/10 flex items-center justify-center border-2 border-card z-10">
-                  <div className="w-2 h-2 rounded-full bg-success" />
+            <div className="space-y-6">
+              {/* Timeline Item 1 */}
+              <div className="flex items-start gap-4">
+                <div className="relative flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center border-2 border-card shrink-0">
+                    <div className="w-2.5 h-2.5 rounded-full bg-success" />
+                  </div>
+                  <div className="w-0.5 h-full bg-border absolute top-10" />
                 </div>
-                <div className="flex-1 pt-1">
+                <div className="flex-1 pt-2">
                   <p className="text-sm font-semibold text-foreground">User signed up</p>
                   <p className="text-xs text-muted-foreground mt-1">Session recording available</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 relative">
-                <div className="absolute left-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-card z-10">
-                  <Activity className="w-4 h-4 text-primary" />
+              {/* Timeline Item 2 */}
+              <div className="flex items-start gap-4">
+                <div className="relative flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border-2 border-card shrink-0">
+                    <Activity className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="w-0.5 h-full bg-border absolute top-10" />
                 </div>
-                <div className="flex-1 pt-1">
+                <div className="flex-1 pt-2">
                   <p className="text-sm font-semibold text-foreground">Completed onboarding flow</p>
                   <p className="text-xs text-muted-foreground mt-1">5 minutes after signup</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 relative">
-                <div className="absolute left-0 w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center border-2 border-card z-10">
-                  <Mail className="w-4 h-4 text-chart-1" />
+              {/* Timeline Item 3 */}
+              <div className="flex items-start gap-4">
+                <div className="relative flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-full bg-chart-1/10 flex items-center justify-center border-2 border-card shrink-0">
+                    <Mail className="w-5 h-5 text-chart-1" />
+                  </div>
+                  <div className="w-0.5 h-full bg-border absolute top-10" />
                 </div>
-                <div className="flex-1 pt-1">
+                <div className="flex-1 pt-2">
                   <p className="text-sm font-semibold text-foreground">AI email sent</p>
                   <p className="text-xs text-muted-foreground mt-1">Personalized activation tip • Opened</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 relative">
-                <div className="absolute left-0 w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center border-2 border-card z-10">
-                  <div className="w-2 h-2 rounded-full bg-chart-2" />
+              {/* Timeline Item 4 (Last - no line) */}
+              <div className="flex items-start gap-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-full bg-chart-2/10 flex items-center justify-center border-2 border-card shrink-0">
+                    <div className="w-2.5 h-2.5 rounded-full bg-chart-2" />
+                  </div>
                 </div>
-                <div className="flex-1 pt-1">
+                <div className="flex-1 pt-2">
                   <p className="text-sm font-semibold text-foreground">Exploring features</p>
                   <p className="text-xs text-muted-foreground mt-1">Active session in progress</p>
                 </div>
