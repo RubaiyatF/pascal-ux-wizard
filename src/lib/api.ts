@@ -55,6 +55,19 @@ class MockApiClient {
       return { campaigns: mockCampaigns };
     }
 
+    if (endpoint.includes('/api/projects/') && endpoint.includes('/team')) {
+      return [
+        { id: '1', email: 'demo@example.com', role: 'admin', status: 'active' },
+        { id: '2', email: 'member@example.com', role: 'member', status: 'active' }
+      ];
+    }
+
+    if (endpoint.includes('/api/projects/') && endpoint.includes('/api-keys')) {
+      return [
+        { id: '1', name: 'Production Key', key: 'pk_demo_***********', createdAt: '2024-01-15' }
+      ];
+    }
+
     if (endpoint.includes('/api/settings/team')) {
       return [{ email: 'demo@example.com' }];
     }
