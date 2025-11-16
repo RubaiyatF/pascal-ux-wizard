@@ -335,7 +335,7 @@ const EmailQueue = () => {
               <div className="relative flex items-center justify-center gap-3 text-sm font-medium text-muted-foreground">
                 <span className="text-destructive animate-pulse">←</span>
                 <span>Swipe left or right to approve/reject</span>
-                <span className="text-green-500 animate-pulse">→</span>
+                <span className="text-chart-1 animate-pulse">→</span>
               </div>
               <div className="relative text-center text-xs text-muted-foreground/60 mt-1">
                 or scroll down to use the buttons for quick actions

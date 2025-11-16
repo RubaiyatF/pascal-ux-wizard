@@ -93,7 +93,7 @@ The Pascal Team`;
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <Card className="p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
@@ -180,7 +180,7 @@ The Pascal Team`;
             <div>
               <label className="text-sm font-medium mb-2 block">Email Body</label>
               <div className="bg-background border border-border rounded-lg overflow-hidden">
-                <div className="px-4 py-4 bg-white">
+                <div className="px-4 py-4 bg-card">
                   <Textarea
                     value={emailBody}
                     onChange={(e) => setEmailBody(e.target.value)}

@@ -104,7 +104,7 @@ export const AnimatedLogo = () => {
   }
 
   return (
-    <div className="relative w-full h-full bg-white rounded-full">
+    <div className="relative w-full h-full bg-card rounded-full">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />

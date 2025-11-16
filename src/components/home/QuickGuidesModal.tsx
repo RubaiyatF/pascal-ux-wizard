@@ -677,7 +677,7 @@ pascal('consent', false);`}
                         Different personas may have different success paths - capture all of them
                       </p>
                     </div>
-                    <div className="border rounded-lg p-4 bg-red-50 dark:bg-red-950/20">
+                    <div className="border rounded-lg p-4 bg-destructive/5 dark:bg-destructive/10">
                       <p className="text-sm font-medium mb-2">✗ Avoid outliers or unique scenarios</p>
                       <p className="text-xs text-muted-foreground">
                         Don't benchmark users with exceptional circumstances or hand-holding
@@ -719,7 +719,7 @@ pascal('consent', false);`}
                         Recommended: 10-20 emails per day to maintain quality review
                       </p>
                     </div>
-                    <div className="border rounded-lg p-4 bg-red-50 dark:bg-red-950/20">
+                    <div className="border rounded-lg p-4 bg-destructive/5 dark:bg-destructive/10">
                       <p className="text-sm font-medium mb-2">✗ Don't spam users with too many emails</p>
                       <p className="text-xs text-muted-foreground">
                         Wait at least 2-3 days between interventions per user

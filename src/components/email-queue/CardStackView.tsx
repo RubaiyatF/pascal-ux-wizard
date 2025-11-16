@@ -71,7 +71,7 @@ export const CardStackView = ({
           <Button
             size="lg"
             variant="outline"
-            className="rounded-full w-16 h-16 p-0 border-2 border-destructive text-destructive hover:bg-destructive hover:text-white"
+            className="rounded-full w-16 h-16 p-0 border-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
             onClick={() => onReject(emails[0].id)}
           >
             <X className="w-8 h-8" />

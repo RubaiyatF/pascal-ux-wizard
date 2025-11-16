@@ -98,7 +98,7 @@ export const EmailCard = ({
           {/* Email Preview/Full Content - Inbox Style */}
           <div className="bg-background border border-border rounded-lg overflow-hidden mb-2">
             {/* Email Body */}
-            <div className="px-3 py-3 bg-white">
+            <div className="px-3 py-3 bg-card">
               <div className="text-sm leading-relaxed text-foreground font-normal">
                 {isExpanded ? (
                   // Full email content with proper spacing
@@ -135,7 +135,7 @@ export const EmailCard = ({
           {/* AI Reasoning - Show in expanded view */}
           {isExpanded && (
             <>
-              <div className="bg-white rounded px-3 py-2 mb-2 border border-border">
+              <div className="bg-card rounded px-3 py-2 mb-2 border border-border">
                 <div className="flex items-start gap-2">
                   <div className="w-3 h-3 shrink-0 mt-0.5 rounded-full overflow-hidden">
                     <AnimatedLogo />

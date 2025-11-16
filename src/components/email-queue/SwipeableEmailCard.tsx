@@ -189,7 +189,7 @@ export const SwipeableEmailCard = ({
         {/* Email Preview/Full Content */}
         <div className="bg-background border border-border rounded-lg overflow-hidden mb-4">
           {/* Email Body */}
-          <div className="px-4 py-4 bg-white">
+          <div className="px-4 py-4 bg-card">
             <div className="text-sm leading-relaxed text-foreground font-normal">
               {isExpanded ? (
                 // Full email content with proper spacing
@@ -224,7 +224,7 @@ export const SwipeableEmailCard = ({
         </div>
 
         {/* AI Reasoning */}
-        <div className="bg-white rounded-lg p-4 mb-4 border border-border">
+        <div className="bg-card rounded-lg p-4 mb-4 border border-border">
           <div className="flex items-start gap-2">
             <div className="w-4 h-4 shrink-0 mt-1 rounded-full overflow-hidden">
               <AnimatedLogo />

@@ -71,10 +71,10 @@ export const InlineSessionPlayer = ({ session, onClose }: InlineSessionPlayerPro
         <Button
           variant="destructive"
           size="icon"
-          className="absolute top-2 right-2 text-white"
+          className="absolute top-2 right-2 text-foreground"
           onClick={onClose}
         >
-          <X className="w-4 h-4 text-white" />
+          <X className="w-4 h-4 text-foreground" />
         </Button>
       </div>
 

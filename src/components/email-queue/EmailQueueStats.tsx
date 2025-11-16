@@ -55,7 +55,7 @@ export const EmailQueueStats = ({ statsData }: EmailQueueStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       {displayStats.map((stat) => (
-        <Card key={stat.label} className="p-4 bg-white">
+        <Card key={stat.label} className="p-4 bg-card">
           <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
           <div className="flex items-baseline gap-2">
             <p className="text-3xl font-bold">{stat.value}</p>

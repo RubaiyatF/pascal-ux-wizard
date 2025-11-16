@@ -285,14 +285,14 @@ const Onboarding = () => {
                 </Button>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
+              <div className="bg-chart-2/5 dark:bg-chart-2/10 border border-chart-2/20 rounded-lg p-4">
                 <div className="flex gap-3">
-                  <Code className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                  <Code className="w-5 h-5 text-chart-2 shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium mb-1 text-blue-900 dark:text-blue-100">
+                    <p className="font-medium mb-1 text-foreground">
                       Your API key is shown in full here
                     </p>
-                    <p className="text-blue-700 dark:text-blue-300">
+                    <p className="text-muted-foreground">
                       After you continue, it will be truncated for security in the Settings page. Make sure to copy it now if you need it.
                     </p>
                   </div>
