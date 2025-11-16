@@ -79,8 +79,8 @@ export const JourneyEmptyState = () => {
           </Card>
 
           <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-500/10 mb-4">
-              <Users className="w-6 h-6 text-orange-500" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-chart-2/10 mb-4">
+              <Users className="w-6 h-6 text-chart-2" />
             </div>
             <h3 className="font-semibold text-lg mb-2">Behavior Insights</h3>
             <p className="text-sm text-muted-foreground mb-3">
@@ -150,8 +150,8 @@ export const JourneyEmptyState = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
-                  <div className="w-2 h-2 rounded-full bg-orange-500" />
+                <div className="w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center shrink-0 -ml-[21px] border-2 border-background">
+                  <div className="w-2 h-2 rounded-full bg-chart-2" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Exploring features</p>
