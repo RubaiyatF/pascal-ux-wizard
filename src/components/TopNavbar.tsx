@@ -105,16 +105,16 @@ export const TopNavbar = () => {
           {/* Project Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2 border-border bg-white">
+              <Button variant="outline" className="gap-2 border-border bg-card">
                 {currentProject}
                 <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+            <DropdownMenuContent align="end" className="w-48 bg-popover border-border z-50">
               {projects.map((project) => (
                 <DropdownMenuItem 
                   key={project}
-                  className={`cursor-pointer ${currentProject === project ? 'bg-accent' : ''}`}
+                  className={`cursor-pointer ${currentProject === project ? 'bg-secondary text-secondary-foreground' : ''}`}
                   onClick={() => handleProjectSwitch(project)}
                 >
                   {project}
@@ -140,7 +140,7 @@ export const TopNavbar = () => {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+            <DropdownMenuContent align="end" className="w-48 bg-popover border-border z-50">
               <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
