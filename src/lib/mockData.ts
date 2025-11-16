@@ -16,8 +16,28 @@ export const mockEvents = [
 ];
 
 export const mockBenchmarks = [
-  { userId: "user1", email: "power.user@example.com", status: "Fast Mover", avgSessionTime: 420 },
-  { userId: "user2", email: "good.user@example.com", status: "On Track", avgSessionTime: 280 },
+  {
+    userId: "user1",
+    email: "power.user@example.com",
+    status: "Fast Mover",
+    avgSessionTime: 420,
+    metrics: { sessionCount: 50, conversionRate: 85 },
+    trends: [
+      { date: "2024-01-01", value: 120 },
+      { date: "2024-01-08", value: 145 },
+    ],
+  },
+  {
+    userId: "user2",
+    email: "good.user@example.com",
+    status: "On Track",
+    avgSessionTime: 280,
+    metrics: { sessionCount: 30, conversionRate: 72 },
+    trends: [
+      { date: "2024-01-01", value: 80 },
+      { date: "2024-01-08", value: 95 },
+    ],
+  },
 ];
 
 export const mockUsers = [
@@ -29,6 +49,8 @@ export const mockUsers = [
     stage: "Adoption",
     journeyDays: 25,
     lastSeen: new Date(Date.now() - 1000 * 60 * 30),
+    currentStage: "Adoption",
+    nextSuggestedAction: "Upgrade to premium",
     metrics: {
       sessionCount: 45,
       avgSessionDuration: 320,
@@ -44,6 +66,8 @@ export const mockUsers = [
     stage: "Onboarding",
     journeyDays: 8,
     lastSeen: new Date(Date.now() - 1000 * 60 * 120),
+    currentStage: "Onboarding",
+    nextSuggestedAction: "Complete profile setup",
     metrics: {
       sessionCount: 15,
       avgSessionDuration: 180,
@@ -59,6 +83,8 @@ export const mockUsers = [
     stage: "Discovery",
     journeyDays: 45,
     lastSeen: new Date(Date.now() - 1000 * 60 * 60 * 48),
+    currentStage: "Discovery",
+    nextSuggestedAction: "Re-engagement campaign",
     metrics: {
       sessionCount: 8,
       avgSessionDuration: 90,
@@ -121,6 +147,14 @@ export const mockAnalytics = {
     prevented_churn: 34,
     feature_adoption: 55,
   },
+  learning_insights: [
+    { insight: "Users who complete onboarding within 3 days have 80% higher retention", category: "Onboarding" },
+    { insight: "Feature X drives 45% more engagement than feature Y", category: "Features" },
+  ],
+  effectiveness_by_type: [
+    { type: "Email", effectiveness: 72, count: 245 },
+    { type: "In-app", effectiveness: 85, count: 189 },
+  ],
 };
 
 export const mockSessions = [
@@ -131,6 +165,12 @@ export const mockSessions = [
     duration: 320,
     pages: 8,
     actions: 15,
+    chunks: [],
+    visual_description: "User navigated through main features",
+    ai_summary: "Active session exploring core functionality",
+    key_insights: ["High engagement", "Feature discovery"],
+    activation_signals: ["Completed setup", "Used key feature"],
+    concerns: [],
   },
 ];
 
@@ -143,5 +183,17 @@ export const mockCampaigns = [
     sent: 245,
     opened: 189,
     clicked: 67,
+    total_sent: 245,
+    sent_change: 12,
+    avg_open_rate: 77.1,
+    open_rate_change: 5.2,
+    avg_action_rate: 35.4,
+    action_rate_change: 8.1,
+    success_impact: 67,
+    impact_change: 15.3,
+    insights: [
+      { message: "Email timing optimization increased opens by 12%", priority: "high" },
+      { message: "Subject line A/B test showed 23% improvement", priority: "medium" },
+    ],
   },
 ];
