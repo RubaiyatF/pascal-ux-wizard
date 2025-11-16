@@ -644,7 +644,7 @@ const Settings = () => {
             </div>
           ) : (
             <>
-              <Card className="p-6 bg-white">
+              <Card className="p-6 bg-card">
                 <h2 className="text-xl font-semibold mb-4">Project Details</h2>
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -727,7 +727,7 @@ const Settings = () => {
             </div>
           ) : (
             <>
-              <Card className="p-6 bg-white">
+              <Card className="p-6 bg-card">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-xl font-semibold">Team Members</h2>
@@ -744,7 +744,7 @@ const Settings = () => {
                     </p>
                   ) : (
                     teamMembers.map((member: TeamMember) => (
-                      <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-white hover:bg-muted/30 transition-colors">
+                      <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg bg-card hover:bg-muted/30 transition-colors">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <p className="font-medium">{member.email}</p>
@@ -780,7 +780,7 @@ const Settings = () => {
                 </div>
               </Card>
 
-              <Card className="p-6 bg-white">
+              <Card className="p-6 bg-card">
                 <h2 className="text-xl font-semibold mb-4">Invite Teammate</h2>
                 <p className="text-sm text-muted-foreground mb-4">
                   Send an invitation to add a new member to your team

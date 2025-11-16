@@ -258,7 +258,7 @@ const Journey = () => {
                       onClick={() => setSelectedUser(user.canonical_user_id)}
                       className={`p-4 rounded-lg border cursor-pointer transition-all relative ${
                         selectedUser === user.canonical_user_id
-                          ? "border-success bg-white shadow-lg shadow-success/20 ring-2 ring-success/20"
+                          ? "border-success bg-card shadow-lg shadow-success/20 ring-2 ring-success/20"
                           : "border-border hover:border-accent/30 hover:bg-accent/5"
                       }`}
                     >
@@ -349,7 +349,7 @@ const Journey = () => {
 
                 {/* Success Journey Summary */}
                 {successJourney && (
-                  <div className="mb-6 p-4 bg-white rounded-lg border border-border">
+                  <div className="mb-6 p-4 bg-card rounded-lg border border-border">
                     <div className="flex items-start gap-2">
                       <div className="w-4 h-4 mt-0.5 shrink-0">
                         <AnimatedLogo />
@@ -467,7 +467,7 @@ const Journey = () => {
 
                               {/* AI Summary if available */}
                               {session.ai_summary && (
-                                <div className="bg-white rounded-lg p-3 border border-border">
+                                <div className="bg-card rounded-lg p-3 border border-border">
                                   <div className="flex items-start gap-2">
                                     <div className="w-4 h-4 shrink-0 mt-0.5 rounded-full overflow-hidden">
                                       <AnimatedLogo />

@@ -42,7 +42,7 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
       <div className="w-full max-w-md animate-fade-in">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full overflow-hidden">
+          <div className="w-16 h-16 mx-auto mb-4 bg-card rounded-full overflow-hidden">
             <AnimatedLogo />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
