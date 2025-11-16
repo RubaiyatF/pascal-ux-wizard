@@ -4,6 +4,9 @@ import { mockProjects } from "@/lib/mockData";
 interface OnboardingContextType {
   currentStep: string;
   projectId: string | null;
+  apiKey: string | null;
+  projectName: string | null;
+  website: string | null;
   setCurrentStep: (step: string) => void;
   completeOnboarding: () => void;
   setProjectData: (data: { projectId: string; apiKey: string; projectName: string; website: string }) => void;
@@ -37,6 +40,9 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const projectId = projectData?.projectId || null;
+  const apiKey = projectData?.apiKey || null;
+  const projectName = projectData?.projectName || null;
+  const website = projectData?.website || null;
 
   useEffect(() => {
     localStorage.setItem("pascal-onboarding-step", currentStep);
@@ -61,6 +67,9 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
       value={{
         currentStep,
         projectId,
+        apiKey,
+        projectName,
+        website,
         setCurrentStep,
         completeOnboarding,
         setProjectData,
