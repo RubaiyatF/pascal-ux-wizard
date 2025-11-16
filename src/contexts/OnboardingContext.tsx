@@ -1,124 +1,70 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { mockProjects } from "@/lib/mockData";
 
-interface OnboardingState {
-  currentStep: 1 | 2 | 3 | "complete";
+interface OnboardingContextType {
+  currentStep: string;
   projectId: string | null;
-  apiKey: string | null;
-  projectName: string | null;
-  website: string | null;
-}
-
-interface OnboardingContextType extends OnboardingState {
-  setStep: (step: 1 | 2 | 3 | "complete") => void;
-  setProjectData: (data: {
+  setCurrentStep: (step: string) => void;
+  completeOnboarding: () => void;
+  setProjectData: (data: { projectId: string; apiKey: string; projectName: string; website: string }) => void;
+  projectData: {
     projectId: string;
     apiKey: string;
     projectName: string;
     website: string;
-  }) => void;
-  completeOnboarding: () => void;
-  resetOnboarding: () => void;
+  } | null;
 }
 
-const OnboardingContext = createContext<OnboardingContextType | undefined>(
-  undefined
-);
+const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
 
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
-  const { userId, isLoaded } = useAuth();
-  const storageKey = `pascal-onboarding-${userId}`;
-
-  const [state, setState] = useState<OnboardingState>(() => {
-    // Don't try to load from localStorage until Clerk is loaded
-    if (!isLoaded || !userId) {
-      return {
-        currentStep: 1,
-        projectId: null,
-        apiKey: null,
-        projectName: null,
-        website: null,
-      };
-    }
-    const saved = localStorage.getItem(storageKey);
-    return saved
-      ? JSON.parse(saved)
-      : {
-          currentStep: 1,
-          projectId: null,
-          apiKey: null,
-          projectName: null,
-          website: null,
-        };
+  const [currentStep, setCurrentStep] = useState(() => {
+    return localStorage.getItem("pascal-onboarding-step") || "welcome";
   });
 
-  // Load from localStorage when Clerk finishes loading
-  useEffect(() => {
-    if (isLoaded && userId) {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        try {
-          const savedState = JSON.parse(saved);
-          setState(savedState);
-        } catch (e) {
-          console.error('[OnboardingContext] Error loading onboarding state:', e);
-        }
-      }
+  const [projectData, setProjectDataState] = useState(() => {
+    const saved = localStorage.getItem("pascal-project-data");
+    if (saved) {
+      return JSON.parse(saved);
     }
-  }, [isLoaded, userId, storageKey]);
+    // Auto-create demo project
+    return {
+      projectId: mockProjects[0].id,
+      apiKey: mockProjects[0].apiKey,
+      projectName: mockProjects[0].name,
+      website: mockProjects[0].website,
+    };
+  });
 
-  // Persist to localStorage on state change
+  const projectId = projectData?.projectId || null;
+
   useEffect(() => {
-    if (isLoaded && userId) {
-      localStorage.setItem(storageKey, JSON.stringify(state));
+    localStorage.setItem("pascal-onboarding-step", currentStep);
+  }, [currentStep]);
+
+  useEffect(() => {
+    if (projectData) {
+      localStorage.setItem("pascal-project-data", JSON.stringify(projectData));
     }
-  }, [state, storageKey, userId, isLoaded]);
+  }, [projectData]);
 
-  const setStep = (step: 1 | 2 | 3 | "complete") => {
-    setState((prev) => ({ ...prev, currentStep: step }));
-  };
-
-  const setProjectData = (data: {
-    projectId: string;
-    apiKey: string;
-    projectName: string;
-    website: string;
-  }) => {
-    setState((prev) => ({
-      ...prev,
-      projectId: data.projectId,
-      apiKey: data.apiKey,
-      projectName: data.projectName,
-      website: data.website,
-      currentStep: 2, // Move to step 2 after project creation
-    }));
+  const setProjectData = (data: { projectId: string; apiKey: string; projectName: string; website: string }) => {
+    setProjectDataState(data);
   };
 
   const completeOnboarding = () => {
-    setState((prev) => ({ ...prev, currentStep: "complete" }));
-  };
-
-  const resetOnboarding = () => {
-    setState({
-      currentStep: 1,
-      projectId: null,
-      apiKey: null,
-      projectName: null,
-      website: null,
-    });
-    if (userId) {
-      localStorage.removeItem(storageKey);
-    }
+    setCurrentStep("complete");
   };
 
   return (
     <OnboardingContext.Provider
       value={{
-        ...state,
-        setStep,
-        setProjectData,
+        currentStep,
+        projectId,
+        setCurrentStep,
         completeOnboarding,
-        resetOnboarding,
+        setProjectData,
+        projectData,
       }}
     >
       {children}
@@ -126,7 +72,6 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useOnboarding = () => {
   const context = useContext(OnboardingContext);
   if (!context) {
