@@ -107,8 +107,8 @@ export const AnalyticsEmptyState = () => {
           <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-orange-500" />
+                <div className="w-10 h-10 rounded-lg bg-chart-2/10 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-chart-2" />
                 </div>
                 <h3 className="font-semibold text-lg">Benchmark Insights</h3>
               </div>
