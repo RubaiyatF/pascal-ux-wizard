@@ -83,7 +83,7 @@ export const TopNavbar = () => {
 
 
         {/* Right Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ml-auto pr-2">
           {/* Project Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
