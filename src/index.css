@@ -4,6 +4,71 @@
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
+/* NeueMontreal Font Family */
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 255 255 255;
@@ -38,9 +103,9 @@
     --sidebar-accent-foreground: 6 96 21;
     --sidebar-border: 23 68 63;
     --sidebar-ring: 161 161 161;
-    --font-sans: Schibsted Grotesk, ui-sans-serif, sans-serif, system-ui;
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    --font-mono: JetBrains Mono, ui-monospace, monospace;
+    --font-sans: 'Neue Montreal', ui-sans-serif, sans-serif, system-ui;
+    --font-serif: 'Neue Montreal', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: 'Neue Montreal', ui-monospace, monospace;
     --radius: 0.625rem;
     --shadow-x: 3.5px;
     --shadow-y: 1px;
@@ -93,9 +158,9 @@
     --sidebar-accent-foreground: 250 250 250;
     --sidebar-border: 40 40 40;
     --sidebar-ring: 82 82 82;
-    --font-sans: Schibsted Grotesk, ui-sans-serif, sans-serif, system-ui;
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    --font-mono: JetBrains Mono, ui-monospace, monospace;
+    --font-sans: 'Neue Montreal', ui-sans-serif, sans-serif, system-ui;
+    --font-serif: 'Neue Montreal', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: 'Neue Montreal', ui-monospace, monospace;
     --radius: 0.625rem;
     --shadow-x: 3.5px;
     --shadow-y: 1px;
