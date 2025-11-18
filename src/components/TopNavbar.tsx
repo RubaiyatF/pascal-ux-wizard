@@ -81,20 +81,6 @@ export const TopNavbar = () => {
           <span className="font-bold text-lg transition-all duration-200 group-hover:font-extrabold">Pascal</span>
         </button>
 
-        {/* Banner */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-sm text-muted-foreground">
-            Request access for Pascal,{" "}
-            <button
-              data-cal-link="pascal-vdhnsv/30min"
-              data-cal-namespace="30min"
-              data-cal-config='{"layout":"month_view"}'
-              className="text-primary hover:underline font-medium"
-            >
-              Book a Demo
-            </button>
-          </div>
-        </div>
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
