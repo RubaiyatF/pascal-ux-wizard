@@ -122,8 +122,8 @@ export const JourneyEmptyState = () => {
               {/* Timeline Item 1 */}
               <div className="flex items-start gap-4">
                 <div className="relative flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center border-2 border-card shrink-0">
-                    <Users className="w-5 h-5 text-success" />
+                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center border-2 border-border shrink-0">
+                    <Users className="w-5 h-5 text-foreground" />
                   </div>
                   <div className="w-0.5 h-full bg-border absolute top-10" />
                 </div>
