@@ -18,7 +18,9 @@ const Layout = ({ children }: LayoutProps) => {
           <AppSidebar />
           
           <main className="flex-1 p-8 transition-all">
-            {children}
+            <div className="h-full border border-border rounded-3xl p-8">
+              {children}
+            </div>
           </main>
         </div>
         
