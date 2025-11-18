@@ -15,9 +15,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Schibsted Grotesk", "ui-sans-serif", "sans-serif", "system-ui"],
-        serif: ["ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"],
-        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+        sans: ["Neue Montreal", "ui-sans-serif", "sans-serif", "system-ui"],
+        serif: ["Neue Montreal", "ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"],
+        mono: ["Neue Montreal", "ui-monospace", "monospace"],
       },
       colors: {
         border: "rgb(var(--border) / <alpha-value>)",
