@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
@@ -117,8 +117,8 @@ export const TopNavbar = () => {
             <DropdownMenuTrigger asChild>
               <Avatar className="w-8 h-8 cursor-pointer">
                 <AvatarImage src="" />
-                <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                  MO
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  <User className="w-4 h-4" />
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
